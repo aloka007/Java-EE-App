@@ -1,0 +1,93 @@
+<b>Login for...</b><br>
+Receptionist<br>
+Cashier<br>
+Chef<br>
+Head Chef<br>
+Manager<br>
+
+
+
+            <sql:query var="result" dataSource="jdbc/smart-rms">
+                SELECT item_id, item_type, item_name, description, price, spicyness FROM menu_item
+            </sql:query>
+            <br>A test view of the menu...<br>
+            <table border="1">
+                <!-- column headers -->
+                <tr>
+                    <c:forEach var="columnName" items="${result.columnNames}">
+                        <th><c:out value="${columnName}"/></th>
+                        </c:forEach>
+                </tr>
+                <!-- column data -->
+                <c:forEach var="row" items="${result.rowsByIndex}">
+                    <tr>
+                        <c:forEach var="column" items="${row}">
+                            <td><c:out value="${column}"/></td>
+                        </c:forEach>
+                    </tr>
+                </c:forEach>
+            </table>
+            <form name="lol" action="haha" method="POST">
+                <input type="text" name="aaa" value="name1" size="30" />
+            </form>
+
+<!--<%@include file="/WEB-INF/users/common/order_table.html"%>-->
+
+<p:poll interval="2" listener="#{dtOrderList.refresh}" update="orderpanel" />
+
+td {
+                    padding: 0px 10px !important;
+                }
+                .ui-widget {
+                    font-family: Verdana,sans-serif;
+                    font-size: 0.9em;
+                }
+
+
+
+package rms.db;
+
+//import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class DataBaseConnection{
+    
+    public Statement stmt;
+    public ResultSet res;
+    public Connection conn;
+    
+    public DataBaseConnection(){
+        
+
+    }
+    @SuppressWarnings("CallToThreadDumpStack")
+    public Connection setConnection(){
+
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            //conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/restaurant","root","admin");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_rms","root","admin");
+        }
+        catch(ClassNotFoundException | SQLException e)
+        {
+        }
+        return conn;
+    }
+    public ResultSet getResult(String query, Connection conn) throws SQLException{
+        this.conn = conn;
+        try
+        {
+            stmt = conn.createStatement();
+            res = stmt.executeQuery(query);
+            
+        }
+        catch(Exception e)
+        {
+        }
+        return res;
+    }
+}

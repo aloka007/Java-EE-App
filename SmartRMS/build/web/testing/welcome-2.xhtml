@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sql="http://java.sun.com/jsp/jstl/sql"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>SmartRMS - Ajax Chef</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <style>
+                td {
+                    padding: 0px 10px !important;
+                }
+                .ui-widget {
+                    font-family: Verdana,sans-serif;
+                    font-size: 0.9em;
+                }
+            </style>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    <big>SmartRMS - Chef</big>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="30" closable="true" collapsible="true">
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="245" header="Left" collapsible="true">
+                    <p:menu>
+                        <p:submenu label="Resources">
+                            <p:menuitem value="Demo" url="index.jsp" />
+                            <p:menuitem value="Documentation" url="http://www.primefaces.org/documentation.html" />
+                            <p:menuitem value="Forum" url="http://forum.primefaces.org/" />
+                            <p:menuitem value="Themes" url="http://www.primefaces.org/themes.html" />
+
+                        </p:submenu>
+
+                    </p:menu>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form>
+                        <h:panelGrid id="kek" columns="4" cellpadding="5">
+                            <h:outputLabel for="name" value="Name:" style="font-weight:bold" />
+                            <p:inputText id="name" value="#{basicViewAJ.text}" />
+                            <p:commandButton value="Submit" update="display" icon="ui-icon-check" />
+                            <h:outputText id="display" value="#{basicViewAJ.text}" />
+                            <!--                            <p:poll interval="1" update="display" /> -->
+                            
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                    <h:form>
+                        <p:outputPanel id="orderpanel">
+                            <h:outputText id="refcount" value="Refresh Count: #{dtOrderList.refreshcount}" />
+                            <p:dataTable id="ordertable" var="order" value="#{dtOrderList.orders}">
+                                <p:column headerText="Order Number">
+                                    <h:outputText style="center" value="#{order.orderNo}" />
+                                </p:column>
+
+                                <p:column headerText="Order Time">
+                                    <h:outputText style="center" value="#{order.orderTime}" />
+                                </p:column>
+
+                                <p:column headerText="Table No">
+                                    <h:outputText style="center"  value="#{order.tableNo}" />
+                                </p:column>
+
+                                <p:column headerText="Customer Name">
+                                    <h:outputText style="center" value="#{order.custName}" />
+                                </p:column>
+                                <p:column headerText="Accept Order">
+                                    <p:selectBooleanButton  onLabel="Accepted!" offLabel="Accept" style="width:160px" />
+                                </p:column>
+                            </p:dataTable>
+
+                        </p:outputPanel>
+                        <p:poll interval="2" listener="#{dtOrderList.refresh}" update="orderpanel" />
+
+                    </h:form>
+
+
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

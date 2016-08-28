@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sql="http://java.sun.com/jsp/jstl/sql"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    <big>SmartRMS - Chef</big>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                    Footer
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="245" header="Left" collapsible="true">
+                    <p:menu>
+                        <p:submenu label="Resources">
+                            <p:menuitem value="Demo" url="index.jsp" />
+                            <p:menuitem value="Documentation" url="http://www.primefaces.org/documentation.html" />
+                            <p:menuitem value="Forum" url="http://forum.primefaces.org/" />
+                            <p:menuitem value="Themes" url="http://www.primefaces.org/themes.html" />
+
+                        </p:submenu>
+
+                    </p:menu>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    Welcome to PrimeFaces
+                    <h:form>
+                        <h:panelGrid id="kek" columns="4" cellpadding="5">
+                            <h:outputLabel for="name" value="Name:" style="font-weight:bold" />
+                            <p:inputText id="name" value="#{basicViewAJ.text}" />
+                            <p:commandButton value="Submit" update="display" icon="ui-icon-check" />
+                            <h:outputText id="display" value="#{basicViewAJ.text}" />
+                            <p:poll interval="1" update="display" /> 
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                    <h:form>
+
+                        <p:dataTable id="cartable" var="car" value="#{dtBasicView.cars}">
+                            <p:column headerText="Id">
+                                <h:outputText value="#{car.id}" />
+                            </p:column>
+
+                            <p:column headerText="Year">
+                                <h:outputText value="#{car.year}" />
+                            </p:column>
+
+                            <p:column headerText="Brand">
+                                <h:outputText value="#{car.brand}" />
+                            </p:column>
+
+                            <p:column headerText="Color">
+                                <h:outputText value="#{car.color}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:poll interval="1" listener="#{dtBasicView.refresh}" update="cartable" /> 
+
+
+
+                    </h:form>
+
+
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+
