@@ -96,9 +96,9 @@
                 </form>
 
             </div>
-            <p:button value="Bookmark" icon="ui-icon-star">
+<!--            <p:button value="Bookmark" icon="ui-icon-star">
                     <f:param name="productId" value="10" />
-                </p:button>
+                </p:button>-->
 
 
             <br>

@@ -15,7 +15,7 @@
     </servlet>
     <servlet>
         <servlet-name>AccountDispatch</servlet-name>
-        <servlet-class>rms.servlets.AccountDispatch</servlet-class>
+        <servlet-class>rms.test.AccountDispatch</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>OrderHandler</servlet-name>
@@ -29,6 +29,10 @@
     <servlet-mapping>
         <servlet-name>ValidateLogin1</servlet-name>
         <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ValidateLogin1</servlet-name>
+        <url-pattern>/Logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AccountDispatch</servlet-name>

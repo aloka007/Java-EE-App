@@ -14,60 +14,42 @@
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                 <title>SmartRMS - Ajax Chef</title>
             </f:facet>
+            <h:outputStylesheet name="css/prime-ui.css" />
         </h:head>
 
         <h:body>
 
-            <style>
-                td {
-                    padding: 2px 10px !important;
-                }
-                .ui-widget {
-                    font-family: Verdana,sans-serif;
-                    font-size: 0.9em;
-                }
-                .ui-panelgrid .ui-panelgrid-cell {
-                    border: none;
-                }
-            </style>
-
             <p:layout fullPage="true">
 
-                <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="north" size="80" resizable="true" closable="true" collapsible="true">
+                <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="north" size="80" collapsible="true" gutter="0">
                     <h:panelGroup layout="block" style="float:left; padding: 0px 15px">
-                        <h2>SmartRMS - Chef this1- #{dtOrderList.usertype}</h2>
+                        <h2>SmartRMS - Chef #{firstname} #{lastname}</h2>
                     </h:panelGroup>
-                        
-                    
+
+
                     <h:panelGroup layout="block" style="float:right; padding: 20px 15px">
                         <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
                     </h:panelGroup>
 
-
                 </p:layoutUnit>
 
-                <p:layoutUnit position="south" size="30" closable="true" collapsible="true">
-                    Footer
-                </p:layoutUnit>
+                
 
-                <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="west" size="200" header="Navigate" collapsible="true">
+                <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="west" size="200" header="Navigate" collapsible="true" gutter="0">
                     <p:menu>
                         <p:submenu label="GoTo">
-                            <p:menuitem value="Back To Login" url="index.jsp" />
-                            <p:menuitem value="Documentation" url="http://www.primefaces.org/documentation.html" />
-                            <p:menuitem value="Forum" url="http://forum.primefaces.org/" />
-                            <p:menuitem value="Themes" url="http://www.primefaces.org/themes.html" />
+                            <p:menuitem value="Completed Orders" url="index.jsp" />
+                            <p:menuitem value="My Profile" url="http://www.primefaces.org/documentation.html" />
+                            <p:menuitem value="Logout" url="/Logout" />
 
                         </p:submenu>
 
                     </p:menu>
                 </p:layoutUnit>
 
-                <p:layoutUnit rendered="#{!dtOrderList.hiddenatrib}" position="center">
-                    <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
-                </p:layoutUnit>
+                
 
-                <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="center" style="padding: 5px 10px">
+                <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="center" style="padding: 5px 10px" collapsible="true" gutter="0">
                     <h:form>
                         <h:panelGrid id="kek" columns="4" cellpadding="5">
                             <h:outputLabel for="name" value="Name:" style="font-weight:bold" />
@@ -112,7 +94,14 @@
                     </h:form>
 
 
-
+                </p:layoutUnit>
+                
+                <p:layoutUnit rendered="#{!dtOrderList.hiddenatrib}" position="center">
+                    <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
+                </p:layoutUnit>
+                
+                <p:layoutUnit class="footer-unit" position="south" size="20" collapsible="true" gutter="0">
+                     Copyright © 2016 UCSC 2nd Year SD Project Group #12
                 </p:layoutUnit>
 
             </p:layout>

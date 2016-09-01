@@ -8,7 +8,7 @@
 
 
 <!DOCTYPE html>
-<html>
+<html xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Smart RMS - Receptionist</title>
@@ -29,7 +29,7 @@
 
             <!--            Script to switch the tabs-->
             <script>
-                var divlist = ["menuDiv", "orderDiv","placedDiv"];
+                var divlist = ["menuDiv", "orderDiv", "placedDiv"];
                 function switchDiv(name) {
                     for (i = 0; i < divlist.length; i++) {
                         document.getElementById(divlist[i]).style.display = "none";
@@ -41,13 +41,14 @@
             <!--            Menu Section-->
             <div id="menuDiv"  style="display:none;">
                 <sql:query var="result" dataSource="jdbc/smart-rms">
-                    SELECT item_id, item_type, item_name, description, price, spiciness FROM menu_item
+                    SELECT item_id, menu_index, item_type, item_name, description, price, spiciness FROM menu_item
                 </sql:query>
                 <br>A test view of the menu...<br>
                 <table>
                     <!-- column headers -->
                     <tr class = "shadedth">
                         <th>Item ID</th>
+                        <th>Index</th>
                         <th>Type</th>
                         <th>Item Name</th>
                         <th>Description</th>
@@ -119,7 +120,7 @@
                 <sql:query var="order_result" dataSource="jdbc/smart-rms">
                     SELECT order_no, order_time, table_no, cust_name FROM `order`
                 </sql:query>
-    
+
                 <table border="1">
                     <!-- column headers -->
                     <tr>
@@ -136,6 +137,11 @@
                         </tr>
                     </c:forEach>
                 </table>
+                    
+                    ${users.get(0).username}
+
+                
+
             </div>
 
 
