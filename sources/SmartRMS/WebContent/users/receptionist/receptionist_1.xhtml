@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sql="http://java.sun.com/jsp/jstl/sql"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>SmartRMS - Receptionist</title>
+            </f:facet>
+            <h:outputStylesheet name="css/prime-ui.css" />
+        </h:head>
+
+        <h:body>
+            <p:layout fullPage="true">
+
+                <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="north" size="80" collapsible="true" gutter="0">
+                    <h:panelGroup layout="block" style="float:left; padding: 0px 15px">
+                        <h2>SmartRMS - Receptionist #{firstname} #{lastname}</h2>
+                    </h:panelGroup>
+
+
+                    <h:panelGroup layout="block" style="float:right; padding: 20px 15px">
+                        <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
+                    </h:panelGroup>
+
+                </p:layoutUnit>
+
+
+
+                <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="west" size="200" header="Navigate" collapsible="true" gutter="0">
+                    <p:menu>
+                        <p:submenu label="GoTo">
+                            <p:menuitem value="Completed Orders" url="index.jsp" />
+                            <p:menuitem value="My Profile" url="http://www.primefaces.org/documentation.html" />
+                            <p:menuitem value="Logout" url="/Logout" />
+
+                        </p:submenu>
+
+                    </p:menu>
+                </p:layoutUnit>
+
+                <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+                    <p:panelGrid styleClass="companyHeaderGrid" columns="2" style="width: 100%;">
+                        <p:panel id="basic" header="Basic" style="width:500px;">
+                            <h:form>
+                                <p:outputLabel value="Search Items  " />
+                                <p:inputText id="search" value="#{dtRecepView.searchText}"/>
+                                <p:ajax event="keyup" listener="#{dtRecepView.filter()}" update="scroller" />
+                                <p:commandButton actionListener="#{dtRecepView.sortList()}" update="scroller" icon="ui-icon-sort" />
+
+                                <p:dataScroller id="scroller" value="#{dtRecepView.leftItems}" chunkSize="100" var="item" mode="inline" scrollHeight="350">
+
+
+                                    <f:facet name="header">
+                                        Scroll Down to Load More Items
+                                    </f:facet>
+
+                                    <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                                        <p:outputPanel>
+                                            <h:panelGrid columns="2" cellpadding="0">
+                                                <p:commandButton icon="ui-icon-plus" style="height: 20px; width: 20px;" >
+                                                    <f:setPropertyActionListener value="#{item}" target="#{dtRecepView.selectedItem}" />
+                                                </p:commandButton>
+                                                <h:outputText value="#{item.menuIndex}-     #{item.itemName}" />
+
+                                            </h:panelGrid>
+                                        </p:outputPanel>
+                                    </h:panelGrid>
+
+                                </p:dataScroller>
+
+                                <h:outputText id="selected-item" value="#{dtRecepView.selectedItem.menuIndex}-  #{dtRecepView.selectedItem.itemName}" />
+
+
+                                <h:panelGrid columns="2" cellpadding="10" style="width: 100%">
+                                    <p:commandButton value="Clear Selection" actionListener="#{dtRecepView.clearList}"  icon="ui-icon-arrow-left" />
+                                    <p:commandButton value="Add To Order" update="selected-item" actionListener="#{dtRecepView.updateList}"  icon="ui-icon-plus" />
+
+                                </h:panelGrid>
+
+                            </h:form>
+                            
+                        </p:panel>
+                        <p:panel header="Basic" footer="Movie Details" style="width:500px; height: 500px; margin-bottom:20px">
+                            <h:form id="form-2">
+
+
+                                <h:outputText id="haha-2" value="#{dtRecepView.selectedItem.itemName}" />
+                                <p:poll interval="1" update="haha-2"/>
+
+
+
+
+<!--                                <p:dataGrid var="item" value="#{dtRecepView.selectedItems}" columns="1" layout="grid" id="orderform">
+                                    <p:panel header="#{item.menuIndex}   #{item.itemName}" style="text-align:left">
+                                        <h:panelGrid columns="2" style="width:100%" columnClasses="left-grid-column, right-grid-column">
+                                            <h:outputText value="Price: #{item.price}" />
+                                            <h:outputLabel for="minMax" style="text-align: right" value="Quantity" />
+                                            <h:outputText value="#{item.description}" />
+                                            <p:spinner id="minMax" size="3" value="#{spinnerView.number3}" min="0" max="10" />
+                                        </h:panelGrid>
+                                    </p:panel>
+                                </p:dataGrid>-->
+                                
+                                
+
+                                <p:commandButton value="Submit" update="orderform" icon="ui-icon-check" />
+                            </h:form>
+                        </p:panel>
+
+                    </p:panelGrid>
+
+
+
+
+
+
+
+
+
+
+
+
+                </p:layoutUnit>
+
+                <p:layoutUnit rendered="#{!dtRecepView.hiddenatrib}" position="center">
+                    <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
+                </p:layoutUnit>
+
+                <p:layoutUnit class="footer-unit" position="south" size="20" collapsible="true" gutter="0">
+                    Copyright © 2016 UCSC 2nd Year SD Project Group #12
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

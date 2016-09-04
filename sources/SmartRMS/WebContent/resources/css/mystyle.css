@@ -1,0 +1,167 @@
+
+.desc{
+    font-family: "Calibri", sans-serif;
+    font-size: 16px;
+    float: bottom;
+}
+.date{
+/*    position: absolute;*/
+    top: 5px;
+    right: 20px;
+    padding: 0px 0px;
+    font-family: "Calibri", sans-serif;
+    font-size: 14px;
+    text-align: right;
+    float: top;
+}
+.user{
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    padding: 7px 7px;
+    font-family: "Calibri", sans-serif;
+    font-size: 18px;
+    text-align: right;
+    float: right;
+}
+.banner{
+    font-family: "Calibri", sans-serif;
+    padding: 2px 12px;
+    width: 250px;
+    float: left;
+    
+}
+.please{
+    font-family:"Calibri Light";
+    color: #3e3f40;
+}
+input[type=text], select {
+    width: 100%;
+    padding: 2px 8px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    box-sizing: border-box;
+}
+input[type=password], select {
+    width: 100%;
+    padding: 2px 8px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    box-sizing: border-box;
+}
+
+.button {
+    background-color: #000033; /* Green */
+    border: none;
+    color: white;
+    padding: 5px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+}
+
+.shadedth{
+    background-color: #4CAF50;
+    color: white;
+}
+.shadedtr:nth-child(even) {
+    background-color: #f2f2f2
+}
+table {
+    border-collapse: collapse;
+}
+
+
+#header {
+    
+    background-color: #000033;
+    color:white;
+    font-family: "Cambria", serif;
+    font-size: 28px;
+    height:60px;
+    text-align:left;
+    padding:10px 10px;
+}
+            
+#nav {
+    font-family: sans-serif;
+    font-size: 13px;
+    line-height:30px;
+    background-color:hsl(240, 10%, 80%);
+    height: 510px;
+    width:100px;
+    float:left;
+    padding:10px;
+}
+#section {
+/*    background-color:hsl(240, 10%, 95%);*/
+    text-align:center;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    padding: 50px 200px;
+/*    height: 300px;*/
+}
+#aside{
+    font-family: sans-serif;
+    width:350px;
+    float:left;
+    padding:10px;
+}
+#footer {
+    position: relative;
+    margin-top: -10px; 
+    font-family: sans-serif;
+    float: bottom;
+    font-size: 11px;
+    background-color: #000033;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:2px;
+}
+
+.btn {
+  -webkit-border-radius: 3;
+  -moz-border-radius: 3;
+  border-radius: 3px;
+  font-family: Arial;
+  color: #000000;
+  font-size: 20px;
+  background: #c4c4c4;
+  padding: 5px 10px 5px 10px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #d1d1d1;
+  text-decoration: none;
+}
+.myButton {
+  -webkit-border-radius: 2;
+  -moz-border-radius: 2;
+  border-radius: 2px;
+  -webkit-box-shadow: 0px 1px 5px #666666;
+  -moz-box-shadow: 0px 1px 5px #666666;
+  box-shadow: 0px 1px 5px #666666;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 14px;
+  background: #6c6e70;
+  padding: 3px 18px 3px 18px;
+  border: solid #363636 1px;
+  text-decoration: none;
+}
+
+.myButton:hover {
+  background: #3e3f40;
+  text-decoration: none;
+}
+.myButton:active {
+        position:relative;
+        top:1px;
+}
