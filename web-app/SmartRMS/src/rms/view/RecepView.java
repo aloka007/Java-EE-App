@@ -168,7 +168,8 @@ public class RecepView {
         for (MenuItem i : items) {
             for (String s : dualitems.getTarget()) {
                 if (s.split(" - ")[1].trim().toLowerCase().equalsIgnoreCase(i.getItemName())) {
-                    OrderItem oi = new OrderItem(i.getItemId(), 1);
+                    //OrderItem oi = new OrderItem(i.getItemId(), 1);
+                    OrderItem oi = new OrderItem(1,i);
                     Container c = new Container(i, oi);
                     rightItems.add(c);
                 }

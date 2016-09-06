@@ -48,7 +48,7 @@ public class CustomerOrder implements Serializable {
     @Basic(optional = false)
     @Column(name = "order_no")
     private Integer orderNo;
-    @Column(name = "order_time", insertable=false)
+    @Column(name = "order_time", insertable=false) 
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderTime;
     @Column(name = "table_no")
@@ -111,11 +111,11 @@ public class CustomerOrder implements Serializable {
         this.custName = custName;
     }
 
-    public Short getAccepted() {
+    public Short getStatus() {
         return status;
     }
 
-    public void setAccepted(Short status) {
+    public void setStatus(Short status) {
         this.status = status;
     }
 
@@ -150,7 +150,7 @@ public class CustomerOrder implements Serializable {
 
     @Override
     public String toString() {
-        return "rms.entity.CustomerOrder[ orderNo=" + orderNo + " ]";
+        return "rms.common.CustomerOrder[ orderNo=" + orderNo + " ]";
     }
     
 }

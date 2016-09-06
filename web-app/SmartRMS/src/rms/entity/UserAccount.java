@@ -140,7 +140,7 @@ public class UserAccount implements Serializable {
 
     @Override
     public String toString() {
-        return "rms.entity.UserAccount[ userId=" + userId + " ]";
+        return "rms.common.UserAccount[ userId=" + userId + " ]";
     }
     
 }

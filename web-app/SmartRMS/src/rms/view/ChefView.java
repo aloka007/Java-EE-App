@@ -9,10 +9,13 @@ package rms.view;
  *
  * @author Tharinda
  */
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import rms.test.OrderService;
 import rms.test.Order;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -25,19 +28,25 @@ import rms.common.ComTainer;
 import rms.entity.CustomerOrder;
 import rms.entity.OrderItem;
 import rms.session.CustomerOrderFacade;
-
+import rms.session.OrderItemFacade;
 
 @ManagedBean(name = "dtOrderList")
 @SessionScoped
 public class ChefView implements Serializable {
+
+    @EJB
+    private CustomerOrderFacade customerOrderFacade;
+
+    @EJB
+    private OrderItemFacade orderItemFacade;
 
     boolean hiddenatrib = false;
     EntityManager em;
 
     int refreshcount = 0;
     private List<CustomerOrder> orders;
-    private List<Container> orderDetails;
-    
+    private List<Container> orderDetails = new ArrayList<>();
+
     private CustomerOrder selectedOrder;
 
     public CustomerOrder getSelectedOrder() {
@@ -48,14 +57,33 @@ public class ChefView implements Serializable {
         this.selectedOrder = selectedOrder;
     }
 
+    private List<OrderItem> itemList;
+
+    public List<OrderItem> getItemList() {
+
+        return itemList;
+    }
+
+    public void refreshList() {
+        List<OrderItem> templist = new ArrayList<>();
+        for (OrderItem i : itemList) {
+            if (Objects.equals(i.getOrderNo().getOrderNo(), selectedOrder.getOrderNo())) {
+                templist.add(i);
+            }
+        }
+        itemList = templist;
+    }
+
     public List<Container> getOrderDetails() {
+        update();
         return orderDetails;
     }
 
     public void setOrderDetails(List<Container> orderDetails) {
         this.orderDetails = orderDetails;
     }
-
+    
+    private Container selectedContainer;
 
     public boolean isHiddenatrib() {
         try {
@@ -74,25 +102,30 @@ public class ChefView implements Serializable {
     public void setHiddenatrib(boolean hiddenatrib) {
         this.hiddenatrib = hiddenatrib;
     }
-    @EJB
-    private CustomerOrderFacade customerOrderFacade;
 
 //    @ManagedProperty("#{orderService}")
 //    private OrderService service;
-
     @PostConstruct
     public void init() {
+        itemList = orderItemFacade.findAll();
         update();
     }
-    
-    public void update(){
+
+    public void update() {
         orders = customerOrderFacade.findAll();
-//        for(CustomerOrder o : orders){
-//            Query query = em.createQuery("SELECT i FROM OrderItem i WHERE i.orderNo.orderNo = :order");
-//            query.setParameter("order", o.getOrderNo());
-//            List<OrderItem> itemlist = (List<OrderItem>) query.getResultList();
-//            orderDetails.add(new Container(o, itemlist));
-//        }
+        itemList = orderItemFacade.findAll();
+        orderDetails = new ArrayList<>();
+        for (CustomerOrder order : orders) {
+            List<OrderItem> templist = new ArrayList<>();
+            for (OrderItem i : itemList) {
+                if (Objects.equals(i.getOrderNo().getOrderNo(), order.getOrderNo())) {
+                    templist.add(i);
+                }
+            }
+            Container cont = new Container(order, templist);
+            orderDetails.add(cont);
+        }
+
     }
 
     public void refresh() {
@@ -107,9 +140,16 @@ public class ChefView implements Serializable {
 //    public void setService(OrderService service) {
 //        this.service = service;
 //    }
-
     public int getRefreshcount() {
         return refreshcount;
+    }
+
+    public Container getSelectedContainer() {
+        return selectedContainer;
+    }
+
+    public void setSelectedContainer(Container selectedContainer) {
+        this.selectedContainer = selectedContainer;
     }
 
 }

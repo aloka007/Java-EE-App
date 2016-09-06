@@ -73,7 +73,7 @@ public class OrderManager {
         order.setCustName(cutomerName);
         order.setOrderedBy(orderedBy);
         order.setTableNo(0);
-        order.setAccepted((short)0);
+        order.setStatus((short)0);
 
 
         em.persist(order);

@@ -5,6 +5,8 @@
  */
 package rms.entity;
 
+import rms.entity.MenuItem;
+import rms.entity.CustomerOrder;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,7 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,7 +31,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "OrderItem.findAll", query = "SELECT o FROM OrderItem o"),
     @NamedQuery(name = "OrderItem.findByOrderItemId", query = "SELECT o FROM OrderItem o WHERE o.orderItemId = :orderItemId"),
-    @NamedQuery(name = "OrderItem.findByItemId", query = "SELECT o FROM OrderItem o WHERE o.itemId = :itemId"),
     @NamedQuery(name = "OrderItem.findByQuantity", query = "SELECT o FROM OrderItem o WHERE o.quantity = :quantity")})
 public class OrderItem implements Serializable {
 
@@ -40,31 +40,28 @@ public class OrderItem implements Serializable {
     @Basic(optional = false)
     @Column(name = "order_item_id")
     private Integer orderItemId;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "item_id")
-    private int itemId;
     @Column(name = "quantity")
     private Integer quantity;
+    @JoinColumn(name = "item_id", referencedColumnName = "item_id")
+    @ManyToOne(optional = false)
+    private MenuItem itemId;
     @JoinColumn(name = "order_no", referencedColumnName = "order_no")
     @ManyToOne(optional = false)
     private CustomerOrder orderNo;
 
-    public OrderItem(int itemId,int quantity) {
-        this.itemId=itemId;
-        this.quantity=quantity;
-    }
     public OrderItem() {
     }
 
-//    public OrderItem(Integer orderItemId) {
-//        this.orderItemId = orderItemId;
-//    }
-//
-//    public OrderItem(Integer orderItemId, int itemId) {
-//        this.orderItemId = orderItemId;
-//        this.itemId = itemId;
-//    }
+    public OrderItem(Integer quantity, MenuItem itemId) {
+        this.quantity = quantity;
+        this.itemId = itemId;
+    }
+    
+    
+
+    public OrderItem(Integer orderItemId) {
+        this.orderItemId = orderItemId;
+    }
 
     public Integer getOrderItemId() {
         return orderItemId;
@@ -74,20 +71,20 @@ public class OrderItem implements Serializable {
         this.orderItemId = orderItemId;
     }
 
-    public int getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public MenuItem getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(MenuItem itemId) {
+        this.itemId = itemId;
     }
 
     public CustomerOrder getOrderNo() {
@@ -120,7 +117,7 @@ public class OrderItem implements Serializable {
 
     @Override
     public String toString() {
-        return "rms.entity.OrderItem[ orderItemId=" + orderItemId + " ]";
+        return "rms.common.OrderItem[ orderItemId=" + orderItemId + " ]";
     }
     
 }
