@@ -55,7 +55,7 @@
                             <p:layoutUnit position="west" size="600" style="border:none" collapsible="true" gutter="0">
                                 <p:outputPanel id="orderpanel">
                                     
-                                    <p:dataTable id="ordertable" var="order" value="#{dtOrderList.orderDetails}">
+                                    <p:dataTable id="ordertable" var="order" value="#{dtOrderList.orderDetails}" rowStyleClass="#{order.customerOrder.status eq 0 ? 'old' : null}">
                                         <f:facet name="header">
                                             <h:outputText id="refcount" value="Orders List.  Refresh Count: #{dtOrderList.refreshcount}" />
                                         </f:facet>
