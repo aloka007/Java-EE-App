@@ -54,17 +54,17 @@
                         <p:layout style="height: 550px">
                             <p:layoutUnit position="west" size="600" style="border:none" collapsible="true" gutter="0">
                                 <p:outputPanel id="orderpanel">
-                                    
-                                    <p:dataTable id="ordertable" var="order" value="#{dtOrderList.orderDetails}" rowStyleClass="#{order.customerOrder.status eq 0 ? 'old' : null}">
+
+                                    <p:dataTable id="ordertable" var="order" value="#{dtOrderList.orderDetails}" >
                                         <f:facet name="header">
                                             <h:outputText id="refcount" value="Orders List.  Refresh Count: #{dtOrderList.refreshcount}" />
                                         </f:facet>
                                         <p:column headerText="Order No" style="width: 40px">
-                                            <h:outputText style="center" value="#{order.customerOrder.orderNo}" />
+                                            <h:outputText style="align-content: center" value="#{order.customerOrder.orderNo}" />
                                         </p:column>
 
                                         <p:column headerText="Order Time">
-                                            <h:outputText style="center" value="#{order.customerOrder.orderTime}" />
+                                            <h:outputText style="align-content: center; background-color: #{order.customerOrder.status == 0 ? 'red' : (order.customerOrder.status == 1 ? 'orange': 'lime')}" value="#{order.customerOrder.orderTime}" />
                                         </p:column>
 
 
@@ -79,7 +79,7 @@
                                     </p:dataTable>
 
                                 </p:outputPanel>
-                                <p:poll interval="2" listener="#{dtOrderList.refresh}" update="orderpanel" />
+                                <p:poll interval="4" listener="#{dtOrderList.refresh}" update="orderpanel" />
                             </p:layoutUnit>
 
                             <p:layoutUnit position="center" style="border:none" collapsible="true" gutter="0">
@@ -96,17 +96,22 @@
                                         <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.orderedBy}" />
 
                                         <h:outputText style="center" value="Status: " />
-                                        <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.status}" />
+                                        <h:outputText style="text-align:center; font-weight: bold" value="#{dtOrderList.selectedContainer.customerOrder.status == 0 ? 'New' : (dtOrderList.selectedContainer.customerOrder.status == 1 ? 'Accepted': 'Ready')}" />
+
+                                        <p:commandButton value="Accept" ajax="false" actionListener="#{dtOrderList.accept(1)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
+
+                                        <p:commandButton value="Ready" ajax="false" actionListener="#{dtOrderList.accept(2)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
+
                                     </p:panelGrid>
-                                    
-                                    
+
+
 
                                     <p:dataTable var="item" value="#{dtOrderList.selectedContainer.itemlist}">
                                         <f:facet name="header">Items List</f:facet>
                                         <p:column headerText="Item ID" style="width: 60px">
                                             <h:outputText value="#{item.itemId.itemId}" />
                                         </p:column>
-                                        
+
                                         <p:column headerText="Item Name">
                                             <h:outputText value="#{item.itemId.itemName}" />
                                         </p:column>

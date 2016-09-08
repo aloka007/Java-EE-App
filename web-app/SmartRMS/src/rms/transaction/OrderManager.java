@@ -49,6 +49,17 @@ public class OrderManager {
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     
+    public void refresh(List<CustomerOrder> list){
+        for(CustomerOrder i : list){
+            em.refresh(i);
+        }
+    }
+    
+    public void acceptOrder(CustomerOrder order){
+        em.flush();
+        em.merge(order);
+        em.flush();
+    }
     
     
     public int placeOrder(String custName, String orderedBy, List<Container> item_list) {

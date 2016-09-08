@@ -10,6 +10,7 @@ package rms.view;
  * @author Tharinda
  */
 import com.sun.javafx.scene.control.skin.VirtualFlow;
+import com.sun.xml.rpc.processor.modeler.j2ee.xml.emptyType;
 import rms.test.OrderService;
 import rms.test.Order;
 import java.io.Serializable;
@@ -18,21 +19,32 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import rms.common.ComTainer;
 import rms.entity.CustomerOrder;
 import rms.entity.OrderItem;
 import rms.session.CustomerOrderFacade;
 import rms.session.OrderItemFacade;
+import rms.transaction.OrderManager;
 
 @ManagedBean(name = "dtOrderList")
 @SessionScoped
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class ChefView implements Serializable {
+
+    @PersistenceContext(unitName = "SmartRMSPU")
+    private EntityManager em;
+
+    @EJB
+    private OrderManager orderManager;
 
     @EJB
     private CustomerOrderFacade customerOrderFacade;
@@ -41,7 +53,6 @@ public class ChefView implements Serializable {
     private OrderItemFacade orderItemFacade;
 
     boolean hiddenatrib = false;
-    EntityManager em;
 
     int refreshcount = 0;
     private List<CustomerOrder> orders;
@@ -82,7 +93,7 @@ public class ChefView implements Serializable {
     public void setOrderDetails(List<Container> orderDetails) {
         this.orderDetails = orderDetails;
     }
-    
+
     private Container selectedContainer;
 
     public boolean isHiddenatrib() {
@@ -111,8 +122,16 @@ public class ChefView implements Serializable {
         update();
     }
 
+    public void accept(int i) {
+        selectedContainer.customerOrder.setStatus((short) i);
+        orderManager.acceptOrder(selectedContainer.customerOrder);
+
+    }
+
     public void update() {
         orders = customerOrderFacade.findAll();
+        em.getEntityManagerFactory().getCache().evictAll();
+
         itemList = orderItemFacade.findAll();
         orderDetails = new ArrayList<>();
         for (CustomerOrder order : orders) {
