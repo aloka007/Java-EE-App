@@ -35,18 +35,37 @@ public class RecepView {
     @EJB
     private MenuItemFacade menuItemFacade;
 
-    private boolean hiddenatrib = false;
+    @PostConstruct
+    public void init() {
+        items = (List<MenuItem>) menuItemFacade.findAll();
+        Collections.sort(items);
+        leftItems = items;
+        selectedItems = items;
+
+        List<String> itemSource = new ArrayList<String>();
+        List<String> itemTarget = new ArrayList<String>();
+
+        for (int i = 0; i < items.size(); i++) {
+            MenuItem iter = items.get(i);
+
+            itemSource.add(iter.getMenuIndex() + " - " + iter.getItemName());
+
+        }
+
+        dualitems = new DualListModel<String>(itemSource, itemTarget);
+
+        ComTainer.setMenu(items);
+    }
 
     //------------------Ordering Functions
     private String customerName = "";
-    
+
     private boolean namevalidate = false;
-    
-    public boolean getNamevalidate(){
-        if(customerName.equals("")){
+
+    public boolean getNamevalidate() {
+        if (customerName.equals("")) {
             namevalidate = false;
-        }
-        else{
+        } else {
             namevalidate = true;
         }
         return namevalidate;
@@ -90,7 +109,7 @@ public class RecepView {
         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
         session.setAttribute("cust_name", customerName);
         session.setAttribute("item_list", rightItems);
-        
+
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         try {
             ec.redirect(ec.getRequestContextPath() + "/PlaceOrder");
@@ -98,8 +117,8 @@ public class RecepView {
             Logger.getLogger(RecepView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-        public void proceed() {        
+
+    public void proceed() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         try {
             ec.redirect(ec.getRequestContextPath() + "/users/receptionist/order-interface.xhtml");
@@ -107,12 +126,11 @@ public class RecepView {
             Logger.getLogger(RecepView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void newOrder() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
-        
-        
+
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         try {
             ec.redirect(ec.getRequestContextPath() + "/NewOrder");
@@ -137,6 +155,10 @@ public class RecepView {
     private List<Container> rightItems = new ArrayList<>();
     private List<String> strings;
 
+    public List<MenuItem> getItems() {
+        return items;
+    }
+
     public List<String> getStrings() {
         return strings;
     }
@@ -145,15 +167,13 @@ public class RecepView {
         this.strings = strings;
     }
 
-
-
     public void filtertoo() {
         rightItems.clear();
         for (MenuItem i : items) {
             for (String s : dualitems.getTarget()) {
                 if (s.split(" - ")[1].trim().toLowerCase().equalsIgnoreCase(i.getItemName())) {
                     //OrderItem oi = new OrderItem(i.getItemId(), 1);
-                    OrderItem oi = new OrderItem(1,i);
+                    OrderItem oi = new OrderItem(1, i);
                     Container c = new Container(i, oi);
                     rightItems.add(c);
                 }
@@ -168,15 +188,6 @@ public class RecepView {
 
     private List<MenuItem> selectedItems;
 
-    public void clearList() {
-        selectedItems.clear();
-    }
-
-
-    public List<MenuItem> getItems() {
-        return items;
-    }
-
     public List<MenuItem> getSelectedItems() {
         return selectedItems;
     }
@@ -185,27 +196,11 @@ public class RecepView {
         this.selectedItems = selectedItems;
     }
 
-    @PostConstruct
-    public void init() {
-        items = (List<MenuItem>) menuItemFacade.findAll();
-        Collections.sort(items);
-        leftItems = items;
-        selectedItems = items;
-
-        List<String> itemSource = new ArrayList<String>();
-        List<String> itemTarget = new ArrayList<String>();
-
-        for (int i = 0; i < items.size(); i++) {
-            MenuItem iter = items.get(i);
-
-            itemSource.add(iter.getMenuIndex() + " - " + iter.getItemName());
-
-        }
-
-        dualitems = new DualListModel<String>(itemSource, itemTarget);
-
-        ComTainer.setMenu(items);
+    public void clearList() {
+        selectedItems.clear();
     }
+
+    private boolean hiddenatrib = false;
 
     public boolean isHiddenatrib() {
         try {

@@ -133,7 +133,7 @@ public class ChefView implements Serializable {
     }
 
     public void update() {
-        //em.getEntityManagerFactory().getCache().evictAll();
+        em.getEntityManagerFactory().getCache().evictAll();
         orders = customerOrderFacade.findAll();
 
         itemList = orderItemFacade.findAll();
