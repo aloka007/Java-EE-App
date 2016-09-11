@@ -107,7 +107,7 @@
 
                                             <f:facet name="right">
 
-                                                <p:button id="proceedbtn" value="Proceed" outcome="order-interface.xhtml" icon="ui-icon-play" disabled="false"/>
+                                                <p:commandButton id="proceedbtn" value="Proceed" ajax="false" action="#{dtRecepView.proceed()}" icon="ui-icon-play" disabled="false"/>
                                                 <p:menuButton value="Options">
                                                     <p:menuitem value="Option1" icon="ui-icon-disk" />
                                                     <p:menuitem value="Option2" icon="ui-icon-arrowrefresh-1-w" />

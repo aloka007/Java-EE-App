@@ -51,8 +51,6 @@ public class RecepView {
         }
         return namevalidate;
     }
-    
-    
 
     private float total;
 
@@ -101,6 +99,15 @@ public class RecepView {
         }
     }
     
+        public void proceed() {        
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            ec.redirect(ec.getRequestContextPath() + "/users/receptionist/order-interface.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(RecepView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void newOrder() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
@@ -139,21 +146,7 @@ public class RecepView {
     }
 
 
-//    public void filter() {
-//        leftItems = items;
-//        for (int j = 0; j < leftItems.size(); j++) {
-//            if (!leftItems.get(j).getItemName().toLowerCase().contains(searchText)) {
-//                MenuItem temp = leftItems.get(j);
-//                leftItems.remove(j);
-//                leftItems.add(temp);
-//            }
-//            j++;
-//        }
-//        if (searchText.trim().equals("")) {
-//            leftItems = items;
-//        }
-//        
-//    }
+
     public void filtertoo() {
         rightItems.clear();
         for (MenuItem i : items) {
@@ -169,32 +162,9 @@ public class RecepView {
         }
     }
 
-//    public void fill() {
-//        leftItems = items;
-//    }
-
-//    public void sortList() {
-//        Collections.sort(items);
-//    }
-
-//    public List<MenuItem> getLeftItems() {
-//        return leftItems;
-//    }
-
     public List<Container> getRightItems() {
         return rightItems;
     }
-    //private MenuItem selectedItem;
-
-//    public MenuItem getSelectedItem() {
-//        return selectedItem;
-//    }
-//
-//    public void setSelectedItem(MenuItem selectedItem) {
-//        this.selectedItem = selectedItem;
-//        strings.add(selectedItem.getItemName());
-//
-//    }
 
     private List<MenuItem> selectedItems;
 
@@ -202,9 +172,6 @@ public class RecepView {
         selectedItems.clear();
     }
 
-//    public void updateList() {
-//        //RequestContext.getCurrentInstance().update("orderform");
-//    }
 
     public List<MenuItem> getItems() {
         return items;
@@ -223,7 +190,6 @@ public class RecepView {
         items = (List<MenuItem>) menuItemFacade.findAll();
         Collections.sort(items);
         leftItems = items;
-        //selectedItems.add(items.get(0));
         selectedItems = items;
 
         List<String> itemSource = new ArrayList<String>();
@@ -231,9 +197,6 @@ public class RecepView {
 
         for (int i = 0; i < items.size(); i++) {
             MenuItem iter = items.get(i);
-//            ComTainer.lisin_itmid.put(i, iter.getItemId());
-//            ComTainer.itmid_menit.put(iter.getItemId(), iter);
-//            ComTainer.itmid_lisin.put(iter.getItemId(), i);
 
             itemSource.add(iter.getMenuIndex() + " - " + iter.getItemName());
 
@@ -258,7 +221,4 @@ public class RecepView {
         return hiddenatrib;
     }
 
-//    public void setHiddenatrib(boolean hiddenatrib) {
-//        this.hiddenatrib = hiddenatrib;
-//    }
 }

@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class CustomerOrder implements Serializable {
 
     @Size(max = 50)
-    @Column(name = "accepted_by")
+    @Column(name = "accepted_by", insertable=false)
     private String acceptedBy;
 
     private static final long serialVersionUID = 1L;

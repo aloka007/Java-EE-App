@@ -9,10 +9,6 @@ package rms.view;
  *
  * @author Tharinda
  */
-import com.sun.javafx.scene.control.skin.VirtualFlow;
-import com.sun.xml.rpc.processor.modeler.j2ee.xml.emptyType;
-import rms.test.OrderService;
-import rms.test.Order;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +18,10 @@ import javax.ejb.EJB;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.servlet.http.HttpSession;
 import rms.common.ComTainer;
 import rms.entity.CustomerOrder;
@@ -58,6 +52,11 @@ public class ChefView implements Serializable {
     int refreshcount = 0;
     private List<CustomerOrder> orders;
     private List<Container> orderDetails = new ArrayList<>();
+    private List<Container> completedOrders = new ArrayList<>();
+
+    public List<Container> getCompletedOrders() {
+        return completedOrders;
+    }
 
     private CustomerOrder selectedOrder;
 
@@ -115,8 +114,6 @@ public class ChefView implements Serializable {
         this.hiddenatrib = hiddenatrib;
     }
 
-//    @ManagedProperty("#{orderService}")
-//    private OrderService service;
     @PostConstruct
     public void init() {
         itemList = orderItemFacade.findAll();
@@ -124,22 +121,24 @@ public class ChefView implements Serializable {
     }
 
     public void accept(int i) {
+        if (i == 2) {
+            completedOrders.add(selectedContainer);
+        }
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
-        String uName = (String)session.getAttribute("username");
+        String uName = (String) session.getAttribute("username");
         selectedContainer.customerOrder.setStatus((short) i);
         selectedContainer.customerOrder.setAcceptedBy(uName);
         orderManager.acceptOrder(selectedContainer.customerOrder);
-
     }
 
     public void update() {
         //em.getEntityManagerFactory().getCache().evictAll();
         orders = customerOrderFacade.findAll();
-        
 
         itemList = orderItemFacade.findAll();
         orderDetails = new ArrayList<>();
+        completedOrders = new ArrayList<>();
         for (CustomerOrder order : orders) {
             List<OrderItem> templist = new ArrayList<>();
             for (OrderItem i : itemList) {
@@ -148,7 +147,11 @@ public class ChefView implements Serializable {
                 }
             }
             Container cont = new Container(order, templist);
-            orderDetails.add(cont);
+            if (order.getStatus().equals((short) 2)) {
+                completedOrders.add(cont);
+            } else {
+                orderDetails.add(cont);
+            }
         }
 
     }
@@ -162,9 +165,6 @@ public class ChefView implements Serializable {
         return orders;
     }
 
-//    public void setService(OrderService service) {
-//        this.service = service;
-//    }
     public int getRefreshcount() {
         return refreshcount;
     }

@@ -25,11 +25,23 @@
                     height: 20px;
                     border: none;
                 }
+
+                .ui-tabs-left > .ui-tabs-nav{
+                    width: 12%;
+                    padding-top: 5px;
+                }
+                .ui-tabs-left > .ui-tabs-panels {
+                    float: right;
+                    width: 88%;
+                }
+                .ui-tabs .ui-tabs-panel{
+                    padding: 0px 0px;
+                }
             </style>
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit id="north-toolbar" rendered="#{dtOrderList.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
+                <p:layoutUnit id="north-toolbar" rendered="#{dtOrderList.hiddenatrib}" position="north" size="55" collapsible="true" gutter="0">
                     <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="4">
                         <h:outputText value="SmartRMS - Chef" style="font-size: 200%" />
                         <h:form>
@@ -42,109 +54,175 @@
                     </p:panelGrid>
                 </p:layoutUnit>
 
-                <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="west" size="200" header="Navigate" collapsible="true" gutter="0">
-                    <p:menu>
-                        <p:submenu label="GoTo">
-                            <p:menuitem value="Completed Orders" url="index.jsp" />
-                            <p:menuitem value="My Profile" url="http://www.primefaces.org/documentation.html" />
-                            <p:menuitem value="Logout" url="/Logout" />
 
-                        </p:submenu>
+                <p:layoutUnit id="center-comp" rendered="#{dtOrderList.hiddenatrib}" position="center" style="height: 98%;" collapsible="true" gutter="0">
 
-                    </p:menu>
-                </p:layoutUnit>
+                    <p:tabView id="chef-tabview" orientation="left" style="height:98%">
+                        <p:tab title="Orders">
+                            <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
+                                <h:form id="mainform">
+                                    <p:layout style="height: 530px">
+                                        <p:layoutUnit position="west" size="500" style="border:none" collapsible="true" gutter="0">
+                                            <p:outputPanel id="orderpanel">
 
+                                                <p:dataTable id="ordertable" var="order" value="#{dtOrderList.orderDetails}" >
+                                                    <f:facet name="header">
+                                                        <h:outputText id="refcount" value="Orders List.  Refresh Count: #{dtOrderList.refreshcount}" />
+                                                    </f:facet>
+                                                    <p:column headerText="Order No" style="width: 40px">
+                                                        <h:outputText style="align-content: center" value="#{order.customerOrder.orderNo}" />
+                                                    </p:column>
 
-
-                <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="center" style="padding: 5px 10px" collapsible="true" gutter="0">
-                    <h:form id="mainform">
-                        <p:layout style="height: 550px">
-                            <p:layoutUnit position="west" size="500" style="border:none" collapsible="true" gutter="0">
-                                <p:outputPanel id="orderpanel">
-
-                                    <p:dataTable id="ordertable" var="order" value="#{dtOrderList.orderDetails}" >
-                                        <f:facet name="header">
-                                            <h:outputText id="refcount" value="Orders List.  Refresh Count: #{dtOrderList.refreshcount}" />
-                                        </f:facet>
-                                        <p:column headerText="Order No" style="width: 40px">
-                                            <h:outputText style="align-content: center" value="#{order.customerOrder.orderNo}" />
-                                        </p:column>
-
-                                        <p:column headerText="Order Time" style="width: 210px">
-                                            <h:outputText style="align-content: center; background-color: #{order.customerOrder.status == 0 ? 'red' : (order.customerOrder.status == 1 ? 'orange': 'lime')}" value="#{order.customerOrder.orderTime}" />
-                                        </p:column>
+                                                    <p:column headerText="Order Time" style="width: 210px">
+                                                        <h:outputText style="align-content: center; background-color: #{order.customerOrder.status == 0 ? 'red' : (order.customerOrder.status == 1 ? 'yellow': 'lime')}" value="#{order.customerOrder.orderTime}" />
+                                                    </p:column>
 
 
-                                        <p:column headerText="Customer Name" style="width: 110px">
-                                            <h:outputText style="center" value="#{order.customerOrder.custName}" />
-                                        </p:column>
-                                        <p:column style="width:32px;text-align: center">
-                                            <p:commandButton ajax="false" update=":mainform:selectedorder" icon="ui-icon-search" title="View">
-                                                <f:setPropertyActionListener value="#{order}" target="#{dtOrderList.selectedContainer}" />
-                                            </p:commandButton>
-                                        </p:column>
-                                    </p:dataTable>
+                                                    <p:column headerText="Customer Name" style="width: 110px">
+                                                        <h:outputText style="center" value="#{order.customerOrder.custName}" />
+                                                    </p:column>
+                                                    <p:column style="width:32px;text-align: center">
+                                                        <p:commandButton ajax="false" update=":mainform:selectedorder" icon="ui-icon-search" title="View">
+                                                            <f:setPropertyActionListener value="#{order}" target="#{dtOrderList.selectedContainer}" />
+                                                        </p:commandButton>
+                                                    </p:column>
+                                                </p:dataTable>
 
-                                </p:outputPanel>
-                                <p:poll interval="4" listener="#{dtOrderList.refresh}" update="orderpanel" />
+                                            </p:outputPanel>
+                                            <p:poll interval="4" listener="#{dtOrderList.refresh}" update="orderpanel" />
+                                        </p:layoutUnit>
+
+                                        <p:layoutUnit position="center" style="border:none" collapsible="true" gutter="0">
+                                            <p:outputPanel id="selectedorder" style="text-align:center;">
+                                                <p:panelGrid  columns="2" style="text-align: left; width:100%">
+                                                    <f:facet name="header">Order Details</f:facet>
+                                                    <h:outputText style="center" value="Order Number: " />
+                                                    <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.orderNo}" />
+
+                                                    <h:outputText style="center" value="Order Time: " />
+                                                    <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.orderTime}" />
+
+                                                    <h:outputText style="center" value="Ordered By: " />
+                                                    <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.orderedBy}" />
+
+                                                    <h:outputText style="center" value="Accepted By: " />
+                                                    <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.acceptedBy}" />
+
+
+                                                    <h:outputText style="center" value="Status: " />
+                                                    <h:outputText style="text-align:center; font-weight: bold" value="#{dtOrderList.selectedContainer.customerOrder.status == 0 ? 'New' : (dtOrderList.selectedContainer.customerOrder.status == 1 ? 'Accepted': 'Ready')}" />
+
+                                                    <p:commandButton value="Accept" ajax="false" actionListener="#{dtOrderList.accept(1)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
+
+                                                    <p:commandButton value="Ready" ajax="false" actionListener="#{dtOrderList.accept(2)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
+
+                                                </p:panelGrid>
+
+
+
+                                                <p:dataTable style="margin-top: 5px" var="item" value="#{dtOrderList.selectedContainer.itemlist}">
+                                                    <f:facet name="header">Items List</f:facet>
+                                                    <p:column headerText="Index" style="width: 60px">
+                                                        <h:outputText value="#{item.itemId.menuIndex}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Item Name">
+                                                        <h:outputText value="#{item.itemId.itemName}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Quantity" style="width: 60px">
+                                                        <h:outputText value="#{item.quantity}" />
+                                                    </p:column>
+
+                                                </p:dataTable>
+
+                                            </p:outputPanel>
+                                        </p:layoutUnit>
+                                    </p:layout>
+                                </h:form>
                             </p:layoutUnit>
+                        </p:tab>
+                        <p:tab id="completed" title="Completed Orders">
 
-                            <p:layoutUnit position="center" style="border:none" collapsible="true" gutter="0">
-                                <p:outputPanel id="selectedorder" style="text-align:center;">
-                                    <p:panelGrid  columns="2" style="text-align: left; width:100%">
-                                        <f:facet name="header">Order Details</f:facet>
-                                        <h:outputText style="center" value="Order Number: " />
-                                        <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.orderNo}" />
+                            <h:form id="mainform-b">
+                                <p:layout id="layout-zro" style="height: 530px">
+                                    <p:layoutUnit id="layout-one" position="west" size="500" style="border:none" collapsible="true" gutter="0">
+                                        <p:outputPanel id="orderpanel">
 
-                                        <h:outputText style="center" value="Order Time: " />
-                                        <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.orderTime}" />
+                                            <p:dataTable id="ordertable" var="order" value="#{dtOrderList.completedOrders}" >
+                                                <f:facet name="header">
+                                                    <h:outputText id="refcount" value="Orders List.  Refresh Count: #{dtOrderList.refreshcount}" />
+                                                </f:facet>
+                                                <p:column headerText="Order No" style="width: 40px">
+                                                    <h:outputText style="align-content: center" value="#{order.customerOrder.orderNo}" />
+                                                </p:column>
 
-                                        <h:outputText style="center" value="Ordered By: " />
-                                        <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.orderedBy}" />
-
-                                        <h:outputText style="center" value="Accepted By: " />
-                                        <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.acceptedBy}" />
-
-
-                                        <h:outputText style="center" value="Status: " />
-                                        <h:outputText style="text-align:center; font-weight: bold" value="#{dtOrderList.selectedContainer.customerOrder.status == 0 ? 'New' : (dtOrderList.selectedContainer.customerOrder.status == 1 ? 'Accepted': 'Ready')}" />
-
-                                        <p:commandButton value="Accept" ajax="false" actionListener="#{dtOrderList.accept(1)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
-
-                                        <p:commandButton value="Ready" ajax="false" actionListener="#{dtOrderList.accept(2)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
-
-                                    </p:panelGrid>
+                                                <p:column headerText="Order Time" style="width: 210px">
+                                                    <h:outputText style="align-content: center; background-color: #{order.customerOrder.status == 0 ? 'red' : (order.customerOrder.status == 1 ? 'yellow': 'lime')}" value="#{order.customerOrder.orderTime}" />
+                                                </p:column>
 
 
+                                                <p:column headerText="Customer Name" style="width: 110px">
+                                                    <h:outputText style="center" value="#{order.customerOrder.custName}" />
+                                                </p:column>
+                                                <p:column style="width:32px;text-align: center">
+                                                    <p:commandButton  update=":chef-tabview:mainform-b:selectedorder-b" icon="ui-icon-search" title="View">
+                                                        <f:setPropertyActionListener value="#{order}" target="#{dtOrderList.selectedContainer}" />
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </p:dataTable>
 
-                                    <p:dataTable style="margin-top: 5px" var="item" value="#{dtOrderList.selectedContainer.itemlist}">
-                                        <f:facet name="header">Items List</f:facet>
-                                        <p:column headerText="Index" style="width: 60px">
-                                            <h:outputText value="#{item.itemId.menuIndex}" />
-                                        </p:column>
+                                        </p:outputPanel>
+                                    </p:layoutUnit>
 
-                                        <p:column headerText="Item Name">
-                                            <h:outputText value="#{item.itemId.itemName}" />
-                                        </p:column>
+                                    <p:layoutUnit id="layout-two" position="center" style="border:none" collapsible="true" gutter="0">
+                                        <p:outputPanel id="selectedorder-b" style="text-align:center;">
+                                            <p:panelGrid  columns="2" style="text-align: left; width:100%">
+                                                <f:facet name="header">Order Details</f:facet>
+                                                <h:outputText style="center" value="Order Number: " />
+                                                <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.orderNo}" />
 
-                                        <p:column headerText="Quantity" style="width: 60px">
-                                            <h:outputText value="#{item.quantity}" />
-                                        </p:column>
+                                                <h:outputText style="center" value="Order Time: " />
+                                                <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.orderTime}" />
 
-                                    </p:dataTable>
+                                                <h:outputText style="center" value="Ordered By: " />
+                                                <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.orderedBy}" />
 
-                                </p:outputPanel>
-                            </p:layoutUnit>
-                        </p:layout>
-
+                                                <h:outputText style="center" value="Accepted By: " />
+                                                <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.acceptedBy}" />
 
 
+                                                <h:outputText style="center" value="Status: " />
+                                                <h:outputText style="text-align:center; font-weight: bold" value="#{dtOrderList.selectedContainer.customerOrder.status == 0 ? 'New' : (dtOrderList.selectedContainer.customerOrder.status == 1 ? 'Accepted': 'Ready')}" />
+
+                                            </p:panelGrid>
 
 
 
+                                            <p:dataTable style="margin-top: 5px" var="item" value="#{dtOrderList.selectedContainer.itemlist}">
+                                                <f:facet name="header">Items List</f:facet>
+                                                <p:column headerText="Index" style="width: 60px">
+                                                    <h:outputText value="#{item.itemId.menuIndex}" />
+                                                </p:column>
 
-                    </h:form>
+                                                <p:column headerText="Item Name">
+                                                    <h:outputText value="#{item.itemId.itemName}" />
+                                                </p:column>
 
+                                                <p:column headerText="Quantity" style="width: 60px">
+                                                    <h:outputText value="#{item.quantity}" />
+                                                </p:column>
+
+                                            </p:dataTable>
+
+                                        </p:outputPanel>
+                                    </p:layoutUnit>
+                                </p:layout>
+                            </h:form>
+
+                        </p:tab>
+
+                    </p:tabView>
 
                 </p:layoutUnit>
 
