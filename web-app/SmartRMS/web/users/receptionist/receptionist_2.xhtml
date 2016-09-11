@@ -21,9 +21,9 @@
             <style>
                 .ui-picklist .ui-picklist-list {
                     height: 300px;
-                    width: 269px;
+                    width: 219px;
                     margin: 0;
-                    overflow: auto;
+                    overflow:auto;
                     padding: 0;
                 }
                 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
@@ -31,119 +31,184 @@
                     color: #ccc;
 
                 }
+                .ui-tabs-left > .ui-tabs-nav{
+                    width: 12%;
+                    padding-top: 5px;
+                }
+                .ui-tabs-left > .ui-tabs-panels {
+                    float: right;
+                    width: 88%;
+                }
+                .ui-tabs .ui-tabs-panel{
+                    padding: 0px 0px;
+                }
+                .header-grid.ui-panelgrid>*>tr,
+                .header-grid.ui-panelgrid .ui-panelgrid-cell {
+                    height: 20px;
+                    border: none;
+                }
+
 
             </style>
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="north" size="80" collapsible="true" gutter="0">
-                    <h:panelGroup layout="block" style="float:left; padding: 0px 15px">
-                        <h2>SmartRMS - Receptionist #{firstname} #{lastname}</h2>
-                    </h:panelGroup>
+                <p:layoutUnit id="north-toolbar" rendered="#{dtRecepView.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
+                    <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="4">
 
 
-                    <h:panelGroup layout="block" style="float:right; padding: 20px 15px">
+                        <h:outputText value="SmartRMS - Receptionist" style="font-size: 200%" />
+                        <h:form>
+                            <p:menuButton value="#{firstname} #{lastname}">
+                                <p:menuitem value="My Profile" url="/Profile" icon="ui-icon-check" />
+                                <p:menuitem value="Logout" url="/Logout" icon="ui-icon-close" />
+                            </p:menuButton>
+                        </h:form>
+
+
+
+
+
                         <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
-                    </h:panelGroup>
+                    </p:panelGrid>
 
                 </p:layoutUnit>
 
 
 
-                <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="west" size="200" header="Navigate" collapsible="true" gutter="0">
-                    <p:menu>
-                        <p:submenu label="GoTo">
-                            <p:menuitem value="Completed Orders" url="index.jsp" />
-                            <p:menuitem value="My Profile" url="http://www.primefaces.org/documentation.html" />
-                            <p:menuitem value="Logout" url="/Logout" />
-
-                        </p:submenu>
-
-                    </p:menu>
-                </p:layoutUnit>
 
                 <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
-                    <h:form  >
 
-                        <p:layout id="main-form">
-                            <p:layoutUnit style="border:none" position="north" size="70" collapsible="true" gutter="0">
-                                <p:toolbar>
-                                    <f:facet name="left">
-                                        <p:commandButton type="button" value="New" icon="ui-icon-document" />
+                    <p:tabView orientation="left" style="height:98%">
+                        <p:tab title="Ordering">
+                            <h:form>
 
-
-                                        <span class="ui-separator">
-                                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                                        </span>
-
-                                        <h:outputText value="    Customer Name: " />
-                                        <p:inputText id="custname" value="#{dtRecepView.customerName}" required="true">
-                                            <p:ajax event="blur" update="custname,msg" />
-                                            
-                                        </p:inputText>
-                                        <p:message id="msg" for="custname" />
-                                            
-
-                                    </f:facet>
-
-                                    <f:facet name="right">
-                                        
-                                        <p:button id="proceedbtn" value="Proceed" outcome="order-interface.xhtml" icon="ui-icon-play" disabled="false"/>
-                                        <p:menuButton value="Options">
-                                            <p:menuitem value="Save" icon="ui-icon-disk" />
-                                            <p:menuitem value="Update" icon="ui-icon-arrowrefresh-1-w" />
-                                            <p:menuitem value="Delete" ajax="false" icon="ui-icon-close" />
-                                            <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink" />
-                                        </p:menuButton>
-                                    </f:facet>
-
-                                </p:toolbar>
-                            </p:layoutUnit>
+                                <p:layout id="main-form">
+                                    <p:layoutUnit style="border:none" position="north" size="60" collapsible="true" gutter="0">
+                                        <p:toolbar>
+                                            <f:facet name="left">
+                                                <p:commandButton value="New" icon="ui-icon-document" />
 
 
-                            <p:layoutUnit style="border:none" position="west" size="600" collapsible="true" gutter="0">
+                                                <span class="ui-separator">
+                                                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                                                </span>
 
-                                <f:facet name="header">
-                                    Pick Items
-                                </f:facet>
-                                <p:pickList id="pickList" style="width:100%" value="#{dtRecepView.dualitems}" var="items" itemLabel="#{items}" itemValue="#{items}" 
-                                            showSourceFilter="true" filterMatchMode="contains">
-                                    <p:ajax event="transfer" listener="#{dtRecepView.filtertoo()}" update="basicDT" />
-                                </p:pickList>
+                                                <h:outputText value="    Customer Name: " />
+                                                <p:inputText id="custname" value="#{dtRecepView.customerName}" required="true">
+                                                    <p:ajax event="blur" update="custname,msg" />
 
-                            </p:layoutUnit>
-                            <p:layoutUnit style="border:none" position="center" collapsible="true" gutter="0">
+                                                </p:inputText>
+                                                <p:message id="msg" for="custname" />
 
-                                <p:dataTable id="basicDT" var="item" value="#{dtRecepView.rightItems}" 
-                                             editable="true" editMode="cell" widgetVar="cellItems">
-                                    <f:facet name="header">
-                                        Enter Quantities
-                                    </f:facet>
-                                    <p:column headerText="No" style="width:30px">
-                                        <h:outputText value="#{item.menuItem.menuIndex}" />
+
+                                            </f:facet>
+
+                                            <f:facet name="right">
+
+                                                <p:commandButton id="proceedbtn" value="Proceed" ajax="false" action="#{dtRecepView.proceed()}" icon="ui-icon-play" disabled="false"/>
+                                                <p:menuButton value="Options">
+                                                    <p:menuitem value="Option1" icon="ui-icon-disk" />
+                                                    <p:menuitem value="Option2" icon="ui-icon-arrowrefresh-1-w" />
+                                                    <p:menuitem value="Option3" icon="ui-icon-close" />
+                                                    <p:menuitem value="Option4" icon="ui-icon-extlink" />
+                                                </p:menuButton>
+                                            </f:facet>
+
+                                        </p:toolbar>
+                                    </p:layoutUnit>
+
+
+                                    <p:layoutUnit style="border:none" position="west" size="500" collapsible="true" gutter="0">
+
+                                        <f:facet name="header">
+                                            Pick Items
+                                        </f:facet>
+                                        <p:pickList id="pickList" style="width:100%" value="#{dtRecepView.dualitems}" var="items" itemLabel="#{items}" itemValue="#{items}" 
+                                                    showSourceFilter="true" filterMatchMode="contains">
+                                            <p:ajax event="transfer" listener="#{dtRecepView.filtertoo()}" update="basicDT" />
+                                        </p:pickList>
+
+                                    </p:layoutUnit>
+                                    <p:layoutUnit style="border:none; width: 95%" position="center" collapsible="true" gutter="0">
+
+                                        <p:dataTable id="basicDT" var="item" value="#{dtRecepView.rightItems}" 
+                                                     editable="true" editMode="cell" widgetVar="cellItems">
+                                            <f:facet name="header">
+                                                Enter Quantities
+                                            </f:facet>
+                                            <p:column headerText="No" style="width:30px">
+                                                <h:outputText value="#{item.menuItem.menuIndex}" />
+                                            </p:column>
+                                            <p:column headerText="Name">
+                                                <h:outputText value="#{item.menuItem.itemName}" />
+                                            </p:column>
+                                            <p:column headerText="Price" style="width:80px">
+                                                <h:outputText value="#{item.menuItem.price}" />
+                                            </p:column>
+                                            <p:column headerText="Quantity" style="width:60px">
+
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputText value="#{item.orderItem.quantity}" /></f:facet>
+                                                    <f:facet name="input"><p:spinner id="minMax" size="2" value="#{item.orderItem.quantity}" min="1" max="10" /></f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                        </p:dataTable>
+
+
+
+                                    </p:layoutUnit>
+
+                                </p:layout> 
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="View Menu">
+                            <p:scrollPanel mode="native" style=" width:100%; height:540px">
+                                <p:dataTable var="item" value="#{dtRecepView.items}">
+                                    <p:column headerText="Index" style="width:30px">
+                                        <h:outputText value="#{item.menuIndex}" />
                                     </p:column>
-                                    <p:column headerText="Name">
-                                        <h:outputText value="#{item.menuItem.itemName}" />
+
+                                    <p:column headerText="Name" style="width:160px">
+                                        <h:outputText value="#{item.itemName}" />
                                     </p:column>
-                                    <p:column headerText="Price" style="width:80px">
-                                        <h:outputText value="#{item.menuItem.price}" />
+
+                                    <p:column headerText="Description" style="width:350px">
+                                        <h:outputText value="#{item.description}" />
                                     </p:column>
-                                    <p:column headerText="Quantity" style="width:60px">
-                                        
-                                        <p:cellEditor>
-                                            <f:facet name="output"><h:outputText value="#{item.orderItem.quantity}" /></f:facet>
-                                            <f:facet name="input"><p:spinner id="minMax" size="2" value="#{item.orderItem.quantity}" min="1" max="10" /></f:facet>
-                                        </p:cellEditor>
+
+                                    <p:column headerText="Price" style="width:50px">
+                                        <h:outputText value="#{item.price}" />
                                     </p:column>
+
+                                    <p:column headerText="Spiciness" style="width:80px">
+                                        <p:rating value="#{item.spiciness}" readonly="true" />
+                                    </p:column>
+
                                 </p:dataTable>
+                            </p:scrollPanel>
+
+                        </p:tab>
+
+                        <p:tab title="Placed Orders">
 
 
 
-                            </p:layoutUnit>
+                        </p:tab>
 
-                        </p:layout> 
-                    </h:form>
+                        <p:tab title="Reservation">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <h:outputText value="After a break of more than 15 years..." />
+                            </h:panelGrid>
+                        </p:tab>
+                    </p:tabView>
+
+
+
+
+
+
 
                 </p:layoutUnit>
 

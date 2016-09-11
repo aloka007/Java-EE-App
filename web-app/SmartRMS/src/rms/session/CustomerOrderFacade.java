@@ -21,7 +21,7 @@ public class CustomerOrderFacade extends AbstractFacade<CustomerOrder> {
     private EntityManager em;
 
     @Override
-    protected EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
         return em;
     }
 

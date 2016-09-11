@@ -11,7 +11,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping structure for table smart_rms.customer
-DROP TABLE IF EXISTS `customer`;
 CREATE TABLE IF NOT EXISTS `customer` (
   `customer_id` int(11) NOT NULL,
   `f_name` varchar(50) DEFAULT NULL,
@@ -30,7 +29,6 @@ DELETE FROM `customer`;
 
 
 -- Dumping structure for table smart_rms.customer_order
-DROP TABLE IF EXISTS `customer_order`;
 CREATE TABLE IF NOT EXISTS `customer_order` (
   `order_no` int(11) NOT NULL AUTO_INCREMENT,
   `order_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -39,27 +37,19 @@ CREATE TABLE IF NOT EXISTS `customer_order` (
   `cust_name` varchar(50) DEFAULT NULL,
   `status` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`order_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=1070 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1072 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table smart_rms.customer_order: ~10 rows (approximately)
 DELETE FROM `customer_order`;
 /*!40000 ALTER TABLE `customer_order` DISABLE KEYS */;
 INSERT INTO `customer_order` (`order_no`, `order_time`, `table_no`, `ordered_by`, `cust_name`, `status`) VALUES
-	(1007, '2016-08-24 10:20:21', 0, 'rec01', 'John Smith', 1),
-	(1020, '2016-08-24 10:48:07', 0, 'rec01', 'Michael Scott', 1),
-	(1033, '2016-08-25 21:10:42', 0, 'rec01', 'Savinda Keshan', 0),
-	(1035, '2016-08-26 11:08:42', 0, 'rec01', 'Dwight Shrute', 0),
-	(1036, '2016-08-26 11:10:00', 0, 'rec01', 'Holly Flax', 0),
-	(1037, '2016-08-26 11:10:28', 0, 'rec01', 'Andrew Bernard', 0),
-	(1045, '2016-09-04 06:20:09', 0, 'rec01', 'Tharinda Aloka', 0),
-	(1052, '2016-09-04 09:49:01', 0, 'rec01', 'David Wallace', 0),
-	(1068, '2016-09-05 12:30:54', 0, 'rec01', 'test 2344', 0),
-	(1069, '2016-09-05 12:35:10', 0, 'rec01', 'haha555', 0);
+	(1052, '2016-09-04 09:49:01', 0, 'rec01', 'David Wallace', 1),
+	(1070, '2016-09-06 21:40:48', 0, 'rec01', 'Tharinda Aloka', 1),
+	(1071, '2016-09-06 21:59:08', 0, 'rec01', 'Jim Halpert', 0);
 /*!40000 ALTER TABLE `customer_order` ENABLE KEYS */;
 
 
 -- Dumping structure for table smart_rms.menu_item
-DROP TABLE IF EXISTS `menu_item`;
 CREATE TABLE IF NOT EXISTS `menu_item` (
   `item_id` int(11) NOT NULL,
   `menu_index` int(11) DEFAULT NULL,
@@ -101,7 +91,6 @@ INSERT INTO `menu_item` (`item_id`, `menu_index`, `item_type`, `item_name`, `des
 
 
 -- Dumping structure for table smart_rms.order_item
-DROP TABLE IF EXISTS `order_item`;
 CREATE TABLE IF NOT EXISTS `order_item` (
   `order_item_id` int(11) NOT NULL AUTO_INCREMENT,
   `item_id` int(11) NOT NULL,
@@ -109,8 +98,10 @@ CREATE TABLE IF NOT EXISTS `order_item` (
   `quantity` int(11) DEFAULT NULL,
   PRIMARY KEY (`order_item_id`),
   KEY `FK_order_item_order` (`order_no`),
+  KEY `FK_order_item_menu_item` (`item_id`),
+  CONSTRAINT `FK_order_item_menu_item` FOREIGN KEY (`item_id`) REFERENCES `menu_item` (`item_id`),
   CONSTRAINT `FK_order_item_order` FOREIGN KEY (`order_no`) REFERENCES `customer_order` (`order_no`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table smart_rms.order_item: ~7 rows (approximately)
 DELETE FROM `order_item`;
@@ -119,15 +110,18 @@ INSERT INTO `order_item` (`order_item_id`, `item_id`, `order_no`, `quantity`) VA
 	(4, 503, 1052, 2),
 	(5, 507, 1052, 1),
 	(6, 516, 1052, 3),
-	(37, 507, 1068, 3),
-	(38, 516, 1068, 1),
-	(39, 504, 1069, 1),
-	(40, 43, 1069, 2);
+	(41, 504, 1070, 2),
+	(42, 508, 1070, 1),
+	(43, 501, 1070, 1),
+	(44, 127, 1070, 2),
+	(45, 505, 1070, 3),
+	(46, 516, 1071, 2),
+	(47, 511, 1071, 1),
+	(48, 506, 1071, 1);
 /*!40000 ALTER TABLE `order_item` ENABLE KEYS */;
 
 
 -- Dumping structure for table smart_rms.user_account
-DROP TABLE IF EXISTS `user_account`;
 CREATE TABLE IF NOT EXISTS `user_account` (
   `user_id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
@@ -138,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `user_account` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table smart_rms.user_account: ~3 rows (approximately)
+-- Dumping data for table smart_rms.user_account: ~4 rows (approximately)
 DELETE FROM `user_account`;
 /*!40000 ALTER TABLE `user_account` DISABLE KEYS */;
 INSERT INTO `user_account` (`user_id`, `username`, `password`, `user_type`, `f_name`, `l_name`) VALUES

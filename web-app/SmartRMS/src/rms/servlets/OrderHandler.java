@@ -64,7 +64,7 @@ public class OrderHandler extends HttpServlet {
                 session.setAttribute("username", username);
                 session.setAttribute("auth_id", auth_id);
 
-                request.getRequestDispatcher("users/receptionist/receptionist_2.xhtml").forward(request, response);
+                request.getRequestDispatcher("/Workspace").forward(request, response);
         }
 
         else if (userPath.equals("/PlaceOrder")) {

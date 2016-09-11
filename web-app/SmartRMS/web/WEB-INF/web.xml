@@ -39,6 +39,10 @@
         <url-pattern>/Logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>ValidateLogin1</servlet-name>
+        <url-pattern>/Workspace</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>AccountDispatch</servlet-name>
         <url-pattern>/AccountDispatch</url-pattern>
     </servlet-mapping>

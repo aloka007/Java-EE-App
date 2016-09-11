@@ -63,6 +63,28 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("/SamrtRMS/"); //rediredt user back into login screen
             return;
         }
+        
+        if (userPath.equals("/Workspace")) {  // logout procedure
+            session = request.getSession(); // get the session from request
+            String uType = (String)session.getAttribute("type");
+            switch (uType) {   // this switch seperates and sends various users to their respective interfaces
+                    case "CHEF":
+                        request.getRequestDispatcher("users/chef/chef.xhtml").forward(request, response);
+                        break;
+                    case "RECEPTIONIST":
+                        //request.getRequestDispatcher("/WEB-INF/users/receptionist/receptionist.jsp").forward(request, response);
+                        request.getRequestDispatcher("users/receptionist/receptionist_2.xhtml").forward(request, response);
+                        break;
+                    case "CASHIER":
+                        //getServletContext().getRequestDispatcher("/WEB-INF/cashier.jsp").forward(request, response);
+                        break;
+                    default:
+                        request.setAttribute("message", "No Interface For User Type");
+                        request.getRequestDispatcher("/common/error.jsp").forward(request, response);
+                        break;
+                }
+            return;
+        }
 
         try {
             username = request.getParameter("username");  // get data from request parameters
@@ -75,9 +97,6 @@ public class LoginServlet extends HttpServlet {
             if (res.next()) {  //this precedure is a very primitive one which entirely depends on the database
                 //this will later be replaced by JPA
                 
-//                request.setAttribute("firstname", res.getString("f_name"));
-//                request.setAttribute("lastname", res.getString("l_name"));
-//                request.setAttribute("type", res.getString("user_type"));
 
                 String uType = res.getString("user_type"); // used to restrict users from accessing other user interfaces
                 Random generator = new Random();           // an informal way of securing the app
@@ -117,6 +136,8 @@ public class LoginServlet extends HttpServlet {
         } finally {
 
         }
+        
+
 
     }
 
