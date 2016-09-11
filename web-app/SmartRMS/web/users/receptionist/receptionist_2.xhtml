@@ -77,10 +77,10 @@
 
 
 
-                <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+                <p:layoutUnit id="center-panel" rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
 
-                    <p:tabView orientation="left" style="height:98%">
+                    <p:tabView id="tab-panel" orientation="left" style="height:98%">
                         <p:tab title="Ordering">
                             <h:form>
 
@@ -188,11 +188,89 @@
 
                                 </p:dataTable>
                             </p:scrollPanel>
-
                         </p:tab>
 
-                        <p:tab title="Placed Orders">
+                        <p:tab id="placed-tab" title="Placed Orders">
+                            <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
+                                <h:form id="mainform">
+                                    <p:layout style="height: 530px">
+                                        <p:layoutUnit position="west" size="500" style="border:none" collapsible="true" gutter="0">
+                                            <p:outputPanel id="orderpanel">
 
+                                                <p:dataTable id="ordertable" var="order" value="#{RecOrd.orderDetails}" >
+                                                    <f:facet name="header">
+                                                        <h:outputText id="refcount" value="Orders List.  Refresh Count: #{RecOrd.refreshcount}" />
+                                                    </f:facet>
+                                                    <p:column headerText="Order No" style="width: 40px">
+                                                        <h:outputText style="align-content: center" value="#{order.customerOrder.orderNo}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Order Time" style="width: 210px">
+                                                        <h:outputText style="align-content: center; background-color: #{RecOrd.statuSwitch(1,order.customerOrder.status)}" value="#{order.customerOrder.orderTime}" />
+                                                    </p:column>
+
+
+                                                    <p:column headerText="Customer Name" style="width: 110px">
+                                                        <h:outputText style="center" value="#{order.customerOrder.custName}" />
+                                                    </p:column>
+                                                    <p:column style="width:32px;text-align: center">
+                                                        <p:commandButton update=":tab-panel:mainform:selectedorder" icon="ui-icon-search" title="View">
+                                                            <f:setPropertyActionListener value="#{order}" target="#{RecOrd.selectedContainer}" />
+                                                        </p:commandButton>
+                                                    </p:column>
+                                                </p:dataTable>
+
+                                            </p:outputPanel>
+                                        </p:layoutUnit>
+
+                                        <p:layoutUnit position="center" style="border:none" collapsible="true" gutter="0">
+                                            <p:outputPanel id="selectedorder" style="text-align:center;">
+                                                <p:panelGrid  columns="2" style="text-align: left; width:100%">
+                                                    <f:facet name="header">Order Details</f:facet>
+                                                    <h:outputText style="center" value="Order Number: " />
+                                                    <h:outputText style="center" value="#{RecOrd.selectedContainer.customerOrder.orderNo}" />
+
+                                                    <h:outputText style="center" value="Order Time: " />
+                                                    <h:outputText style="center" value="#{RecOrd.selectedContainer.customerOrder.orderTime}" />
+
+                                                    <h:outputText style="center" value="Ordered By: " />
+                                                    <h:outputText style="center" value="#{RecOrd.selectedContainer.customerOrder.orderedBy}" />
+
+                                                    <h:outputText style="center" value="Accepted By: " />
+                                                    <h:outputText style="center" value="#{RecOrd.selectedContainer.customerOrder.acceptedBy}" />
+
+
+                                                    <h:outputText style="center" value="Status: " />
+                                                    <h:outputText style="text-align:center; font-weight: bold" value="#{RecOrd.selectedContainer.customerOrder.status == 0 ? 'New' : (RecOrd.selectedContainer.customerOrder.status == 1 ? 'Accepted': 'Ready')}" />
+
+                                                    <p:commandButton value="Cancel Order" ajax="false" actionListener="#{RecOrd.accept(9)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
+
+
+                                                </p:panelGrid>
+
+
+
+                                                <p:dataTable style="margin-top: 5px" var="item" value="#{RecOrd.selectedContainer.itemlist}">
+                                                    <f:facet name="header">Items List</f:facet>
+                                                    <p:column headerText="Index" style="width: 60px">
+                                                        <h:outputText value="#{item.itemId.menuIndex}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Item Name">
+                                                        <h:outputText value="#{item.itemId.itemName}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Quantity" style="width: 60px">
+                                                        <h:outputText value="#{item.quantity}" />
+                                                    </p:column>
+
+                                                </p:dataTable>
+
+                                            </p:outputPanel>
+                                        </p:layoutUnit>
+                                    </p:layout>
+                                </h:form>
+                            </p:layoutUnit>
 
 
                         </p:tab>
