@@ -42,40 +42,42 @@
                 .ui-tabs .ui-tabs-panel{
                     padding: 0px 0px;
                 }
+                .header-grid.ui-panelgrid>*>tr,
+                .header-grid.ui-panelgrid .ui-panelgrid-cell {
+                    height: 20px;
+                    border: none;
+                }
+
 
             </style>
 
             <p:layout fullPage="true">
 
                 <p:layoutUnit id="north-toolbar" rendered="#{dtRecepView.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
-                    <h:panelGroup layout="block" style="float:left; padding: 0px 15px">
-                        <h2>SmartRMS - Receptionist #{firstname} #{lastname}</h2>
-                    </h:panelGroup>
+                    <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="4">
 
 
-                    <h:panelGroup layout="block" style="float:right; padding: 20px 15px">
+                        <h:outputText value="SmartRMS - Receptionist" style="font-size: 200%" />
+                        <h:form>
+                            <p:menuButton value="#{firstname} #{lastname}">
+                                <p:menuitem value="My Profile" url="/Profile" icon="ui-icon-check" />
+                                <p:menuitem value="Logout" url="/Logout" icon="ui-icon-close" />
+                            </p:menuButton>
+                        </h:form>
+
+
+
+
+
                         <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
-                    </h:panelGroup>
+                    </p:panelGrid>
 
                 </p:layoutUnit>
 
 
 
-<!--                <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="west" size="200" header="Navigate" collapsible="true" gutter="0">
-                    <p:menu>
-                        <p:submenu label="GoTo">
-                            <p:menuitem value="Completed Orders" url="index.jsp" />
-                            <p:menuitem value="My Profile" url="http://www.primefaces.org/documentation.html" />
-                            <p:menuitem value="Logout" url="/Logout" />
-
-                        </p:submenu>
-
-                    </p:menu>
-                </p:layoutUnit>-->
 
                 <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
-
-
 
 
                     <p:tabView orientation="left" style="height:98%">
@@ -86,7 +88,7 @@
                                     <p:layoutUnit style="border:none" position="north" size="60" collapsible="true" gutter="0">
                                         <p:toolbar>
                                             <f:facet name="left">
-                                                <p:commandButton type="button" value="New" icon="ui-icon-document" />
+                                                <p:commandButton value="New" icon="ui-icon-document" />
 
 
                                                 <span class="ui-separator">
@@ -105,12 +107,12 @@
 
                                             <f:facet name="right">
 
-                                                <p:button id="proceedbtn" value="Proceed" outcome="order-interface.xhtml" icon="ui-icon-play" disabled="false"/>
+                                                <p:commandButton id="proceedbtn" value="Proceed" ajax="false" action="#{dtRecepView.proceed()}" icon="ui-icon-play" disabled="false"/>
                                                 <p:menuButton value="Options">
-                                                    <p:menuitem value="Save" icon="ui-icon-disk" />
-                                                    <p:menuitem value="Update" icon="ui-icon-arrowrefresh-1-w" />
-                                                    <p:menuitem value="Delete" ajax="false" icon="ui-icon-close" />
-                                                    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink" />
+                                                    <p:menuitem value="Option1" icon="ui-icon-disk" />
+                                                    <p:menuitem value="Option2" icon="ui-icon-arrowrefresh-1-w" />
+                                                    <p:menuitem value="Option3" icon="ui-icon-close" />
+                                                    <p:menuitem value="Option4" icon="ui-icon-extlink" />
                                                 </p:menuButton>
                                             </f:facet>
 
@@ -180,7 +182,7 @@
                                         <h:outputText value="#{item.price}" />
                                     </p:column>
 
-                                    <p:column headerText="Spiciness" style="width:140px">
+                                    <p:column headerText="Spiciness" style="width:80px">
                                         <p:rating value="#{item.spiciness}" readonly="true" />
                                     </p:column>
 
@@ -191,7 +193,7 @@
 
                         <p:tab title="Placed Orders">
 
-                           
+
 
                         </p:tab>
 

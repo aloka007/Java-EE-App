@@ -31,36 +31,36 @@
                     color: #ccc;
 
                 }
-
+                .header-grid.ui-panelgrid>*>tr,
+                .header-grid.ui-panelgrid .ui-panelgrid-cell {
+                    height: 20px;
+                    border: none;
+                }
             </style>
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="north" size="80" collapsible="true" gutter="0">
-                    <h:panelGroup layout="block" style="float:left; padding: 0px 15px">
-                        <h2>Order Feedback </h2>   
-                    </h:panelGroup>
+                <p:layoutUnit id="north-toolbar" rendered="#{dtRecepView.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
+                    <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="4">
 
 
-                    <h:panelGroup layout="block" style="float:right; padding: 20px 15px">
+                        <h:outputText value="Order FeedBack" style="font-size: 200%" />
+                        <h:form>
+                            <p:menuButton value="#{firstname} #{lastname}">
+                                <p:menuitem value="My Profile" url="/Profile" icon="ui-icon-check" />
+                                <p:menuitem value="Logout" url="/Logout" icon="ui-icon-close" />
+                            </p:menuButton>
+                        </h:form>
+
+
+
+
+
                         <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
-                    </h:panelGroup>
+                    </p:panelGrid>
 
                 </p:layoutUnit>
 
-
-
-                <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="west" size="200" header="Navigate" collapsible="true" gutter="0">
-                    <p:menu>
-                        <p:submenu label="GoTo">
-                            <p:menuitem value="Completed Orders" url="index.jsp" />
-                            <p:menuitem value="My Profile" url="http://www.primefaces.org/documentation.html" />
-                            <p:menuitem value="Logout" url="/Logout" />
-
-                        </p:submenu>
-
-                    </p:menu>
-                </p:layoutUnit>
 
                 <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
@@ -68,12 +68,10 @@
                         <p:layout id="main-form">
                             <p:layoutUnit style="border:none" position="west" size="600" collapsible="true" gutter="0">
                                 <p:panelGrid columns="1" style="width:100%;border: none">
-                                    <h:outputText style="font-size: 1.2em; font-weight: bold" value="" />
 
                                     <h:outputText style="font-size: 1.2em; font-weight: bold" value="#{message}" />
                                     <h:outputText style="font-size: 1.2em; font-weight: bold" value="Order No: #{orderno}" />
-                                    <h:outputText style="font-size: 1.2em; font-weight: bold" value="" />
-                                    
+
                                     <p:commandButton value="New Order" id="nonAjax" actionListener="#{dtRecepView.newOrder()}" ajax="false" icon="ui-icon-check"/>
                                 </p:panelGrid>
 
@@ -98,9 +96,18 @@
                                         <h:outputText value="#{item.subtotal}" />
                                     </p:column>
                                 </p:dataTable>
-                                <p:panelGrid columns="3" style="width:100%;border: none">
-                                    <h:outputText value="Customer Name:  #{dtRecepView.customerName}" />
-                                    <h:outputText value="Total:  #{dtRecepView.total}" />
+                                <p:panelGrid columns="2" style="width:100%;border: none">
+                                    <h:outputText value="Customer Name:  " />
+                                    <h:outputText value="#{dtRecepView.customerName}" />
+
+                                    <h:outputText value="Discount (5%):" />
+                                    <h:outputText value="(#{dtRecepView.total * 0.05})" />
+
+                                    <h:outputText value="Sales Tax (15%):" />
+                                    <h:outputText value="#{(dtRecepView.total * 0.95) *0.15}" />
+
+                                    <h:outputText value="Total:" />
+                                    <h:outputText value="#{((dtRecepView.total * 0.95) *1.15)-(((dtRecepView.total * 0.95) *1.15) % 0.01)}" />
 
                                 </p:panelGrid>
 

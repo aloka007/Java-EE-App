@@ -109,7 +109,7 @@
         </div>
 
         <div id="footer">
-            Copyright © 2016 UCSC 2nd Year SD Project Group #12
+            Copyright © 2016 Smart RMS SD Project Group #12
         </div>
 
 
