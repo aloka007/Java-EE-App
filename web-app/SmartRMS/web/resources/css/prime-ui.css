@@ -18,9 +18,9 @@ td {
     border: none;
 }
 .ui-corner-all {
-    -moz-border-radius: 0px;
-    -webkit-border-radius: 0px;
-    border-radius: 0px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
 }
 .ui-layout-unit {
     border: 1px solid #D3D3D3;

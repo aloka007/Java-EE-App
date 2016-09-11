@@ -15,10 +15,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 import org.primefaces.model.DualListModel;
 import rms.common.ComTainer;
@@ -107,6 +105,7 @@ public class RecepView {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
         
+        
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         try {
             ec.redirect(ec.getRequestContextPath() + "/NewOrder");
@@ -139,15 +138,7 @@ public class RecepView {
         this.strings = strings;
     }
 
-//    private String searchText;
-//
-//    public String getSearchText() {
-//        return searchText;
-//    }
-//
-//    public void setSearchText(String searchText) {
-//        this.searchText = searchText;
-//    }
+
 //    public void filter() {
 //        leftItems = items;
 //        for (int j = 0; j < leftItems.size(); j++) {
@@ -178,32 +169,32 @@ public class RecepView {
         }
     }
 
-    public void fill() {
-        leftItems = items;
-    }
+//    public void fill() {
+//        leftItems = items;
+//    }
 
-    public void sortList() {
-        Collections.sort(items);
-    }
+//    public void sortList() {
+//        Collections.sort(items);
+//    }
 
-    public List<MenuItem> getLeftItems() {
-        return leftItems;
-    }
+//    public List<MenuItem> getLeftItems() {
+//        return leftItems;
+//    }
 
     public List<Container> getRightItems() {
         return rightItems;
     }
-    private MenuItem selectedItem;
+    //private MenuItem selectedItem;
 
-    public MenuItem getSelectedItem() {
-        return selectedItem;
-    }
-
-    public void setSelectedItem(MenuItem selectedItem) {
-        this.selectedItem = selectedItem;
-        strings.add(selectedItem.getItemName());
-
-    }
+//    public MenuItem getSelectedItem() {
+//        return selectedItem;
+//    }
+//
+//    public void setSelectedItem(MenuItem selectedItem) {
+//        this.selectedItem = selectedItem;
+//        strings.add(selectedItem.getItemName());
+//
+//    }
 
     private List<MenuItem> selectedItems;
 
@@ -267,7 +258,7 @@ public class RecepView {
         return hiddenatrib;
     }
 
-    public void setHiddenatrib(boolean hiddenatrib) {
-        this.hiddenatrib = hiddenatrib;
-    }
+//    public void setHiddenatrib(boolean hiddenatrib) {
+//        this.hiddenatrib = hiddenatrib;
+//    }
 }

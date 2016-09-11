@@ -42,6 +42,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "CustomerOrder.findByStatus", query = "SELECT c FROM CustomerOrder c WHERE c.status = :status")})
 public class CustomerOrder implements Serializable {
 
+    @Size(max = 50)
+    @Column(name = "accepted_by")
+    private String acceptedBy;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -151,6 +155,14 @@ public class CustomerOrder implements Serializable {
     @Override
     public String toString() {
         return "rms.common.CustomerOrder[ orderNo=" + orderNo + " ]";
+    }
+
+    public String getAcceptedBy() {
+        return acceptedBy;
+    }
+
+    public void setAcceptedBy(String acceptedBy) {
+        this.acceptedBy = acceptedBy;
     }
     
 }

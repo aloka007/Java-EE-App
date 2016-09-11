@@ -19,21 +19,28 @@
 
         <h:body>
 
+            <style>
+                .header-grid.ui-panelgrid>*>tr,
+                .header-grid.ui-panelgrid .ui-panelgrid-cell {
+                    height: 20px;
+                    border: none;
+                }
+            </style>
+
             <p:layout fullPage="true">
 
-                <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="north" size="70" collapsible="true" gutter="0">
-                    <h:panelGroup layout="block" style="float:left; padding: 0px 15px">
-                        <h2>SmartRMS - Chef #{firstname} #{lastname}</h2>
-                    </h:panelGroup>
-
-
-                    <h:panelGroup layout="block" style="float:right; padding: 20px 15px">
+                <p:layoutUnit id="north-toolbar" rendered="#{dtOrderList.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
+                    <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="4">
+                        <h:outputText value="SmartRMS - Chef" style="font-size: 200%" />
+                        <h:form>
+                            <p:menuButton value="#{firstname} #{lastname}">
+                                <p:menuitem value="My Profile" url="/Profile" icon="ui-icon-check" />
+                                <p:menuitem value="Logout" url="/Logout" icon="ui-icon-close" />
+                            </p:menuButton>
+                        </h:form>
                         <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
-                    </h:panelGroup>
-
+                    </p:panelGrid>
                 </p:layoutUnit>
-
-
 
                 <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="west" size="200" header="Navigate" collapsible="true" gutter="0">
                     <p:menu>
@@ -52,7 +59,7 @@
                 <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="center" style="padding: 5px 10px" collapsible="true" gutter="0">
                     <h:form id="mainform">
                         <p:layout style="height: 550px">
-                            <p:layoutUnit position="west" size="600" style="border:none" collapsible="true" gutter="0">
+                            <p:layoutUnit position="west" size="500" style="border:none" collapsible="true" gutter="0">
                                 <p:outputPanel id="orderpanel">
 
                                     <p:dataTable id="ordertable" var="order" value="#{dtOrderList.orderDetails}" >
@@ -63,16 +70,16 @@
                                             <h:outputText style="align-content: center" value="#{order.customerOrder.orderNo}" />
                                         </p:column>
 
-                                        <p:column headerText="Order Time">
+                                        <p:column headerText="Order Time" style="width: 210px">
                                             <h:outputText style="align-content: center; background-color: #{order.customerOrder.status == 0 ? 'red' : (order.customerOrder.status == 1 ? 'orange': 'lime')}" value="#{order.customerOrder.orderTime}" />
                                         </p:column>
 
 
-                                        <p:column headerText="Customer Name">
+                                        <p:column headerText="Customer Name" style="width: 110px">
                                             <h:outputText style="center" value="#{order.customerOrder.custName}" />
                                         </p:column>
                                         <p:column style="width:32px;text-align: center">
-                                            <p:commandButton update=":mainform:selectedorder" icon="ui-icon-search" title="View">
+                                            <p:commandButton ajax="false" update=":mainform:selectedorder" icon="ui-icon-search" title="View">
                                                 <f:setPropertyActionListener value="#{order}" target="#{dtOrderList.selectedContainer}" />
                                             </p:commandButton>
                                         </p:column>
@@ -95,6 +102,10 @@
                                         <h:outputText style="center" value="Ordered By: " />
                                         <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.orderedBy}" />
 
+                                        <h:outputText style="center" value="Accepted By: " />
+                                        <h:outputText style="center" value="#{dtOrderList.selectedContainer.customerOrder.acceptedBy}" />
+
+
                                         <h:outputText style="center" value="Status: " />
                                         <h:outputText style="text-align:center; font-weight: bold" value="#{dtOrderList.selectedContainer.customerOrder.status == 0 ? 'New' : (dtOrderList.selectedContainer.customerOrder.status == 1 ? 'Accepted': 'Ready')}" />
 
@@ -106,10 +117,10 @@
 
 
 
-                                    <p:dataTable var="item" value="#{dtOrderList.selectedContainer.itemlist}">
+                                    <p:dataTable style="margin-top: 5px" var="item" value="#{dtOrderList.selectedContainer.itemlist}">
                                         <f:facet name="header">Items List</f:facet>
-                                        <p:column headerText="Item ID" style="width: 60px">
-                                            <h:outputText value="#{item.itemId.itemId}" />
+                                        <p:column headerText="Index" style="width: 60px">
+                                            <h:outputText value="#{item.itemId.menuIndex}" />
                                         </p:column>
 
                                         <p:column headerText="Item Name">

@@ -28,6 +28,7 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.HttpSession;
 import rms.common.ComTainer;
 import rms.entity.CustomerOrder;
 import rms.entity.OrderItem;
@@ -123,14 +124,19 @@ public class ChefView implements Serializable {
     }
 
     public void accept(int i) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+        String uName = (String)session.getAttribute("username");
         selectedContainer.customerOrder.setStatus((short) i);
+        selectedContainer.customerOrder.setAcceptedBy(uName);
         orderManager.acceptOrder(selectedContainer.customerOrder);
 
     }
 
     public void update() {
+        //em.getEntityManagerFactory().getCache().evictAll();
         orders = customerOrderFacade.findAll();
-        em.getEntityManagerFactory().getCache().evictAll();
+        
 
         itemList = orderItemFacade.findAll();
         orderDetails = new ArrayList<>();
