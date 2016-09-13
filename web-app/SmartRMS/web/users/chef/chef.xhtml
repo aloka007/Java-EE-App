@@ -158,7 +158,7 @@
                                                 </p:column>
 
                                                 <p:column headerText="Order Time" style="width: 210px">
-                                                    <h:outputText style="align-content: center; background-color: #{order.customerOrder.status == 0 ? 'red' : (order.customerOrder.status == 1 ? 'yellow': 'lime')}" value="#{order.customerOrder.orderTime}" />
+                                                    <h:outputText style="align-content: center; background-color: #{dtOrderList.statuSwitch(1, order.customerOrder.status)}" value="#{order.customerOrder.orderTime}" />
                                                 </p:column>
 
 
@@ -193,7 +193,7 @@
 
 
                                                 <h:outputText style="center" value="Status: " />
-                                                <h:outputText style="text-align:center; font-weight: bold" value="#{dtOrderList.selectedContainer.customerOrder.status == 0 ? 'New' : (dtOrderList.selectedContainer.customerOrder.status == 1 ? 'Accepted': 'Ready')}" />
+                                                <h:outputText style="text-align:center; font-weight: bold" value="#{dtOrderList.statuSwitch(2, dtOrderList.selectedContainer.customerOrder.status)}" />
 
                                             </p:panelGrid>
 

@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -118,15 +118,21 @@ public class RecepOrders {
     }
 
     public void accept(int i) {
-        if (i == 2) {
-            completedOrders.add(selectedContainer);
+        if (i == 9 && (selectedContainer.customerOrder.getStatus() == 1 || selectedContainer.customerOrder.getStatus() == 2)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Order is already accepted!"));
+        } else {
+
+            if (i == 2) {
+                completedOrders.add(selectedContainer);
+            }
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+            String uName = (String) session.getAttribute("username");
+            selectedContainer.customerOrder.setStatus((short) i);
+            selectedContainer.customerOrder.setAcceptedBy(uName);
+            orderManager.acceptOrder(selectedContainer.customerOrder);
         }
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
-        String uName = (String) session.getAttribute("username");
-        selectedContainer.customerOrder.setStatus((short) i);
-        selectedContainer.customerOrder.setAcceptedBy(uName);
-        orderManager.acceptOrder(selectedContainer.customerOrder);
+
     }
 
     public void update() {
@@ -144,18 +150,18 @@ public class RecepOrders {
                 }
             }
             Container cont = new Container(order, templist);
-            if (order.getStatus().equals((short) 2)) {
-                completedOrders.add(cont);
-            } else {
-                orderDetails.add(cont);
-            }
+            orderDetails.add(cont);
+//            if (order.getStatus().equals((short) 2)) {
+//                completedOrders.add(cont);
+//            } else {
+//                orderDetails.add(cont);
+//            }
         }
-
     }
-    
-    public String statuSwitch(int m, short i){
+
+    public String statuSwitch(int m, short i) {
         String s = "";
-        if (m == 1){
+        if (m == 1) {
             switch (i) {
                 case 0:
                     s = "red";
@@ -172,7 +178,25 @@ public class RecepOrders {
                 default:
                     break;
             }
-                        
+
+        } else if (m == 2) {
+
+            switch (i) {
+                case 0:
+                    s = "New";
+                    break;
+                case 1:
+                    s = "Accepted";
+                    break;
+                case 2:
+                    s = "Ready";
+                    break;
+                case 9:
+                    s = "Cancelled";
+                    break;
+                default:
+                    break;
+            }
         }
         return s;
     }

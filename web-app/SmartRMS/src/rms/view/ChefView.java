@@ -147,7 +147,7 @@ public class ChefView implements Serializable {
                 }
             }
             Container cont = new Container(order, templist);
-            if (order.getStatus().equals((short) 2)) {
+            if (order.getStatus().equals((short) 2 ) || order.getStatus().equals((short) 9 )) {
                 completedOrders.add(cont);
             } else {
                 orderDetails.add(cont);
@@ -175,6 +175,48 @@ public class ChefView implements Serializable {
 
     public void setSelectedContainer(Container selectedContainer) {
         this.selectedContainer = selectedContainer;
+    }
+    
+    public String statuSwitch(int m, short i) {
+        String s = "";
+        if (m == 1) {
+            switch (i) {
+                case 0:
+                    s = "red";
+                    break;
+                case 1:
+                    s = "yellow";
+                    break;
+                case 2:
+                    s = "lime";
+                    break;
+                case 9:
+                    s = "slategray";
+                    break;
+                default:
+                    break;
+            }
+
+        } else if (m == 2) {
+
+            switch (i) {
+                case 0:
+                    s = "New";
+                    break;
+                case 1:
+                    s = "Accepted";
+                    break;
+                case 2:
+                    s = "Ready";
+                    break;
+                case 9:
+                    s = "Cancelled";
+                    break;
+                default:
+                    break;
+            }
+        }
+        return s;
     }
 
 }

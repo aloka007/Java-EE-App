@@ -22,7 +22,7 @@ public final class DataBaseConnection {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            //conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/restaurant","root","admin");
+            //conn = DriverManager.getConnection("jdbc:mysql://br-cdbr-azure-south-b.cloudapp.net:3306/smart_rms","b50735a87d1621","8a720e5f");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_rms", "root", "admin");
         } catch (ClassNotFoundException | SQLException e) {
         }

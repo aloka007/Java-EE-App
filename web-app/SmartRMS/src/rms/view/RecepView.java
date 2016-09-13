@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -119,12 +120,17 @@ public class RecepView {
     }
 
     public void proceed() {
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        try {
-            ec.redirect(ec.getRequestContextPath() + "/users/receptionist/order-interface.xhtml");
-        } catch (IOException ex) {
-            Logger.getLogger(RecepView.class.getName()).log(Level.SEVERE, null, ex);
+        if (rightItems.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Item list is empty!"));
+        } else {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            try {
+                ec.redirect(ec.getRequestContextPath() + "/users/receptionist/order-interface.xhtml");
+            } catch (IOException ex) {
+                Logger.getLogger(RecepView.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
     }
 
     public void newOrder() {

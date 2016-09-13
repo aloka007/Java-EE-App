@@ -83,6 +83,8 @@
                     <p:tabView id="tab-panel" orientation="left" style="height:98%">
                         <p:tab title="Ordering">
                             <h:form>
+                                
+                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
                                 <p:layout id="main-form">
                                     <p:layoutUnit style="border:none" position="north" size="60" collapsible="true" gutter="0">
@@ -193,6 +195,7 @@
                         <p:tab id="placed-tab" title="Placed Orders">
                             <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
                                 <h:form id="mainform">
+                                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                                     <p:layout style="height: 530px">
                                         <p:layoutUnit position="west" size="500" style="border:none" collapsible="true" gutter="0">
                                             <p:outputPanel id="orderpanel">
@@ -241,7 +244,7 @@
 
 
                                                     <h:outputText style="center" value="Status: " />
-                                                    <h:outputText style="text-align:center; font-weight: bold" value="#{RecOrd.selectedContainer.customerOrder.status == 0 ? 'New' : (RecOrd.selectedContainer.customerOrder.status == 1 ? 'Accepted': 'Ready')}" />
+                                                    <h:outputText style="text-align:center; font-weight: bold" value="#{RecOrd.statuSwitch(2,RecOrd.selectedContainer.customerOrder.status)}" />
 
                                                     <p:commandButton value="Cancel Order" ajax="false" actionListener="#{RecOrd.accept(9)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
 
