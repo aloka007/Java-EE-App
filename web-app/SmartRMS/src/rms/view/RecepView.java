@@ -6,6 +6,7 @@
 package rms.view;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -22,8 +23,10 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.model.DualListModel;
 import rms.common.ComTainer;
+import rms.entity.DiningTable;
 import rms.entity.MenuItem;
 import rms.entity.OrderItem;
+import rms.session.DiningTableFacade;
 import rms.session.MenuItemFacade;
 
 /**
@@ -36,13 +39,20 @@ public class RecepView {
 
     @EJB
     private MenuItemFacade menuItemFacade;
+    
+    @EJB
+    private DiningTableFacade diningTableFacade;
 
     @PostConstruct
-    public void init() {
+    public void init() {  // INITIALIZATION-------------------------**************************
+        
+        
         items = (List<MenuItem>) menuItemFacade.findAll();
         Collections.sort(items);
         leftItems = items;
         selectedItems = items;
+        
+        tables = diningTableFacade.findAll();
 
         List<String> itemSource = new ArrayList<String>();
         List<String> itemTarget = new ArrayList<String>();
@@ -58,7 +68,7 @@ public class RecepView {
 
         ComTainer.setMenu(items);
     }
-
+    // <editor-fold defaultstate="collapsed" desc="Ordering Functions. Click on the + sign on the left to edit the code.">
     //------------------Ordering Functions
     private String customerName = "";
 
@@ -147,8 +157,50 @@ public class RecepView {
     }
 
     //-------------------ordering functions
+    // </editor-fold>
     
     //-------------------reservation funcions
+    
+    
+    
+
+    public List<DiningTable> getTables() {
+        List<DiningTable> retables = new ArrayList<>();
+        List<Integer> resTables;
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+        resTables = (List<Integer>)session.getAttribute("reslist");
+        
+        for (DiningTable i : tables){
+            boolean reserved = false;
+            for (int j : resTables){
+                if (i.getTableNo() == j){
+                    reserved = true;
+                }
+            }
+            if (!reserved && i.getTableType().equals("RES")){
+                retables.add(i);
+            }
+        }
+        
+        return retables;
+    }
+    
+    private List<DiningTable> selectedTables;
+
+    public List<DiningTable> getSelectedTables() {
+        return selectedTables;
+    }
+
+    public void setSelectedTables(List<DiningTable> selectedTables) {
+        this.selectedTables = selectedTables;
+    }
+    
+    private List<DiningTable> tables;
+
+    public void setTables(List<DiningTable> tables) {
+        this.tables = tables;
+    }
     
     private String mealTime;
 
@@ -158,6 +210,16 @@ public class RecepView {
 
     public void setMealTime(String mealTime) {
         this.mealTime = mealTime;
+    }
+    
+    private int customerCount;
+
+    public int getCustomerCount() {
+        return customerCount;
+    }
+
+    public void setCustomerCount(int customerCount) {
+        this.customerCount = customerCount;
     }
     
     
@@ -175,7 +237,7 @@ public class RecepView {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
         session.setAttribute("cust_name", customerName);
-        session.setAttribute("res_date", date1);
+        session.setAttribute("res_date", new SimpleDateFormat("yyyy-MM-dd").format(date1));
         session.setAttribute("res_time", mealTime);
 
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -260,7 +322,8 @@ public class RecepView {
             }
         } catch (Exception e) {
         }
-        return hiddenatrib;
+        //return hiddenatrib;
+        return true;
     }
 
 }

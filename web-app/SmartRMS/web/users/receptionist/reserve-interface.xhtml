@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sql="http://java.sun.com/jsp/jstl/sql"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Available Options</title>
+            </f:facet>
+            <h:outputStylesheet name="css/prime-ui.css" />
+        </h:head>
+
+        <h:body>
+            <style>
+                .ui-picklist .ui-picklist-list {
+                    height: 300px;
+                    width: 269px;
+                    margin: 0;
+                    overflow: auto;
+                    padding: 0;
+                }
+                .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
+                    background: #363636;
+                    color: #ccc;
+
+                }
+                .header-grid.ui-panelgrid>*>tr,
+                .header-grid.ui-panelgrid .ui-panelgrid-cell {
+                    height: 20px;
+                    border: none;
+                }
+            </style>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit id="north-toolbar" rendered="#{dtRecepView.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
+                    <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="4">
+
+
+                        <h:outputText value="Available Options" style="font-size: 200%" />
+                        <h:form>
+                            <p:menuButton value="#{firstname} #{lastname}">
+                                <p:menuitem value="My Profile" url="/Profile" icon="ui-icon-check" />
+                                <p:menuitem value="Logout" url="/Logout" icon="ui-icon-close" />
+                            </p:menuButton>
+                        </h:form>
+
+
+
+
+
+                        <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
+                    </p:panelGrid>
+
+                </p:layoutUnit>
+
+
+                <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+
+                    <h:form>
+                        <p:layout id="main-form">
+
+
+
+                            <p:layoutUnit style="border:none" position="center" collapsible="true" gutter="0">
+
+                                <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
+                                    <h:outputText value="Customer Name:  " />
+                                    <h:outputText value="#{dtRecepView.customerName}" />
+
+                                    <h:outputText value="No of Customers:" />
+                                    <h:outputText value="#{dtRecepView.customerCount}" />
+
+                                    <h:outputText value="Avail:  " />
+                                    <h:outputText value="***" />
+
+                                    <p:button id="backbtn" value="Go Back" outcome="/users/receptionist/receptionist_2.xhtml" icon="ui-icon-play" disabled="false"/>
+                                    <p:commandButton value="Confirm and Submit" id="nonAjax" actionListener="#{dtRecepView.submit()}" ajax="false" icon="ui-icon-check"/>
+
+                                </p:panelGrid>
+
+                                <p:dataTable var="table" style="width:50%; margin-left: 25%;" value="#{dtRecepView.tables}" selection="#{dtRecepView.selectedTables}" rowKey="#{table.id}">
+                                    <f:facet name="header">
+                                        Select Tables
+                                    </f:facet>
+                                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                    <p:column headerText="Table No">
+                                        <h:outputText value="#{table.tableNo}" />
+                                    </p:column>
+                                    <p:column headerText="No of Seats">
+                                        <h:outputText value="#{table.numOfSeats}" />
+                                    </p:column>
+                                </p:dataTable>
+
+                            </p:layoutUnit>
+                        </p:layout>
+
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+                <p:layoutUnit rendered="#{!dtRecepView.hiddenatrib}" position="center">
+                    <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
+                </p:layoutUnit>
+
+                <p:layoutUnit class="footer-unit" position="south" size="20" collapsible="true" gutter="0">
+                    Copyright © 2016 Smart RMS Project Group #12
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+
