@@ -47,6 +47,11 @@
                     height: 20px;
                     border: none;
                 }
+                .res-grid.ui-panelgrid>*>tr,
+                .res-grid.ui-panelgrid .ui-panelgrid-cell {
+                    height: 20px;
+                    border: none;
+                }
 
 
             </style>
@@ -83,7 +88,7 @@
                     <p:tabView id="tab-panel" orientation="left" style="height:98%">
                         <p:tab title="Ordering">
                             <h:form>
-                                
+
                                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
                                 <p:layout id="main-form">
@@ -279,9 +284,32 @@
                         </p:tab>
 
                         <p:tab title="Reservation">
-                            <h:panelGrid columns="2" cellpadding="10">
-                                <h:outputText value="After a break of more than 15 years..." />
-                            </h:panelGrid>
+
+                            <h:form>
+                                <p:panelGrid id="res-grid" columns="5">
+
+                                    <h:outputText value="    Customer Name: " />
+                                    <p:inputText id="custname" value="#{dtRecepView.customerName}" required="true">
+                                        <p:ajax event="blur" update="custname,msg" />
+                                        <p:message id="msg" for="custname" />
+                                    </p:inputText>
+
+                                    <p:calendar id="popup" value="#{dtRecepView.date1}"/>
+
+                                    <p:commandButton id="checkbtn" value="Check Availability" ajax="false" action="#{dtRecepView.checkAvail()}" icon="ui-icon-check" disabled="false"/>
+
+                                    <p:selectOneMenu id="restime" value="#{dtRecepView.mealTime}" style="width:125px">
+                                        <f:selectItem itemLabel="Lunch" itemValue="LUNCH" />
+                                        <f:selectItem itemLabel="Dinner" itemValue="DINNER" />
+                                    </p:selectOneMenu>
+
+                                </p:panelGrid>
+                            </h:form>
+
+
+
+
+
                         </p:tab>
                     </p:tabView>
 

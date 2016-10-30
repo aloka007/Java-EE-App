@@ -218,5 +218,4 @@ public class ChefView implements Serializable {
         }
         return s;
     }
-
 }

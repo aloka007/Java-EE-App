@@ -8,6 +8,7 @@ package rms.view;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -146,6 +147,46 @@ public class RecepView {
     }
 
     //-------------------ordering functions
+    
+    //-------------------reservation funcions
+    
+    private String mealTime;
+
+    public String getMealTime() {
+        return mealTime;
+    }
+
+    public void setMealTime(String mealTime) {
+        this.mealTime = mealTime;
+    }
+    
+    
+    private Date date1;
+
+    public Date getDate1() {
+        return date1;
+    }
+
+    public void setDate1(Date date1) {
+        this.date1 = date1;
+    }
+    
+    public void checkAvail() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+        session.setAttribute("cust_name", customerName);
+        session.setAttribute("res_date", date1);
+        session.setAttribute("res_time", mealTime);
+
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            ec.redirect(ec.getRequestContextPath() + "/Reserve");
+        } catch (IOException ex) {
+            Logger.getLogger(RecepView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    //---------------------------------------
+    
     private DualListModel<String> dualitems;
 
     public DualListModel<String> getDualitems() {

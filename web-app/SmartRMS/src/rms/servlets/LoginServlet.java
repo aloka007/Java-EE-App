@@ -34,19 +34,6 @@ public class LoginServlet extends HttpServlet {
 
     String username, password, query;
 
-    @EJB
-    private UserAccountFacade userAccountFacade;
-    
-
-    @Override
-    public void init() throws ServletException {
-
-        // store user list in servlet context            <<<<<<<< not necessary- to be removed
-        List<UserAccount> items;
-        items = userAccountFacade.findAll();
-        getServletContext().setAttribute("users", items);
-        
-    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {  // the only servlet method used for the app
