@@ -12,7 +12,7 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Available Options</title>
+                <title>Reservation Feedback</title>
             </f:facet>
             <h:outputStylesheet name="css/prime-ui.css" />
         </h:head>
@@ -80,19 +80,21 @@
                                     
                                     <h:outputText value="Time:  " />
                                     <h:outputText value="#{res_time}" />
-
-                                    <p:button id="backbtn" value="Go Back" outcome="/users/receptionist/receptionist_2.xhtml" icon="ui-icon-play" disabled="false"/>
-                                    <p:commandButton value="Confirm and Submit" id="nonAjax" actionListener="#{dtRecepView.reserve()}" ajax="false" icon="ui-icon-check"/>
-
+                                    
+                                    <h:outputText value="Feedback:  " />
+                                    <h:outputText value="#{message}" />
+                                    
+                                    <h:outputText value="Reservation No:  " />
+                                    <h:outputText value="#{resno}" />
+                                    
+                                    <p:commandButton value="Return To Workspace" id="nonAjax" actionListener="#{dtRecepView.newOrder()}" ajax="false" icon="ui-icon-check"/>
+                                    
                                 </p:panelGrid>
-                                
-                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
-                                <p:dataTable var="table" style="width:50%; margin-left: 25%;" value="#{dtRecepView.tables}" selection="#{dtRecepView.selectedTables}" rowKey="#{table.id}">
+                                <p:dataTable var="table" style="width:50%; margin-left: 25%;" value="#{dtRecepView.selectedTables}" >
                                     <f:facet name="header">
-                                        Select Tables
+                                        Reserved Tables
                                     </f:facet>
-                                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
                                     <p:column headerText="Table No">
                                         <h:outputText value="#{table.tableNo}" />
                                     </p:column>

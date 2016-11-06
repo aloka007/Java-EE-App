@@ -37,7 +37,7 @@
                 }
                 .ui-tabs-left > .ui-tabs-panels {
                     float: right;
-                    width: 88%;
+                    width: 87%;
                 }
                 .ui-tabs .ui-tabs-panel{
                     padding: 0px 0px;
@@ -75,9 +75,6 @@
                         </h:form>
 
 
-
-
-
                         <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
                     </p:panelGrid>
 
@@ -88,12 +85,14 @@
 
                 <p:layoutUnit id="center-panel" rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
+                    <p:messages id="messages" autoUpdate="true" closable="true" />
 
-                    <p:tabView id="tab-panel" orientation="left" style="height:98%">
-                        <p:tab title="Ordering">
+                    <p:tabView id="tab-panel" orientation="left" style="height:98%" activeIndex="#{dtRecepView.selectedTab}">
+                        <p:ajax event="tabChange" listener="#{dtRecepView.onTabChange}"/>
+                        <p:tab title="Ordering" id="tab0">
                             <h:form>
 
-                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
 
                                 <p:layout id="main-form">
                                     <p:layoutUnit style="border:none; padding-left:3px; padding-bottom: 0px; padding-top: 0px;" position="north" size="50" collapsible="true" gutter="0">
@@ -174,7 +173,7 @@
                                 </p:layout> 
                             </h:form>
                         </p:tab>
-                        <p:tab title="View Menu">
+                        <p:tab title="View Menu" id="tab1">
                             <p:scrollPanel mode="native" style=" width:100%; height:540px">
                                 <p:dataTable var="item" value="#{dtRecepView.items}">
                                     <p:column headerText="Index" style="width:30px">
@@ -201,7 +200,7 @@
                             </p:scrollPanel>
                         </p:tab>
 
-                        <p:tab id="placed-tab" title="Placed Orders">
+                        <p:tab id="tab2" title="Placed Orders">
                             <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
                                 <h:form id="mainform">
                                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
@@ -287,17 +286,17 @@
 
                         </p:tab>
 
-                        <p:tab title="Reservation">
+                        <p:tab id="tab3" title="Reservation">
 
                             <h:form>
 
-                                <h:panelGrid columns="2" style="margin-left:30%; margin-top: 3%;" cellpadding="5">
+                                <h:panelGrid columns="3" style="margin-left:30%; margin-top: 3%;" cellpadding="5">
 
                                     <h:outputText value="Customer Name:" />
                                     <p:inputText id="custname" value="#{dtRecepView.customerName}" required="true">
                                         <p:ajax event="blur" update="custname,msg" />
-                                        <p:message id="msg" for="custname" />
                                     </p:inputText>
+                                    <p:message id="msg" for="custname" />
 
                                     <h:outputText value="No of Customers:" />
                                     <p:selectOneMenu id="console" value="#{dtRecepView.customerCount}" style="width:125px">
@@ -322,15 +321,18 @@
                                         <f:selectItem itemLabel="19" itemValue="#{19}" />
                                         <f:selectItem itemLabel="20" itemValue="#{20}" />
                                     </p:selectOneMenu>
+                                    <h:outputText value=" " />
 
                                     <h:outputText value="Date:" />
                                     <p:calendar id="popup" value="#{dtRecepView.date1}"/>
+                                    <h:outputText value=" " />
 
                                     <h:outputText value="Meal Time:" />
                                     <p:selectOneMenu id="restime" value="#{dtRecepView.mealTime}" style="width:125px">
                                         <f:selectItem itemLabel="Lunch" itemValue="LUNCH" />
                                         <f:selectItem itemLabel="Dinner" itemValue="DINNER" />
                                     </p:selectOneMenu>
+                                    <h:outputText value=" " />
 
                                     <p:commandButton id="checkbtn" value="Check Availability" ajax="false" action="#{dtRecepView.checkAvail()}" icon="ui-icon-check" disabled="false"/>
 

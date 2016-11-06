@@ -13,14 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import rms.db.DBpack;
+import rms.entity.Customer;
 import rms.entity.DiningTable;
 import rms.session.DiningTableFacade;
+import rms.transaction.ReserveManager;
 
 /**
  *
@@ -37,51 +40,71 @@ public class ReserveHandler extends HttpServlet {
      * @throws IOException if an I/O error occurs
      * @throws java.sql.SQLException
      */
+    @EJB
+    private ReserveManager reserveManager;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        ResultSet res,res1;
+        String userPath = request.getServletPath();
+
+        ResultSet res, res1;
         DiningTableFacade diningTableFacade = new DiningTableFacade();
-        
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            
+
             List<Integer> tableList = new ArrayList<>();
-            
+
             HttpSession session = request.getSession();
             String custName = (String) session.getAttribute("cust_name");
+            int custId = (int) session.getAttribute("cust_id");
             String resDate = (String) session.getAttribute("res_date");
             String resTime = (String) session.getAttribute("res_time");
-            String resList = "";
-            String query = "SELECT reservation.res_id, reservation_table.res_tb_id, reservation_table.table_id "
-                    + "FROM `reservation` "
-                    + "INNER JOIN reservation_table ON reservation.res_id = reservation_table.res_id "
-                    + "WHERE date = '"+resDate+"' AND meal_time = '"+resTime+"'";
-            res = DBpack.getResult(query);
-            
-//            String query1 = "SELECT * FROM dining_table WHERE table_type = 'RES'";
-//            res1 = DBpack.getResult(query1);
-//            if (res1.next()){
-//                out.println(res1.getString("table_no"));
-//                while (res1.next()){
-//                    out.println(res1.getString("table_no"));
-//                }
-//            }
-            if (res.next()){
-                //out.println(res.getString("reservation_table.res_tb_id"));
-                resList = res.getString("reservation_table.res_tb_id");
-                tableList.add(res.getInt("reservation_table.table_id"));
-                while (res.next()){
+            String username = (String) session.getAttribute("username");
+            if (userPath.equals("/Check Available")) {
+                String query = "SELECT reservation.res_id, reservation_table.res_tb_id, reservation_table.table_id "
+                        + "FROM `reservation` "
+                        + "INNER JOIN reservation_table ON reservation.res_id = reservation_table.res_id "
+                        + "WHERE date = '" + resDate + "' AND meal_time = '" + resTime + "'";
+                res = DBpack.getResult(query);
+
+
+                if (res.next()) {
+                    //out.println(res.getString("reservation_table.res_tb_id"));
                     tableList.add(res.getInt("reservation_table.table_id"));
+                    while (res.next()) {
+                        tableList.add(res.getInt("reservation_table.table_id"));
+                    }
+                } else {
+                    //out.println(resTime);
+                    //out.println("Empty");
                 }
-            }
-            else{
-                //out.println(resTime);
-                //out.println("Empty");
-                resList = "Empty";
-            }
                 session.setAttribute("reslist", tableList);
                 request.getRequestDispatcher("users/receptionist/reserve-interface.xhtml").forward(request, response);
+            }
+            if (userPath.equals("/Reserve")) {
+                List<DiningTable> tables = (List<DiningTable>) session.getAttribute("table_list");
+                if (custId == 0){
+                    
+                    Customer tempCustomer = reserveManager.createCustomer(custName);
+
+                    int resId = reserveManager.reserve(tempCustomer, username, resDate, resTime, tables);
+
+                    if (resId != 0) {
+
+                        // otherwise, send back to checkout page and display error
+                        request.setAttribute("message", "Reservation Successful!");
+                        request.setAttribute("resno", resId);
+
+                    } else {
+                        request.setAttribute("resno", 0);
+                        request.setAttribute("message", "Reservation Failed!");
+                    }
+                }
+                request.getRequestDispatcher("users/receptionist/reserve-feedback.xhtml").forward(request, response);
+                
+            }
         }
     }
 

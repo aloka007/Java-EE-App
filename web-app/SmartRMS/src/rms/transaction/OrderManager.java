@@ -9,12 +9,9 @@
 package rms.transaction;
 
 import rms.entity.*;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
@@ -80,7 +77,6 @@ public class OrderManager {
 
         // set up customer order
         CustomerOrder order = new CustomerOrder();
-        //order.setOrderNo(1046);
         order.setCustName(cutomerName);
         order.setOrderedBy(orderedBy);
         order.setTableNo(0);
@@ -102,37 +98,6 @@ public class OrderManager {
 
             em.persist(orderedItem);
         }
-    }
-
-    public Map getOrderDetails(int orderId) {
-
-        Map orderMap = new HashMap();
-
-        // get order
-        CustomerOrder order = customerOrderFacade.find(orderId);
-
-        // get customer
-//        Customer customer = order.getCustomer();
-//
-//        // get all ordered products
-//        List<OrderedProduct> orderedProducts = orderedProductFacade.findByOrderId(orderId);
-//
-//        // get product details for ordered items
-//        List<Product> products = new ArrayList<Product>();
-//
-//        for (OrderedProduct op : orderedProducts) {
-//
-//            Product p = (Product) productFacade.find(op.getOrderedProductPK().getProductId());
-//            products.add(p);
-//        }
-//
-//        // add each item to orderMap
-//        orderMap.put("orderRecord", order);
-//        orderMap.put("customer", customer);
-//        orderMap.put("orderedProducts", orderedProducts);
-//        orderMap.put("products", products);
-
-        return orderMap;
     }
 
 }
