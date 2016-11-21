@@ -40,7 +40,7 @@
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit id="north-toolbar" rendered="#{dtRecepView.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
+                <p:layoutUnit id="north-toolbar" rendered="#{ComV.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
                     <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="4">
 
 
@@ -62,13 +62,11 @@
                 </p:layoutUnit>
 
 
-                <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+                <p:layoutUnit rendered="#{ComV.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
                     <h:form>
-                        <p:layout id="main-form">
-                            <p:layoutUnit style="border:none" position="west" size="600" collapsible="true" gutter="0">
 
-                                <p:dataTable id="basicDT" var="item" value="#{dtRecepView.rightItems}" style="width:100%">
+                                <p:dataTable id="basicDT" var="item" value="#{dtRecepView.rightItems}" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
                                     <f:facet name="header">
                                         Check Items
                                     </f:facet>
@@ -88,7 +86,7 @@
                                         <h:outputText value="#{item.subtotal}" />
                                     </p:column>
                                 </p:dataTable>
-                                <p:panelGrid columns="2" style="width:100%;border: none">
+                                <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
                                     <h:outputText value="Customer Name:  " />
                                     <h:outputText value="#{dtRecepView.customerName}" />
                                     
@@ -106,22 +104,15 @@
                                     
                                 </p:panelGrid>
 
-                            </p:layoutUnit>
-
-
-                            <p:layoutUnit style="border:none" position="center" collapsible="true" gutter="0">
-                                
-
-
-                            </p:layoutUnit>
-                        </p:layout>
+                            
+                       
 
 
                     </h:form>
 
                 </p:layoutUnit>
 
-                <p:layoutUnit rendered="#{!dtRecepView.hiddenatrib}" position="center">
+                <p:layoutUnit rendered="#{!ComV.hiddenatrib}" position="center">
                     <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
                 </p:layoutUnit>
 

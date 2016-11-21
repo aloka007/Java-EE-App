@@ -10,6 +10,47 @@ and open the template in the editor.
 /*td {
     padding: 2px 10px !important;
 }*/
+
+/*colors*/
+.red {background: red  !important ;}
+.darkorange {background: darkorange  !important ;}
+.lime {background: lime  !important ;}
+.turquoise {background: turquoise  !important ;}
+.slategray {background: slategray  !important ;}
+
+.north-toolbar * {
+    /*    background-color: rgb(38, 38, 38);*/
+    background: transparent;
+    color: rgb(239, 239, 239);
+}
+.north-toolbar{
+    background-image: url("#{resource['images/header.gif']}");
+    background-repeat: repeat-x;
+    background-position: 0px -6px;
+}
+
+
+.header-grid.ui-panelgrid>*>tr,
+.header-grid.ui-panelgrid .ui-panelgrid-cell {
+    height: 20px;
+    border: none;
+}
+
+.ui-tabs-left > .ui-tabs-nav{
+    width: 12%;
+    padding-top: 5px;
+    height: 600px !important;
+}
+.ui-tabs-left > .ui-tabs-panels {
+    float: right;
+    width: 87%;
+}
+.ui-tabs .ui-tabs-panel{
+    padding: 0px 0px;
+}
+
+
+/*moved css^^^^^^^^^^^^^^^^^^*/
 .ui-widget {
     font-family: Verdana,sans-serif;
     font-size: 0.8em;

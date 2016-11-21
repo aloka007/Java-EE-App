@@ -40,7 +40,6 @@
 
 
         <div id="header">
-
             <div class = "banner">
                 <b>Smart RMS</b>
                 <div class = "desc">Restaurant Management System</div>

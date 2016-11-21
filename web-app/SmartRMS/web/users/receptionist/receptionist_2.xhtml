@@ -20,7 +20,7 @@
         <h:body>
             <style>
                 .ui-picklist .ui-picklist-list {
-                    height: 300px;
+                    height: 400px;
                     width: 220px;
                     margin: 0;
                     overflow:auto;
@@ -57,38 +57,37 @@
 
                 }
 
+                .ui-tabs-left > .ui-tabs-nav{
+                    width: 12%;
+                    padding-top: 5px;
+                    height: 98% !important;
+                }
+                .item-table{
+                    width: 50% !important;
+                }
+                
+                
+
 
             </style>
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit id="north-toolbar" rendered="#{dtRecepView.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
-                    <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="4">
+                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{ComV.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
 
-
-                        <h:outputText value="SmartRMS - Receptionist" style="font-size: 200%" />
-                        <h:form>
-                            <p:menuButton value="#{firstname} #{lastname}">
-                                <p:menuitem value="My Profile" url="/Profile" icon="ui-icon-check" />
-                                <p:menuitem value="Logout" url="/Logout" icon="ui-icon-close" />
-                            </p:menuButton>
-                        </h:form>
-
-
-                        <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
-                    </p:panelGrid>
+                    <ui:include src="/users/common/header.xhtml" />
 
                 </p:layoutUnit>
 
 
 
 
-                <p:layoutUnit id="center-panel" rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+                <p:layoutUnit id="center-panel" rendered="#{ComV.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
-                    <p:messages id="messages" autoUpdate="true" closable="true" />
+<!--                    <p:messages id="messages" autoUpdate="true" closable="true" />-->
 
-                    <p:tabView id="tab-panel" orientation="left" style="height:98%" activeIndex="#{dtRecepView.selectedTab}">
-                        <p:ajax event="tabChange" listener="#{dtRecepView.onTabChange}"/>
+                    <p:tabView id="tab-panel" orientation="left" style="height:98%" activeIndex="#{ComV.selectedTab}">
+                        <p:ajax event="tabChange" listener="#{ComV.onTabChange}"/>
                         <p:tab title="Ordering" id="tab0">
                             <h:form>
 
@@ -130,18 +129,18 @@
                                     </p:layoutUnit>
 
 
-                                    <p:layoutUnit style="border:none; padding-top: 2px; width: 50%" position="west" size="50%" collapsible="true" gutter="0">
+                                    <p:layoutUnit style="border:none; padding-top: 2px; padding-right: 0px; height: 420px" position="west" size="494" collapsible="true" gutter="0">
 
                                         <f:facet name="header">
                                             Pick Items
                                         </f:facet>
                                         <p:pickList id="pickList" style="" value="#{dtRecepView.dualitems}" var="items" itemLabel="#{items}" itemValue="#{items}" 
-                                                    showSourceFilter="true" filterMatchMode="contains">
+                                                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
                                             <p:ajax event="transfer" listener="#{dtRecepView.filtertoo()}" update="basicDT" />
                                         </p:pickList>
 
                                     </p:layoutUnit>
-                                    <p:layoutUnit style="border:none; width: 95%" position="center" collapsible="true" gutter="0">
+                                    <p:layoutUnit style="border:none;" class="item-table" position="center" collapsible="true" gutter="0">
 
                                         <p:dataTable id="basicDT" style="margin-top:0px;" var="item" value="#{dtRecepView.rightItems}" 
                                                      editable="true" editMode="cell" widgetVar="cellItems">
@@ -151,7 +150,7 @@
                                             <p:column headerText="No" style="width:30px">
                                                 <h:outputText value="#{item.menuItem.menuIndex}" />
                                             </p:column>
-                                            <p:column headerText="Name">
+                                            <p:column headerText="Name" style="width:250px">
                                                 <h:outputText value="#{item.menuItem.itemName}" />
                                             </p:column>
                                             <p:column headerText="Price" style="width:80px">
@@ -201,14 +200,14 @@
                         </p:tab>
 
                         <p:tab id="tab2" title="Placed Orders">
-                            <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
+                            <p:layoutUnit rendered="#{ComV.hiddenatrib}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
                                 <h:form id="mainform">
                                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                                     <p:layout style="height: 530px">
                                         <p:layoutUnit position="west" size="50%" style="border:none" collapsible="true" gutter="0">
                                             <p:outputPanel id="orderpanel">
 
-                                                <p:dataTable id="ordertable" var="order" value="#{RecOrd.orderDetails}" >
+                                                <p:dataTable id="ordertable" var="order" value="#{RecOrd.orderDetails}" rowStyleClass="#{ComV.statuSwitch(1,order.customerOrder.status)}" >
                                                     <f:facet name="header">
                                                         <h:outputText id="refcount" value="Orders List.  Refresh Count: #{RecOrd.refreshcount}" />
                                                     </f:facet>
@@ -217,7 +216,7 @@
                                                     </p:column>
 
                                                     <p:column headerText="Order Time" style="width: 210px">
-                                                        <h:outputText style="align-content: center; background-color: #{RecOrd.statuSwitch(1,order.customerOrder.status)}" value="#{order.customerOrder.orderTime}" />
+                                                        <h:outputText style="align-content: center; background-color: #{ComV.statuSwitch(1,order.customerOrder.status)}" value="#{order.customerOrder.orderTime}" />
                                                     </p:column>
 
 
@@ -252,10 +251,13 @@
 
 
                                                     <h:outputText style="center" value="Status: " />
-                                                    <h:outputText style="text-align:center; font-weight: bold" value="#{RecOrd.statuSwitch(2,RecOrd.selectedContainer.customerOrder.status)}" />
+                                                    <h:outputText style="text-align:center; font-weight: bold" value="#{ComV.statuSwitch(2,RecOrd.selectedContainer.customerOrder.status)}" />
 
-                                                    <p:commandButton value="Cancel Order" ajax="false" actionListener="#{RecOrd.accept(9)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
+                                                    <p:commandButton disabled="#{(RecOrd.selectedContainer.customerOrder.status != 0)}" value="Cancel Order" ajax="false" 
+                                                                     actionListener="#{RecOrd.accept(9)}" update=":mainform:selectedorder" icon="ui-icon-close" title="View"/>
 
+                                                    <p:commandButton disabled="#{(RecOrd.selectedContainer.customerOrder.status != 2)}" value="Mark As Delivered" ajax="false"
+                                                                     actionListener="#{RecOrd.accept(3)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
 
                                                 </p:panelGrid>
 
@@ -355,7 +357,7 @@
 
                 </p:layoutUnit>
 
-                <p:layoutUnit rendered="#{!dtRecepView.hiddenatrib}" position="center">
+                <p:layoutUnit rendered="#{!ComV.hiddenatrib}" position="center">
                     <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
                 </p:layoutUnit>
 

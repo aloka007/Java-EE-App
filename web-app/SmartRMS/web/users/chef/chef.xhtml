@@ -12,48 +12,18 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>SmartRMS - Ajax Chef</title>
+                <title>SmartRMS - Chef</title>
             </f:facet>
             <h:outputStylesheet name="css/prime-ui.css" />
         </h:head>
 
         <h:body>
 
-            <style>
-                .header-grid.ui-panelgrid>*>tr,
-                .header-grid.ui-panelgrid .ui-panelgrid-cell {
-                    height: 20px;
-                    border: none;
-                }
-
-                .ui-tabs-left > .ui-tabs-nav{
-                    width: 12%;
-                    padding-top: 5px;
-                }
-                .ui-tabs-left > .ui-tabs-panels {
-                    float: right;
-                    width: 88%;
-                }
-                .ui-tabs .ui-tabs-panel{
-                    padding: 0px 0px;
-                }
-            </style>
 
             <p:layout fullPage="true">
-
-                <p:layoutUnit id="north-toolbar" rendered="#{dtOrderList.hiddenatrib}" position="north" size="55" collapsible="true" gutter="0">
-                    <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="4">
-                        <h:outputText value="SmartRMS - Chef" style="font-size: 200%" />
-                        <h:form>
-                            <p:menuButton value="#{firstname} #{lastname}">
-                                <p:menuitem value="My Profile" url="/Profile" icon="ui-icon-check" />
-                                <p:menuitem value="Logout" url="/Logout" icon="ui-icon-close" />
-                            </p:menuButton>
-                        </h:form>
-                        <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
-                    </p:panelGrid>
+                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{dtOrderList.hiddenatrib}" position="north" size="55" collapsible="true" gutter="0">
+                    <ui:include src="/users/common/header.xhtml" />
                 </p:layoutUnit>
-
 
                 <p:layoutUnit id="center-comp" rendered="#{dtOrderList.hiddenatrib}" position="center" style="height: 98%;" collapsible="true" gutter="0">
 
@@ -230,9 +200,8 @@
                     <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
                 </p:layoutUnit>
 
-                <p:layoutUnit class="footer-unit" position="south" size="20" collapsible="true" gutter="0">
-                    Copyright © 2016 Smart RMS Project Group #12
-                </p:layoutUnit>
+                <ui:include src="/users/common/footer.xhtml" />
+
 
             </p:layout>
 

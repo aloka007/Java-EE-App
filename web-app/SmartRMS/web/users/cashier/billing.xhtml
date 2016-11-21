@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sql="http://java.sun.com/jsp/jstl/sql"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>SmartRMS - Cashier - Billing</title>
+            </f:facet>
+            <h:outputStylesheet name="css/prime-ui.css" />
+        </h:head>
+
+        <h:body>
+            <style>
+                .ui-picklist .ui-picklist-list {
+                    height: 400px;
+                    width: 220px;
+                    margin: 0;
+                    overflow:auto;
+                    padding: 0;
+                }
+                .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
+                    /*                    background: #363636;*/
+                    color: red;  
+                    /*                    specific for cashier*/
+
+                }
+                .ui-tabs-left > .ui-tabs-nav{
+                    width: 12%;
+                    padding-top: 5px;
+                }
+                .ui-tabs-left > .ui-tabs-panels {
+                    float: right;
+                    width: 87%;
+                }
+                .ui-tabs .ui-tabs-panel{
+                    padding: 0px 0px;
+                }
+                .header-grid.ui-panelgrid>*>tr,
+                .header-grid.ui-panelgrid .ui-panelgrid-cell {
+                    height: 20px;
+                    border: none;
+                }
+                .res-grid.ui-panelgrid>*>tr,
+                .res-grid.ui-panelgrid .ui-panelgrid-cell {
+                    height: 20px;
+                    border: none;
+                }
+                .ui-g-2{
+                    text-align:right;
+
+                }
+
+                .ui-tabs-left > .ui-tabs-nav{
+                    width: 12%;
+                    padding-top: 5px;
+                    height: 98% !important;
+                }
+                .item-table{
+                    width: 50% !important;
+                }
+
+
+
+
+
+            </style>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{CashV.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
+
+                    <ui:include src="/users/common/header.xhtml" />
+
+                </p:layoutUnit>
+
+
+
+
+                <p:layoutUnit id="center-panel" rendered="#{CashV.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+
+                    <p:messages id="messages" autoUpdate="true" closable="true" />
+
+                    <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
+                        <h:outputText value="Customer Name:" />
+                        <h:outputText value="#{CashV.customerName}" />
+                    </p:panelGrid>
+
+                    <p:repeat value="#{CashV.selectedContainers}" offset="0" step="1" varStatus="vs" size="#{CashV.selectedContainers.size()}" var="cont">
+                        <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-top: 20px;">
+                            <h:outputText value="Order No:" />
+                            <h:outputText value="#{cont.customerOrder.orderNo}" />
+                        </p:panelGrid>
+                            <p:dataTable style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;" var="item" value="#{cont.itemlist}">
+                                <f:facet name="header">Items List</f:facet>
+<!--                                IDE might give wrong warnings here-->
+                                <p:column headerText="Index" style="width: 60px">
+                                    <h:outputText value="#{item.itemId.itemId}" />
+                                </p:column>
+    
+                                <p:column headerText="Item Name">
+                                    <h:outputText value="#{item.itemId.itemName}" />
+                                </p:column>
+    
+                                <p:column headerText="Quantity" style="width: 60px">
+                                    <h:outputText value="#{item.quantity}" />
+                                </p:column>
+    
+                            </p:dataTable>
+                    </p:repeat>
+
+
+
+
+                </p:layoutUnit>
+
+                <p:layoutUnit rendered="#{!CashV.hiddenatrib}" position="center">
+                    <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
+                </p:layoutUnit>
+
+                <p:layoutUnit class="footer-unit" position="south" size="20" collapsible="true" gutter="0">
+                    Copyright © 2016 Smart RMS Project Group #12
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

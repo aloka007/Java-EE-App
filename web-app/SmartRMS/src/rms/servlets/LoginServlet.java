@@ -8,9 +8,7 @@ package rms.servlets;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Random;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,9 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import rms.common.ComTainer;
 import rms.db.DBpack;
-import rms.entity.UserAccount;
 import rms.security.MdFive;
-import rms.session.UserAccountFacade;
 
 /**
  *
@@ -63,7 +59,8 @@ public class LoginServlet extends HttpServlet {
                         request.getRequestDispatcher("users/receptionist/receptionist_2.xhtml").forward(request, response);
                         break;
                     case "CASHIER":
-                        //getServletContext().getRequestDispatcher("/WEB-INF/cashier.jsp").forward(request, response);
+                        //getServletContext().getRequestDispatcher("/WEB-INF/cashier.jsp").forward(request, response);                        
+                        request.getRequestDispatcher("users/cashier/cashier.xhtml").forward(request, response);
                         break;
                     default:
                         request.setAttribute("message", "No Interface For User Type");
@@ -105,6 +102,7 @@ public class LoginServlet extends HttpServlet {
                         break;
                     case "CASHIER":
                         //getServletContext().getRequestDispatcher("/WEB-INF/cashier.jsp").forward(request, response);
+                        request.getRequestDispatcher("users/cashier/cashier.xhtml").forward(request, response);
                         break;
                     default:
                         request.setAttribute("message", "No Interface For User Type");

@@ -78,8 +78,10 @@ table {
 
 
 #header {
-    
-    background-color: #000033;
+    background-image: url("../images/header.gif");
+    background-repeat: repeat-x;
+    background-position: 0px -6px;
+/*    background-color: #000033;*/
     color:white;
     font-family: "Cambria", serif;
     font-size: 28px;
@@ -93,17 +95,23 @@ table {
     font-size: 13px;
     line-height:30px;
     background-color:hsl(240, 10%, 80%);
-    height: 510px;
+    height: 520px;
     width:100px;
     float:left;
     padding:10px;
 }
 #section {
 /*    background-color:hsl(240, 10%, 95%);*/
+
+    background-image: url("../images/noise.png");
+    background-repeat: repeat-x;
+    background-position: 0px 0px;
+    
     text-align:center;
     font-family: "Segoe UI", sans-serif;
     font-size: 14px;
     padding: 50px 200px;
+    height: 450px
 /*    height: 300px;*/
 }
 #aside{
@@ -113,12 +121,16 @@ table {
     padding:10px;
 }
 #footer {
+    background-image: url("../images/header.gif");
+    background-repeat: repeat-x;
+    background-position: 0px -7px;
+    
     position: relative;
     margin-top: -10px; 
     font-family: sans-serif;
     float: bottom;
     font-size: 11px;
-    background-color: #000033;
+/*    background-color: #000033;*/
     color:white;
     clear:both;
     text-align:center;

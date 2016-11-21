@@ -10,7 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -21,7 +23,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.DualListModel;
 import rms.common.ComTainer;
 import rms.entity.DiningTable;
@@ -69,19 +70,19 @@ public class RecepView {
         ComTainer.setMenu(items);
     }
 
-    private int selectedTab = 0;
-
-    public void setSelectedTab(int selectedTab) {
-        this.selectedTab = selectedTab;
-    }
-
-    public int getSelectedTab() {
-        return selectedTab;
-    }
-
-    public void onTabChange(TabChangeEvent event) {
-        selectedTab = Integer.parseInt(event.getTab().getId().substring(3, 4));
-    }
+//    private int selectedTab = 0;
+//
+//    public void setSelectedTab(int selectedTab) {
+//        this.selectedTab = selectedTab;
+//    }
+//
+//    public int getSelectedTab() {
+//        return selectedTab;
+//    }
+//
+//    public void onTabChange(TabChangeEvent event) {
+//        selectedTab = Integer.parseInt(event.getTab().getId().substring(3, 4));
+//    }
     // <editor-fold defaultstate="collapsed" desc="Ordering Functions. Click on the + sign on the left to edit the code.">
     //------------------Ordering Functions
     private String customerName = "";
@@ -195,6 +196,59 @@ public class RecepView {
 
         return retables;
     }
+
+    //This is the function that finds all possible combinations;
+    public List<List<DiningTable>> getCombinations() {
+        List<DiningTable> availableDiningTables = getTables();
+        
+        List<List<DiningTable>> nestedList = new ArrayList<>();
+        Set<DiningTable> available = new HashSet<>(availableDiningTables); //convert llist to a set
+        Set<Set<DiningTable>> powerSet = powerSet(available);
+        
+        ArrayList<Integer> uniques = new ArrayList<>();
+        
+        for(Set set : powerSet){
+            List<DiningTable> templList = new ArrayList<>(set);
+            int uid = 0;
+            int seats = 0;
+            int min = 1000;
+            for(DiningTable table : templList){
+                uid += (int)Math.pow(10, table.getNumOfSeats());
+                seats += table.getNumOfSeats();
+                if(table.getNumOfSeats() < min){
+                    min = table.getNumOfSeats();
+                }
+            }
+            // add if seat combination is unique, not empty, seats are more than customers, seats are not 8 (MAX) more than customers
+            if (!uniques.contains(uid) && !templList.isEmpty() && this.customerCount <= seats && seats < (this.customerCount+min)){
+                nestedList.add(templList);
+                uniques.add(uid);            
+            }
+            
+        }
+        
+        return nestedList;
+    }
+
+    public static <T> Set<Set<T>> powerSet(Set<T> originalSet) {
+        Set<Set<T>> sets = new HashSet<>();
+        if (originalSet.isEmpty()) {
+            sets.add(new HashSet<T>());
+            return sets;
+        }
+        List<T> list = new ArrayList<>(originalSet);
+        T head = list.get(0);
+        Set<T> rest = new HashSet<>(list.subList(1, list.size()));
+        for (Set<T> set : powerSet(rest)) {
+            Set<T> newSet = new HashSet<>();
+            newSet.add(head);
+            newSet.addAll(set);
+            sets.add(newSet);
+            sets.add(set);
+        }
+        return sets;
+    }
+    //end of that function
 
     private List<DiningTable> selectedTables;
 
@@ -349,21 +403,21 @@ public class RecepView {
         selectedItems.clear();
     }
 
-    private boolean hiddenatrib = false;
-
-    public boolean isHiddenatrib() {
-        try {
-            String usertype = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("type");
-            String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
-            int auth_id = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("auth_id");
-            int key_id = ComTainer.getKey(username);
-            if (usertype.equals("RECEPTIONIST") && key_id == auth_id) {
-                hiddenatrib = true;
-            }
-        } catch (Exception e) {
-        }
-        //return hiddenatrib;
-        return true;
-    }
+//    private boolean hiddenatrib = false;
+//
+//    public boolean isHiddenatrib() {
+//        try {
+//            String usertype = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("type");
+//            String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
+//            int auth_id = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("auth_id");
+//            int key_id = ComTainer.getKey(username);
+//            if (usertype.equals("RECEPTIONIST") && key_id == auth_id) {
+//                hiddenatrib = true;
+//            }
+//        } catch (Exception e) {
+//        }
+//        //return hiddenatrib;
+//        return true;
+//    }
 
 }

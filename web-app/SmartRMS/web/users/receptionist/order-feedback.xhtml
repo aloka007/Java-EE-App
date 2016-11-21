@@ -40,7 +40,7 @@
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit id="north-toolbar" rendered="#{dtRecepView.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
+                <p:layoutUnit id="north-toolbar" rendered="#{ComV.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
                     <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="4">
 
 
@@ -62,73 +62,67 @@
                 </p:layoutUnit>
 
 
-                <p:layoutUnit rendered="#{dtRecepView.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+                <p:layoutUnit rendered="#{ComV.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
                     <h:form>
-                        <p:layout id="main-form">
-                            <p:layoutUnit style="border:none" position="west" size="600" collapsible="true" gutter="0">
-                                <p:panelGrid columns="1" style="width:100%;border: none">
 
-                                    <h:outputText style="font-size: 1.2em; font-weight: bold" value="#{message}" />
-                                    <h:outputText style="font-size: 1.2em; font-weight: bold" value="Order No: #{orderno}" />
+                        <p:panelGrid columns="1" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
 
-                                    <p:commandButton value="New Order" id="nonAjax" actionListener="#{dtRecepView.newOrder()}" ajax="false" icon="ui-icon-check"/>
-                                </p:panelGrid>
+                            <h:outputText style="font-size: 1.2em; font-weight: bold" value="#{message}" />
+                            <h:outputText style="font-size: 1.2em; font-weight: bold" value="Order No: #{orderno}" />
+
+                            <p:commandButton value="New Order" id="nonAjax" actionListener="#{dtRecepView.newOrder()}" ajax="false" icon="ui-icon-check"/>
+                        </p:panelGrid>
 
 
-                                <p:dataTable id="basicDT" var="item" value="#{dtRecepView.rightItems}" style="width:100%">
-                                    <f:facet name="header">
-                                        Check Items
-                                    </f:facet>
-                                    <p:column headerText="No" style="width:30px">
-                                        <h:outputText value="#{item.menuItem.menuIndex}" />
-                                    </p:column>
-                                    <p:column headerText="Name">
-                                        <h:outputText value="#{item.menuItem.itemName}" />
-                                    </p:column>
-                                    <p:column headerText="Price" style="width:80px">
-                                        <h:outputText value="#{item.menuItem.price}" />
-                                    </p:column>
-                                    <p:column headerText="Quantity" style="width:80px">
-                                        <h:outputText value="#{item.orderItem.quantity}" />
-                                    </p:column>
-                                    <p:column headerText="Subtotal" style="width:80px">
-                                        <h:outputText value="#{item.subtotal}" />
-                                    </p:column>
-                                </p:dataTable>
-                                <p:panelGrid columns="2" style="width:100%;border: none">
-                                    <h:outputText value="Customer Name:  " />
-                                    <h:outputText value="#{dtRecepView.customerName}" />
+                        <p:dataTable id="basicDT" var="item" value="#{dtRecepView.rightItems}" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
+                            <f:facet name="header">
+                                Check Items
+                            </f:facet>
+                            <p:column headerText="No" style="width:30px">
+                                <h:outputText value="#{item.menuItem.menuIndex}" />
+                            </p:column>
+                            <p:column headerText="Name">
+                                <h:outputText value="#{item.menuItem.itemName}" />
+                            </p:column>
+                            <p:column headerText="Price" style="width:80px">
+                                <h:outputText value="#{item.menuItem.price}" />
+                            </p:column>
+                            <p:column headerText="Quantity" style="width:80px">
+                                <h:outputText value="#{item.orderItem.quantity}" />
+                            </p:column>
+                            <p:column headerText="Subtotal" style="width:80px">
+                                <h:outputText value="#{item.subtotal}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
+                            <h:outputText value="Customer Name:  " />
+                            <h:outputText value="#{dtRecepView.customerName}" />
 
-                                    <h:outputText value="Discount (5%):" />
-                                    <h:outputText value="(#{dtRecepView.total * 0.05})" />
+                            <h:outputText value="Discount (5%):" />
+                            <h:outputText value="(#{dtRecepView.total * 0.05})" />
 
-                                    <h:outputText value="Sales Tax (15%):" />
-                                    <h:outputText value="#{(dtRecepView.total * 0.95) *0.15}" />
+                            <h:outputText value="Sales Tax (15%):" />
+                            <h:outputText value="#{(dtRecepView.total * 0.95) *0.15}" />
 
-                                    <h:outputText value="Total:" />
-                                    <h:outputText value="#{((dtRecepView.total * 0.95) *1.15)-(((dtRecepView.total * 0.95) *1.15) % 0.01)}" />
+                            <h:outputText value="Total:" />
+                            <h:outputText value="#{((dtRecepView.total * 0.95) *1.15)-(((dtRecepView.total * 0.95) *1.15) % 0.01)}" />
 
-                                </p:panelGrid>
-
-                            </p:layoutUnit>
+                        </p:panelGrid>
 
 
 
 
-                            <p:layoutUnit style="border:none" position="center" collapsible="true" gutter="0">
 
 
 
-                            </p:layoutUnit>
-                        </p:layout>
 
 
                     </h:form>
 
                 </p:layoutUnit>
 
-                <p:layoutUnit rendered="#{!dtRecepView.hiddenatrib}" position="center">
+                <p:layoutUnit rendered="#{!ComV.hiddenatrib}" position="center">
                     <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
                 </p:layoutUnit>
 
