@@ -92,7 +92,6 @@ public class ReserveHandler extends HttpServlet {
                     int resId = reserveManager.reserve(tempCustomer, username, resDate, resTime, tables);
 
                     if (resId != 0) {
-
                         // otherwise, send back to checkout page and display error
                         request.setAttribute("message", "Reservation Successful!");
                         request.setAttribute("resno", resId);

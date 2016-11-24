@@ -38,7 +38,6 @@ import rms.session.MenuItemFacade;
 @ManagedBean(name = "dtRecepView", eager = true)
 @SessionScoped
 public class RecepView {
-
     @EJB
     private MenuItemFacade menuItemFacade;
 
@@ -220,7 +219,7 @@ public class RecepView {
                 }
             }
             // add if seat combination is unique, not empty, seats are more than customers, seats are not 8 (MAX) more than customers
-            if (!uniques.contains(uid) && !templList.isEmpty() && this.customerCount <= seats && seats < (this.customerCount+min)){
+            if (!uniques.contains(uid) && !templList.isEmpty() && this.customerCount <= seats && seats < (this.customerCount+min) && this.customerCount+4 > seats){
                 nestedList.add(templList);
                 uniques.add(uid);            
             }
