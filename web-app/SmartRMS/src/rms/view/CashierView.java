@@ -44,6 +44,9 @@ public class CashierView {
     public void init() {
         itemList = orderItemFacade.findAll();
         update();
+        for (int i = 0; i < 12; i++) {
+            filterValues.add(String.valueOf(i));
+        }
     }
 
     @PersistenceContext(unitName = "SmartRMSPU")
@@ -124,7 +127,27 @@ public class CashierView {
     public void setSelectedContainers(List<Container> selectedContainers) {
         this.selectedContainers = selectedContainers;
     }
-    
+
+    private List filteredContainers; //filtered containers
+
+    public List getFilteredContainers() {
+        return filteredContainers;
+    }
+
+    public void setFilteredContainers(List filteredContainers) {
+        this.filteredContainers = filteredContainers;
+    }
+
+    private List filterValues = new ArrayList();
+
+    public List getFilterValues() {
+        return filterValues;
+    }
+
+    public void setFilterValues(List filterValues) {
+        this.filterValues = filterValues;
+    }
+
     private String customerName = "Anonymous"; //customer name
 
     public String getCustomerName() {
@@ -134,7 +157,6 @@ public class CashierView {
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
-    
 
     public void proceed() {
         if (selectedContainers.isEmpty()) {

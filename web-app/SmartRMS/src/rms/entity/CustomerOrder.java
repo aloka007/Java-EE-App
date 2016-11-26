@@ -6,6 +6,7 @@
 package rms.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -86,9 +87,14 @@ public class CustomerOrder implements Serializable {
         this.orderNo = orderNo;
     }
 
-    public Date getOrderTime() {
-        return orderTime;
+    public String getOrderTime() {
+        String newstring = new SimpleDateFormat("hh:mm:ss aaa ', ' d MMM").format(orderTime);
+        return newstring;
     }
+    
+//    public Date getOrderTime() {
+//        return orderTime;
+//    }
 
     public void setOrderTime(Date orderTime) {
         this.orderTime = orderTime;
