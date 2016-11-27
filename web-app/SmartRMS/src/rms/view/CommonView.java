@@ -88,7 +88,7 @@ public class CommonView {
             String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
             int auth_id = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("auth_id");
             int key_id = ComTainer.getKey(username);
-            if (usertype.equals("RECEPTIONIST") && key_id == auth_id) {
+            if (usertype.equals("CASHIER") && key_id == auth_id) {
                 hiddenatrib = true;
             }
         } catch (Exception e) {

@@ -10,6 +10,19 @@ and open the template in the editor.
 /*td {
     padding: 2px 10px !important;
 }*/
+.ui-growl-item-container{
+    box-shadow: 5px 5px 10px #888888 !important;
+    border-radius: 5px !important;
+    color: white !important;
+    background-image: none !important;
+}
+
+.ui-growl-error{
+    background-color: red !important;
+}
+.ui-growl-warn{
+    background-color: orange !important;
+}
 
 /*colors*/
 .red {background: red  !important ;}

@@ -28,7 +28,7 @@
                 }
                 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
                     /*                    background: #363636;*/
-                    color: red;  
+                    color: white;  
                     /*                    specific for cashier*/
 
                 }
@@ -71,6 +71,17 @@
                     width: 30px !important;
                     min-width: 30px !important;
                 }
+                
+                .main-panel{
+                    height: 100% !important;
+                }
+                
+                .user-toolbar .ui-layout-unit-content{
+                    padding: 0px !important;
+                    height: 45px !important;
+                }
+                
+                
 
 
 
@@ -80,7 +91,7 @@
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{CashV.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
+                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{ComV.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
 
                     <ui:include src="/users/common/header.xhtml" />
 
@@ -89,20 +100,20 @@
 
 
 
-                <p:layoutUnit id="center-panel" rendered="#{CashV.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+                <p:layoutUnit id="center-panel" class="main-panel" rendered="#{ComV.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
-                    <p:messages id="messages" autoUpdate="true" closable="true" />
+<!--                    <p:messages id="messages" autoUpdate="true" closable="true" />-->
 
                     <p:tabView id="tab-panel" orientation="left" style="height:98%" activeIndex="#{CashV.selectedTab}">
                         <p:ajax event="tabChange" listener="#{CashV.onTabChange}"/>
                         <p:tab title="Dine-In Orders" id="tab0">
-                            <p:layoutUnit rendered="#{CashV.hiddenatrib}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
+                            <p:layoutUnit rendered="#{ComV.hiddenatrib}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
                                 <h:form id="mainform">
 
                                     <p:layout style="height: 530px">
 
-                                        <p:layoutUnit style="border:none; padding-left:3px; padding-bottom: 0px; padding-top: 0px;" position="north" size="50" collapsible="true" gutter="0">
-                                            <p:toolbar>
+                                        <p:layoutUnit class="user-toolbar" style="border:none; padding-left:3px; padding-bottom: 0px; padding-top: 0px;" position="north" size="50" collapsible="true" gutter="0">
+                                            <p:toolbar style="overflow: hidden">
                                                 <f:facet name="left">
                                                     <p:commandButton value="New" icon="ui-icon-document" />
 
@@ -110,18 +121,13 @@
                                                     <span class="ui-separator">
                                                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
                                                     </span>
-                                                    <h:outputText value="    Customer Name: " />
-                                                    <p:inputText id="custname" value="#{CashV.customerName}" required="true">
-                                                        <p:ajax event="blur" update="custname,msg" />
-
-                                                    </p:inputText>
-                                                    <p:message id="msg" for="custname" />
 
                                                 </f:facet>
 
                                                 <f:facet name="right">
+                                                    <p:growl id="growl" showDetail="true" sticky="true" />  
 
-                                                    <p:commandButton id="proceedbtn" value="Create Bill" ajax="false" action="#{CashV.proceed()}" icon="ui-icon-play" disabled="false"/>
+                                                    <p:commandButton id="proceedbtn" value="Create Bill" ajax="false" update="growl" action="#{CashV.proceed()}" icon="ui-icon-play" disabled="false"/>
                                                     <p:menuButton value="Options">
                                                         <p:menuitem value="Option1" icon="ui-icon-disk" />
                                                         <p:menuitem value="Option2" icon="ui-icon-arrowrefresh-1-w" />
@@ -137,7 +143,7 @@
                                             <p:outputPanel id="orderpanel">
 
                                                 <p:dataTable id="ordertable" widgetVar="orderTable" var="order" value="#{CashV.orderDetails}" rowKey="#{order.customerOrder.orderNo}" selection="#{CashV.selectedContainers}"
-                                                             rowStyleClass="#{CashV.statuSwitch(1,order.customerOrder.status)}" filteredValue="#{CashV.filteredContainers}" >
+                                                             rowStyleClass="#{ComV.statuSwitch(1,order.customerOrder.status)}" filteredValue="#{CashV.filteredContainers}" >
                                                     <f:facet name="header">
                                                         <h:outputText id="refcount" value="Orders List" />
                                                     </f:facet>
@@ -157,7 +163,7 @@
                                                     </p:column>
 
                                                     <p:column headerText="Order Time" style="width: 140px">
-                                                        <h:outputText style="align-content: center; background-color: #{CashV.statuSwitch(1,order.customerOrder.status)}" value="#{order.customerOrder.orderTime}" />
+                                                        <h:outputText style="align-content: center;" value="#{order.customerOrder.orderTime}" />
                                                     </p:column>
 
 
@@ -192,7 +198,7 @@
 
 
                                                     <h:outputText style="center" value="Status: " />
-                                                    <h:outputText style="text-align:center; font-weight: bold" value="#{CashV.statuSwitch(2,CashV.selectedContainer.customerOrder.status)}" />
+                                                    <h:outputText style="text-align:center; font-weight: bold" value="#{ComV.statuSwitch(2,CashV.selectedContainer.customerOrder.status)}" />
 
                                                 </p:panelGrid>
 
@@ -245,7 +251,7 @@
 
                 </p:layoutUnit>
 
-                <p:layoutUnit rendered="#{!CashV.hiddenatrib}" position="center">
+                <p:layoutUnit rendered="#{!ComV.hiddenatrib}" position="center">
                     <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
                 </p:layoutUnit>
 

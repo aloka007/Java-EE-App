@@ -26,6 +26,9 @@ public class Container {
         return subtotal;
     }
 
+    public Container() {
+    }
+
     public Container(MenuItem menuItem, OrderItem orderItem) {
         this.menuItem = menuItem;
         this.orderItem = orderItem;

@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -24,10 +25,16 @@ public class DBpack {
         return conn;
     }
 
-    public static void runUpdate(String query) throws SQLException {
+    public static int runUpdate(String query) throws SQLException {
         Connection conn2 = DBpack.getConnection();
-        PreparedStatement ps = conn2.prepareStatement(query);
+        PreparedStatement ps = conn2.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         ps.executeUpdate();
+        ResultSet rs = ps.getGeneratedKeys();
+        int generatedKey = 0;
+        if (rs.next()) {
+            generatedKey = rs.getInt(1);
+        }
+        return generatedKey;
     }
 
     public static ResultSet getResult(String query) throws SQLException {

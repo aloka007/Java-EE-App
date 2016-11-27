@@ -75,7 +75,7 @@
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{CashV.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
+                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{ComV.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
 
                     <ui:include src="/users/common/header.xhtml" />
 
@@ -84,44 +84,98 @@
 
 
 
-                <p:layoutUnit id="center-panel" rendered="#{CashV.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+                <p:layoutUnit id="center-panel" rendered="#{ComV.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+                    <h:form id="mainform">
+                        <p:toolbar style="overflow: hidden">
+                            <f:facet name="left">
+                                <p:commandButton value="New" icon="ui-icon-document" />
 
-                    <p:messages id="messages" autoUpdate="true" closable="true" />
 
-                    <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
-                        <h:outputText value="Customer Name:" />
-                        <h:outputText value="#{CashV.customerName}" />
-                    </p:panelGrid>
+                                <span class="ui-separator">
+                                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                                </span>
+                                <h:outputText value="    Customer Name or Email: " />
+                                <p:inputText id="custname" value="#{CashV.customerName}"></p:inputText>
 
-                    <p:repeat value="#{CashV.selectedContainers}" offset="0" step="1" varStatus="vs" size="#{CashV.selectedContainers.size()}" var="cont">
-                        <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-top: 20px;">
-                            <h:outputText value="Order No:" />
-                            <h:outputText value="#{cont.customerOrder.orderNo}" />
+                                <h:outputText value="    Tip: " />
+                                <p:inputText id="tip" value="#{CashV.bill.tip}"></p:inputText>
+
+                                <h:outputText value="    Waiter ID: " />
+                                <p:inputText id="wid" value="#{CashV.bill.waiterId}"></p:inputText>
+
+                            </f:facet>
+
+                            <f:facet name="right">
+                                <p:growl id="growl" showDetail="true" sticky="true" />  
+
+                                <p:commandButton id="proceedbtn" value="Settle and Save" ajax="false" update="growl" action="#{CashV.save()}" icon="ui-icon-check" disabled="false"/>
+                                <p:menuButton value="Options">
+                                    <p:menuitem value="Option1" icon="ui-icon-disk" />
+                                    <p:menuitem value="Option2" icon="ui-icon-arrowrefresh-1-w" />
+                                    <p:menuitem value="Option3" icon="ui-icon-close" />
+                                    <p:menuitem value="Option4" icon="ui-icon-extlink" />
+                                </p:menuButton>
+                            </f:facet>
+
+                        </p:toolbar>
+
+
+                        <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
+                            <h:outputText value="Cashier ID:" />
+                            <h:outputText value="#{username}" />
                         </p:panelGrid>
-                            <p:dataTable style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;" var="item" value="#{cont.itemlist}">
+
+                        <p:repeat value="#{CashV.bill.orders}" offset="0" step="1" varStatus="vs" size="#{CashV.selectedContainers.size()}" var="billorder">
+                            <!--                                IDE wrong warnings-->
+                            <p:panelGrid columns="4" style="width:50%; border: none; margin-left: 25%; margin-top: 20px;">
+
+                                <h:outputText value="Order No:" />
+                                <h:outputText value="#{billorder.customerOrder.orderNo}" />
+                                <h:outputText value="Customer Name:" />
+                                <h:outputText value="#{billorder.customerOrder.custName}" />
+                            </p:panelGrid>
+                            <p:dataTable style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;" var="item" value="#{billorder.items}">
                                 <f:facet name="header">Items List</f:facet>
 <!--                                IDE might give wrong warnings here-->
-                                <p:column headerText="Index" style="width: 60px">
-                                    <h:outputText value="#{item.itemId.itemId}" />
-                                </p:column>
-    
+<!--                                <p:column headerText="Index" style="width: 60px">
+                                    <h:outputText value="#{item.orderItem.itemId.itemId}" />
+                                </p:column>-->
+
                                 <p:column headerText="Item Name">
-                                    <h:outputText value="#{item.itemId.itemName}" />
+                                    <h:outputText value="#{item.orderItem.itemId.itemName}" />
                                 </p:column>
-    
+
                                 <p:column headerText="Quantity" style="width: 60px">
-                                    <h:outputText value="#{item.quantity}" />
+                                    <h:outputText value="#{item.orderItem.quantity}" />
                                 </p:column>
-    
+
+                                <p:column headerText="Price" style="width: 60px">
+                                    <h:outputText value="#{item.orderItem.itemId.price}" />
+                                </p:column>
+
+                                <p:column headerText="Amount" style="width: 60px">
+                                    <h:outputText value="#{item.amount}" />
+                                </p:column>
+
                             </p:dataTable>
-                    </p:repeat>
+                        </p:repeat>
 
+                        <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-top: 20px;">
 
+                            <h:outputText value="Total Amount:" />
+                            <h:outputText value="#{CashV.bill.amount}" />
+                            <h:outputText value="Discount (0%):" />
+                            <h:outputText value="(#{CashV.bill.discount})" />
+                            <h:outputText value="Sales Tax (15%):" />
+                            <h:outputText value="#{CashV.bill.tax}" />
+                        </p:panelGrid>
+
+                    </h:form>
 
 
                 </p:layoutUnit>
 
-                <p:layoutUnit rendered="#{!CashV.hiddenatrib}" position="center">
+                <p:layoutUnit rendered="#{!ComV.hiddenatrib}" position="center">
                     <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
                 </p:layoutUnit>
 
