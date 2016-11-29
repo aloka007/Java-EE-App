@@ -74,7 +74,7 @@
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{ComV.hiddenatrib}" position="north" size="60" collapsible="true" gutter="0">
+                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{ComV.authorize('RECEPTIONIST')}" position="north" size="60" collapsible="true" gutter="0">
 
                     <ui:include src="/users/common/header.xhtml" />
 
@@ -83,7 +83,7 @@
 
 
 
-                <p:layoutUnit id="center-panel" rendered="#{ComV.hiddenatrib}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+                <p:layoutUnit id="center-panel" rendered="#{ComV.authorize('RECEPTIONIST')}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
 <!--                    <p:messages id="messages" autoUpdate="true" closable="true" />-->
 
@@ -201,7 +201,7 @@
                         </p:tab>
 
                         <p:tab id="tab2" title="Placed Orders">
-                            <p:layoutUnit rendered="#{ComV.hiddenatrib}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
+                            <p:layoutUnit rendered="#{ComV.authorize('RECEPTIONIST')}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
                                 <h:form id="mainform">
                                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                                     <p:layout style="height: 530px">
@@ -358,7 +358,7 @@
 
                 </p:layoutUnit>
 
-                <p:layoutUnit rendered="#{!ComV.hiddenatrib}" position="center">
+                <p:layoutUnit rendered="#{!ComV.authorize('RECEPTIONIST')}" position="center">
                     <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
                 </p:layoutUnit>
 

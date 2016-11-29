@@ -80,20 +80,20 @@ public class CommonView {
         return s;
     }
 
-    private boolean hiddenatrib;
+    private boolean hiddenatrib = false;
 
-    public boolean isHiddenatrib() {
+    public boolean authorize(String utype) {
         try {
             String usertype = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("type");
             String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
             int auth_id = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("auth_id");
             int key_id = ComTainer.getKey(username);
-            if (usertype.equals("CASHIER") && key_id == auth_id) {
+            if (usertype.equals(utype) && key_id == auth_id) {
                 hiddenatrib = true;
             }
         } catch (Exception e) {
         }
-        //return hiddenatrib;
-        return true;
+        return hiddenatrib;
+        //return true;
     }
 }

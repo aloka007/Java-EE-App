@@ -21,15 +21,15 @@
 
 
             <p:layout fullPage="true">
-                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{dtOrderList.hiddenatrib}" position="north" size="55" collapsible="true" gutter="0">
+                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{ComV.authorize('CHEF')}" position="north" size="55" collapsible="true" gutter="0">
                     <ui:include src="/users/common/header.xhtml" />
                 </p:layoutUnit>
 
-                <p:layoutUnit id="center-comp" rendered="#{dtOrderList.hiddenatrib}" position="center" style="height: 98%;" collapsible="true" gutter="0">
+                <p:layoutUnit id="center-comp" rendered="#{ComV.authorize('CHEF')}" position="center" style="height: 98%;" collapsible="true" gutter="0">
 
                     <p:tabView id="chef-tabview" orientation="left" style="height:98%">
                         <p:tab title="Orders">
-                            <p:layoutUnit rendered="#{dtOrderList.hiddenatrib}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
+                            <p:layoutUnit rendered="#{ComV.authorize('CHEF')}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
                                 <h:form id="mainform">
                                     <p:layout style="height: 530px">
                                         <p:layoutUnit position="west" size="500" style="border:none" collapsible="true" gutter="0">
@@ -196,7 +196,7 @@
 
                 </p:layoutUnit>
 
-                <p:layoutUnit rendered="#{!dtOrderList.hiddenatrib}" position="center">
+                <p:layoutUnit rendered="#{!ComV.authorize('CHEF')}" position="center">
                     <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
                 </p:layoutUnit>
 

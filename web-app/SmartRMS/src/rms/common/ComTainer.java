@@ -10,11 +10,11 @@ package rms.common;
  * @author Tharinda
  */
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import javax.ejb.EJB;
 import rms.entity.MenuItem;
-import rms.session.MenuItemFacade;
 
 public class ComTainer implements Serializable {
 
@@ -23,12 +23,17 @@ public class ComTainer implements Serializable {
     static HashMap keys = new HashMap();
 
     private static List<MenuItem> menu;
-    
-    public static HashMap<Integer,Integer> lisin_itmid = new HashMap();
+
+    public static HashMap<Integer, Integer> lisin_itmid = new HashMap();
     public static HashMap<Integer, MenuItem> itmid_menit = new HashMap();
-    public static HashMap<Integer,Integer> itmid_lisin =new HashMap();
+    public static HashMap<Integer, Integer> itmid_lisin = new HashMap();
 
-
+    public static Date addDays(Date date, int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days); //minus number would decrement the days
+        return cal.getTime();
+    }
 
     public static void setKey(String userName, int authID) {
         keys.put(userName, authID);

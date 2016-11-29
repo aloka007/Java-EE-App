@@ -73,13 +73,14 @@ public class LoginServlet extends HttpServlet {
         try {
             username = request.getParameter("username");  // get data from request parameters
             password = request.getParameter("password");
-            password = MdFive.hash(username); // hash the password with MD5 hashing
+            password = MdFive.hash(password); // hash the password with MD5 hashing
             
             //The database query- this part is to be replaced later by JPA which eliminates the need to use database connectors
             query = "select * from user_account where username = '" + username + "' and password = '" + password + "'";
             res = DBpack.getResult(query);
             if (res.next()) {  //this precedure is a very primitive one which entirely depends on the database
                 //this will later be replaced by JPA
+                
                 
 
                 String uType = res.getString("user_type"); // used to restrict users from accessing other user interfaces
@@ -103,6 +104,10 @@ public class LoginServlet extends HttpServlet {
                     case "CASHIER":
                         //getServletContext().getRequestDispatcher("/WEB-INF/cashier.jsp").forward(request, response);
                         request.getRequestDispatcher("users/cashier/cashier.xhtml").forward(request, response);
+                        break;
+                    case "ADMIN":
+                        //getServletContext().getRequestDispatcher("/WEB-INF/cashier.jsp").forward(request, response);
+                        request.getRequestDispatcher("users/admin/admin.xhtml").forward(request, response);
                         break;
                     default:
                         request.setAttribute("message", "No Interface For User Type");
