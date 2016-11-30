@@ -44,6 +44,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Bill.findByTotal", query = "SELECT b FROM Bill b WHERE b.total = :total")})
 public class Bill implements Serializable {
 
+    @Size(max = 6)
+    @Column(name = "pay_mode")
+    private String payMode;
+
     @Size(max = 50)
     @Column(name = "waiter_id")
     private String waiterId;
@@ -211,6 +215,14 @@ public class Bill implements Serializable {
 
     public void setCashierId(String cashierId) {
         this.cashierId = cashierId;
+    }
+
+    public String getPayMode() {
+        return payMode;
+    }
+
+    public void setPayMode(String payMode) {
+        this.payMode = payMode;
     }
     
 }

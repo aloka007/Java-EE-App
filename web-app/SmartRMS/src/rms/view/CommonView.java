@@ -49,6 +49,9 @@ public class CommonView {
                 case 3:
                     s = "turquoise";
                     break;
+                case 4:
+                    s = "yellow";
+                    break;
                 case 9:
                     s = "slategray";
                     break;
@@ -69,6 +72,9 @@ public class CommonView {
                     break;
                 case 3:
                     s = "Delivered";
+                    break;
+                case 4:
+                    s = "Paid";
                     break;
                 case 9:
                     s = "Cancelled";

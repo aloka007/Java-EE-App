@@ -157,7 +157,7 @@ public class ChefView implements Serializable {
                 }
             }
             Container cont = new Container(order, templist);
-            if (order.getStatus().equals((short) 2) || order.getStatus().equals((short) 9)) {
+            if (order.getStatus().equals((short) 2) || order.getStatus().equals((short) 3) || order.getStatus().equals((short) 4) || order.getStatus().equals((short) 9)) {
                 completedOrders.add(cont);
             } else {
                 orderDetails.add(cont);

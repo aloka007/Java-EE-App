@@ -23,6 +23,7 @@
             <p:layout fullPage="true">
                 <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{ComV.authorize('CHEF')}" position="north" size="55" collapsible="true" gutter="0">
                     <ui:include src="/users/common/header.xhtml" />
+                    <p:growl id="growl" showDetail="true" sticky="true" />  
                 </p:layoutUnit>
 
                 <p:layoutUnit id="center-comp" rendered="#{ComV.authorize('CHEF')}" position="center" style="height: 98%;" collapsible="true" gutter="0">
@@ -35,7 +36,7 @@
                                         <p:layoutUnit position="west" size="500" style="border:none" collapsible="true" gutter="0">
                                             <p:outputPanel id="orderpanel">
 
-                                                <p:dataTable id="ordertable" var="order" value="#{dtOrderList.orderDetails}" >
+                                                <p:dataTable id="ordertable" var="order" value="#{dtOrderList.orderDetails}" rowStyleClass="#{ComV.statuSwitch(1,order.customerOrder.status)}">
                                                     <f:facet name="header">
                                                         <h:outputText id="refcount" value="Orders List.  Refresh Count: #{dtOrderList.refreshcount}" />
                                                     </f:facet>
@@ -44,9 +45,8 @@
                                                     </p:column>
 
                                                     <p:column headerText="Order Time" style="width: 210px">
-                                                        <h:outputText style="align-content: center; background-color: #{order.customerOrder.status == 0 ? 'red' : (order.customerOrder.status == 1 ? 'yellow': 'lime')}" value="#{order.customerOrder.orderTime}" />
+                                                        <h:outputText style="align-content: center;" value="#{order.customerOrder.orderTime}" />
                                                     </p:column>
-
 
                                                     <p:column headerText="Customer Name" style="width: 110px">
                                                         <h:outputText style="center" value="#{order.customerOrder.custName}" />
@@ -119,7 +119,7 @@
                                     <p:layoutUnit id="layout-one" position="west" size="500" style="border:none" collapsible="true" gutter="0">
                                         <p:outputPanel id="orderpanel">
 
-                                            <p:dataTable id="ordertable" var="order" value="#{dtOrderList.completedOrders}" >
+                                            <p:dataTable id="ordertable" var="order" value="#{dtOrderList.completedOrders}" rowStyleClass="#{ComV.statuSwitch(1,order.customerOrder.status)}">
                                                 <f:facet name="header">
                                                     <h:outputText id="refcount" value="Orders List.  Refresh Count: #{dtOrderList.refreshcount}" />
                                                 </f:facet>
@@ -128,7 +128,7 @@
                                                 </p:column>
 
                                                 <p:column headerText="Order Time" style="width: 210px">
-                                                    <h:outputText style="align-content: center; background-color: #{dtOrderList.statuSwitch(1, order.customerOrder.status)}" value="#{order.customerOrder.orderTime}" />
+                                                    <h:outputText style="align-content: center;" value="#{order.customerOrder.orderTime}" />
                                                 </p:column>
 
 
@@ -163,8 +163,7 @@
 
 
                                                 <h:outputText style="center" value="Status: " />
-                                                <h:outputText style="text-align:center; font-weight: bold" value="#{dtOrderList.statuSwitch(2, dtOrderList.selectedContainer.customerOrder.status)}" />
-
+                                                <h:outputText style="text-align:center; font-weight: bold" value="#{ComV.statuSwitch(2, dtOrderList.selectedContainer.customerOrder.status)}"/>
                                             </p:panelGrid>
 
 

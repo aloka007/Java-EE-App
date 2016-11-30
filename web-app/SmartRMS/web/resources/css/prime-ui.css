@@ -23,6 +23,9 @@ and open the template in the editor.
 .ui-growl-warn{
     background-color: orange !important;
 }
+.ui-growl-info{
+    background-color: limegreen !important;
+}
 
 /*colors*/
 .red {background: red  !important ;}

@@ -39,6 +39,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "MenuItem.findBySpiciness", query = "SELECT m FROM MenuItem m WHERE m.spiciness = :spiciness")})
 public class MenuItem implements Serializable, Comparable{
 
+    @OneToMany(mappedBy = "itemId")
+    private Collection<MenuItemIngredient> menuItemIngredientCollection;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -166,6 +169,15 @@ public class MenuItem implements Serializable, Comparable{
     public int compareTo(Object i){
         MenuItem j = (MenuItem) i;
         return (this.menuIndex - j.getMenuIndex());
+    }
+
+    @XmlTransient
+    public Collection<MenuItemIngredient> getMenuItemIngredientCollection() {
+        return menuItemIngredientCollection;
+    }
+
+    public void setMenuItemIngredientCollection(Collection<MenuItemIngredient> menuItemIngredientCollection) {
+        this.menuItemIngredientCollection = menuItemIngredientCollection;
     }
     
 }

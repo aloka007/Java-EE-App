@@ -93,3 +93,6 @@ public class DataBaseConnection{
 }
 
  update=":chef-tabview:mainform-b:selectedorder-b"
+
+                                                    background-color: #{order.customerOrder.status == 0 ? 'red' : (order.customerOrder.status == 1 ? 'yellow': 'lime')}
+
