@@ -8,15 +8,8 @@
 package rms.transaction;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import rms.entity.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
@@ -29,7 +22,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import rms.db.DBpack;
 import rms.session.CustomerOrderFacade;
 import rms.session.OrderItemFacade;
 import rms.view.Container;
@@ -62,28 +54,26 @@ public class OrderManager {
 
     public void acceptOrder(CustomerOrder order) {
         if (order.getStatus().equals((short) 1)) {
-            //List<OrderItem> orderItems = orderItemFacade.findAll();
-
-//            for (OrderItem orderItem : orderItems) {
-//                if (Objects.equals(orderItem.getOrderNo().getOrderNo(), order.getOrderNo())) {
-//                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Info!", orderItem.getItemId().getItemName()));
-//                }
-//            }
             List<OrderItem> orderItems = (List<OrderItem>) order.getOrderItemCollection();
-            for (OrderItem orderItem : orderItems) {
-                //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Info!", orderItem.getItemId().getItemName()));
-                List<MenuItemIngredient> menuItemIngredients = (List<MenuItemIngredient>)orderItem.getItemId().getMenuItemIngredientCollection();
-                for (MenuItemIngredient menuItemIngredient : menuItemIngredients) {
-                    Ingredient ingredient = menuItemIngredient.getIngredientId();
-                    BigDecimal consumption = menuItemIngredient.getAmount().multiply(BigDecimal.valueOf(orderItem.getQuantity()));
-                    ingredient.setAmount(ingredient.getAmount().subtract(consumption));
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ingredient.getName()+" Consumed!",
-                    ingredient.getAmount().toString() + ingredient.getUnit()+" Left"));
+            for (OrderItem orderItem : orderItems) {//for each item in order
+                List<MenuItemIngredient> menuItemIngredients = (List<MenuItemIngredient>)orderItem.getItemId().getMenuItemIngredientCollection();//get the ingredients for a menu item
+                for (MenuItemIngredient menuItemIngredient : menuItemIngredients) {//for each ingredient of menu item
+                    Ingredient ingredient = menuItemIngredient.getIngredientId();//get its ingredient
+                    BigDecimal consumption = menuItemIngredient.getAmount().multiply(BigDecimal.valueOf(orderItem.getQuantity()));//get the consumed amount
+                    ingredient.setAmount(ingredient.getAmount().subtract(consumption));//set the ingredient's amt
+                    if(1==ingredient.getAmount().compareTo(ingredient.getWarn())){
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ingredient.getName()+" Consumed!",
+                                    ingredient.getAmount().toString() + ingredient.getUnit()+" Remaining"));//display a message with details
+                    }
+                    else{
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, ingredient.getName()+" Consumed!",
+                                    "Only "+ingredient.getAmount().toString() + ingredient.getUnit()+" Remaining"));//display a message with details
+                    }
                     em.flush();
-                    em.merge(ingredient);
+                    em.merge(ingredient);//save the updated ingredient to database
                     em.flush();
                     
-                    IngredientConsumption ingredientConsumption = new IngredientConsumption();
+                    IngredientConsumption ingredientConsumption = new IngredientConsumption();//create a new ing.consumption object
                     ingredientConsumption.setAction("CONSUME");
                     ingredientConsumption.setIngredientId(ingredient);
                     ingredientConsumption.setAmount(consumption);
@@ -92,7 +82,6 @@ public class OrderManager {
                     em.flush();
                 }
             }
-            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Error!", "Customer name cannot be empty!"));
         }
         em.flush();
         em.merge(order);
