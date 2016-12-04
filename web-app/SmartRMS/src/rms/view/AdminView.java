@@ -23,13 +23,18 @@ import javax.faces.context.FacesContext;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartSeries;
 import rms.entity.Bill;
 import rms.session.BillFacade;
 import rms.common.ComTainer;
+import rms.entity.Ingredient;
+import rms.session.IngredientFacade;
 
 /**
  *
@@ -41,8 +46,10 @@ public class AdminView {
 
     @PostConstruct
     public void init() {
+        ingredientList = (List<Ingredient>) ingredientFacade.findAll();
+        billList = (List<Bill>) billFacade.findAll();
         createDateModel();
-        billList = (List<Bill>)billFacade.findAll();
+        initBarModel();
     }
 
 // <editor-fold defaultstate="collapsed" desc=" Sales Components ">
@@ -65,25 +72,10 @@ public class AdminView {
         series1.setLabel("Series 1");
         series1.setSmoothLine(false);
 
-//        series1.set("2014-01-01", 51);
-//        series1.set("2014-01-06", 22);
-//        series1.set("2014-01-12", 65);
-//        series1.set("2014-01-18", 74);
-//        series1.set("2014-01-24", 24);
-//        series1.set("2014-01-30", 51);
-
-
-//        for (int i = 1; i < 9; i++) {
-//            series1.set("2016-12-0" + Integer.toString(i), r.nextInt(200000 - 50000) + 50000);
-//        }
-//        for (int i = 10; i < 31; i++) {
-//            series1.set("2016-12-" + Integer.toString(i), r.nextInt(200000 - 50000) + 50000);
-//        }
-
         String mindate = "0";
 
         try {
-            billList = (List<Bill>)billFacade.findAll();
+            //billList = (List<Bill>)billFacade.findAll();
             //Date initDate = new SimpleDateFormat("yyyy-MM-dd").parse("2016-11-03");
             Date tempDate = new SimpleDateFormat("yyyy-MM-dd").parse("2016-11-02");
             Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse("2016-12-31");
@@ -118,6 +110,42 @@ public class AdminView {
     }
 
 // </editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Stocks Components">
+    @EJB
+    IngredientFacade ingredientFacade;
+    List<Ingredient> ingredientList = new ArrayList<>();
+    private BarChartModel stocksBarModel = new BarChartModel();
+    
+    private LineChartModel consumptionChart; 
+
+    public LineChartModel getConsumptionChart() {
+        return consumptionChart;
+    }
+
+    public BarChartModel getStocksBarModel() {
+        return stocksBarModel;
+    }
+
+    private void initBarModel() {
+        stocksBarModel.setTitle("Bar Chart");
+        Axis xAxis = stocksBarModel.getAxis(AxisType.X);
+        xAxis.setLabel("Ingredient");
+        Axis yAxis = stocksBarModel.getAxis(AxisType.Y);
+        yAxis.setLabel("Amount (grams)");
+        
+        ChartSeries bar = new ChartSeries();
+        
+        for (Ingredient ingredient : ingredientList) {
+            if (ingredient.getUnit().equals("UNIT")) {
+                bar.set(ingredient.getName(), ingredient.getAmount().multiply(BigDecimal.valueOf(1)).toBigInteger().intValue());
+            } else {
+                bar.set(ingredient.getName(), ingredient.getAmount().multiply(BigDecimal.valueOf(1000)).toBigInteger().intValue());
+            }
+        }
+        stocksBarModel.addSeries(bar);
+    }
+
+//</editor-fold>
     public void navigate(String path) {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         try {

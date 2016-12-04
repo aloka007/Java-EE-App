@@ -81,12 +81,6 @@
                     height: 45px !important;
                 }
 
-
-
-
-
-
-
             </style>
 
             <p:layout fullPage="true">
@@ -118,7 +112,9 @@
                             </div>
                             <div class="ui-g-4">
                                 <p:panel id="basic3" header="Stock" footer="Movie Details" style="margin-bottom:20px">
+                                    <p:commandLink ajax="false" actionListener="#{AdmV.navigate('stocks')}">
                                     <p:graphicImage name="images/Package-80.png" />
+                                    </p:commandLink>
                                 </p:panel>
                             </div>
                         </div>

@@ -12,7 +12,7 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>SmartRMS - Sales</title>
+                <title>SmartRMS - Stocks</title>
             </f:facet>
             <h:outputStylesheet name="css/prime-ui.css" />
         </h:head>
@@ -102,7 +102,7 @@
 
                 <p:layoutUnit id="center-panel" class="main-panel" rendered="#{ComV.authorize('ADMIN')}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
-                    <p:chart type="line" model="#{AdmV.dateModel}" style="height:400px; width: 50%; margin-left: 25%"/>
+                    <p:chart type="bar" model="#{AdmV.stocksBarModel}" style="height:300px; width: 50%; margin-left: 25%"/>
 
 
 
