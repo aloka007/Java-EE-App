@@ -28,8 +28,10 @@ import rms.common.ComTainer;
 import rms.entity.DiningTable;
 import rms.entity.MenuItem;
 import rms.entity.OrderItem;
+import rms.entity.Reservation;
 import rms.session.DiningTableFacade;
 import rms.session.MenuItemFacade;
+import rms.session.ReservationFacade;
 
 /**
  *
@@ -43,6 +45,9 @@ public class RecepView {
 
     @EJB
     private DiningTableFacade diningTableFacade;
+    
+    @EJB
+    private ReservationFacade reservationFacade;
 
     @PostConstruct
     public void init() {  // INITIALIZATION-------------------------**************************
@@ -248,6 +253,18 @@ public class RecepView {
         return sets;
     }
     //end of that function
+    
+    //view-edit reservations
+    private List<Reservation> reservationsList;
+
+    public List<Reservation> getReservationsList() {
+        reservationsList = reservationFacade.findAll();
+        return reservationsList;
+    }
+
+    public void setReservationsList(List<Reservation> reservationsList) {
+        this.reservationsList = reservationsList;
+    }
 
     private List<DiningTable> selectedTables;
 

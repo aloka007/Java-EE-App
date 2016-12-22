@@ -96,6 +96,7 @@ public class AdminView {
         }
 
         salesChart.addSeries(series1);
+        salesChart.setAnimate(true);
 
         salesChart.setTitle("Zoom for Details");
         salesChart.setZoom(true);
@@ -128,6 +129,7 @@ public class AdminView {
 
     private void initBarModel() {
         stocksBarModel.setTitle("Bar Chart");
+        stocksBarModel.setAnimate(true);
         Axis xAxis = stocksBarModel.getAxis(AxisType.X);
         xAxis.setLabel("Ingredient");
         Axis yAxis = stocksBarModel.getAxis(AxisType.Y);

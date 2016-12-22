@@ -94,9 +94,9 @@
 
 
 
-                                <p:layout id="main-form">
-                                    <p:layoutUnit style="border:none; padding-left:3px; padding-bottom: 0px; padding-top: 0px;" position="north" size="50" collapsible="true" gutter="0">
-                                        <p:toolbar>
+                                <p:layout id="main-form" style="overflow: hidden">
+                                    <p:layoutUnit style="overflow: hidden; border:none; padding-left:3px; padding-bottom: 0px; padding-top: 0px;" position="north" size="50" collapsible="true" gutter="0">
+                                        <p:toolbar style="overflow: hidden">
                                             <f:facet name="left">
                                                 <p:commandButton value="New" icon="ui-icon-document" />
 
@@ -130,7 +130,7 @@
                                     </p:layoutUnit>
 
 
-                                    <p:layoutUnit style="border:none; padding-top: 2px; padding-right: 0px; height: 420px" position="west" size="520" collapsible="true" gutter="0">
+                                    <p:layoutUnit style="overflow: hidden; border:none; padding-top: 2px; padding-right: 0px; height: 420px" position="west" size="520" collapsible="true" gutter="0">
 
                                         <f:facet name="header">
                                             Pick Items
@@ -141,7 +141,7 @@
                                         </p:pickList>
 
                                     </p:layoutUnit>
-                                    <p:layoutUnit style="border:none;" class="item-table" position="center" collapsible="true" gutter="0">
+                                    <p:layoutUnit style="border:none; overflow: hidden;" class="item-table" position="center" collapsible="true" gutter="0">
 
                                         <p:dataTable id="basicDT" style="margin-top:0px;" var="item" value="#{dtRecepView.rightItems}" 
                                                      editable="true" editMode="cell" widgetVar="cellItems">
@@ -174,8 +174,8 @@
                             </h:form>
                         </p:tab>
                         <p:tab title="View Menu" id="tab1">
-                            <p:scrollPanel mode="native" style=" width:100%; height:540px">
-                                <p:dataTable var="item" value="#{dtRecepView.items}">
+                            
+                                <p:dataTable var="item" value="#{dtRecepView.items}" scrollable="true" scrollHeight="530">
                                     <p:column headerText="Index" style="width:30px">
                                         <h:outputText value="#{item.menuIndex}" />
                                     </p:column>
@@ -197,7 +197,7 @@
                                     </p:column>
 
                                 </p:dataTable>
-                            </p:scrollPanel>
+                            
                         </p:tab>
 
                         <p:tab id="tab2" title="Placed Orders">
@@ -347,6 +347,35 @@
 
 
 
+                        </p:tab>
+                        <p:tab id="tab4" title="View Reservations">
+                            
+                            <div class="ui-g-12">
+                                <p:dataTable value="#{dtRecepView.reservationsList}" var="reservation">
+                                    <p:column headerText="ID">
+                                        <h:outputText value="#{reservation.resId}" />
+                                    </p:column>
+                                    <p:column headerText="Placed Time">
+                                        <h:outputText value="#{reservation.placedTime}" />
+                                    </p:column>
+                                    <p:column headerText="Date">
+                                        <p:calendar id="resdate" value="#{reservation.date}" disabled="true"/>
+                                    </p:column>
+                                    <p:column headerText="Time">
+                                        <h:outputText value="#{reservation.mealTime}"/>
+                                    </p:column>
+                                    <p:column headerText="By">
+                                        <h:outputText value="#{reservation.placedBy}"/>
+                                    </p:column>
+                                    <p:column headerText="Customer Name">
+                                        <h:outputText value="#{reservation.customerId.name}"/>
+                                    </p:column>
+                                    <p:column headerText="Status">
+                                        <h:outputText value="#{reservation.status}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                            
                         </p:tab>
                     </p:tabView>
 

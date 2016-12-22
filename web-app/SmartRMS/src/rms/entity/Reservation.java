@@ -39,6 +39,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Reservation.findByPlacedBy", query = "SELECT r FROM Reservation r WHERE r.placedBy = :placedBy")})
 public class Reservation implements Serializable {
 
+    @Size(max = 9)
+    @Column(name = "status")
+    private String status;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -139,6 +143,14 @@ public class Reservation implements Serializable {
     @Override
     public String toString() {
         return "rms.entity.Reservation[ resId=" + resId + " ]";
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
 }
