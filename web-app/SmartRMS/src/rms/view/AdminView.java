@@ -60,6 +60,14 @@ public class AdminView {
 
     List<Bill> billList = new ArrayList<>();
 
+    public List<Bill> getBillList() {
+        return billList;
+    }
+
+    public void setBillList(List<Bill> billList) {
+        this.billList = billList;
+    }
+
     public LineChartModel getDateModel() {
         return salesChart;
     }

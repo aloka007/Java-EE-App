@@ -163,26 +163,16 @@ public class CashierView {
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
-    // bill details
-//    private BigDecimal tip = BigDecimal.valueOf(0.00); //tip
-//
-//    public BigDecimal getTip() {
-//        return tip;
-//    }
-//
-//    public void setTip(BigDecimal tip) {
-//        this.tip = tip;
-//    }
-//    
-//    private String waiterID; //waiter ID
-//
-//    public String getWaiterID() {
-//        return waiterID;
-//    }
-//
-//    public void setWaiterID(String waiterID) {
-//        this.waiterID = waiterID;
-//    }
+    
+    private String payMode = "CASH";
+
+    public String getPayMode() {
+        return payMode;
+    }
+
+    public void setPayMode(String payMode) {
+        this.payMode = payMode;
+    }
     
     private Bill bill; //the bill object that's being created
 
@@ -202,6 +192,7 @@ public class CashierView {
         bill.setCustomerName(customerName);
         bill.setSubTotal((bill.getAmount().subtract(bill.getDiscount())).add(bill.getTax()));
         bill.setTotal(bill.getSubTotal().add(bill.getTip()));
+        bill.setPayMode(payMode);
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
         session.setAttribute("bill", bill);

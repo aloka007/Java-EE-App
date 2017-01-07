@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sql="http://java.sun.com/jsp/jstl/sql"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>SmartRMS Staff Login</title>
+            </f:facet>
+            <h:outputStylesheet name="css/prime-ui.css" />
+        </h:head>
+
+        <h:body>
+            <style>
+                .ui-picklist .ui-picklist-list {
+                    height: 400px;
+                    width: 220px;
+                    margin: 0;
+                    overflow:auto;
+                    padding: 0;
+                }
+                .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
+                    /*                    background: #363636;*/
+                    color: white;  
+                    /*                    specific for cashier*/
+
+                }
+                .ui-tabs-left > .ui-tabs-nav{
+                    width: 12%;
+                    padding-top: 5px;
+                }
+                .ui-tabs-left > .ui-tabs-panels {
+                    float: right;
+                    width: 87%;
+                }
+                .ui-tabs .ui-tabs-panel{
+                    padding: 0px 0px;
+                }
+                .header-grid.ui-panelgrid>*>tr,
+                .header-grid.ui-panelgrid .ui-panelgrid-cell {
+                    height: 20px;
+                    border: none;
+                }
+                .res-grid.ui-panelgrid>*>tr,
+                .res-grid.ui-panelgrid .ui-panelgrid-cell {
+                    height: 20px;
+                    border: none;
+                }
+                .ui-g-2{
+                    text-align:right;
+
+                }
+
+                .ui-tabs-left > .ui-tabs-nav{
+                    width: 12%;
+                    padding-top: 5px;
+                    height: 98% !important;
+                }
+                .item-table{
+                    width: 50% !important;
+                }
+
+                .ui-selectonemenu{
+                    width: 30px !important;
+                    min-width: 30px !important;
+                }
+
+                .main-panel{
+                    height: 100% !important;
+                }
+
+                .user-toolbar .ui-layout-unit-content{
+                    padding: 0px !important;
+                    height: 45px !important;
+                }
+
+            </style>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit id="center-panel" class="main-panel" position="center" style="padding: 5px 5px;" collapsible="true" gutter="0">
+                    <h:form>
+                        <div class="ui-g">
+                            <div class="ui-g-12" style="height:200px;">  </div>
+                        </div>
+                        <p:messages/>
+                        <div id="middle" class="ui-g">
+                            <div class="ui-g-4"></div>
+                            <div id="p-form" class="ui-g-4" style="text-align:center;background-color:white;padding: 20px !important;">
+                                <div class="ui-g">
+                                    <div class="ui-g-12"><p:inputText value="#{IndV.username}" placeholder="Username" required="#{true}" onfocus="PF('spot').show()"/></div>
+                                </div>
+                                <div class="ui-g">
+                                    <div class="ui-g-12"><p:password id="nonFeedback" value="#{IndV.password}" placeholder="Password" required="#{true}" onfocus="PF('spot').show()"/></div>
+
+                                </div>
+                                <div class="ui-g">
+                                    <div class="ui-g-12"><p:commandButton value="Login" id="nonAjax" actionListener="#{IndV.login()}" ajax="false" /></div>
+
+                                </div>
+                            </div>
+                            <div class="ui-g-4"></div>
+                        </div>
+                        
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+
+
+                <p:layoutUnit class="footer-unit" position="south" size="20" collapsible="true" gutter="0">
+                    Copyright © 2016 Smart RMS Project Group #12
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

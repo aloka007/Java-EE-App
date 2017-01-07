@@ -54,7 +54,7 @@ public class BillingHandler extends HttpServlet {
             
         }
         try {
-            int tempInt = DBpack.runUpdate("INSERT INTO `smart_rms`.`bill` (`waiter_id`, `cashier_id`, `customer_name`, `amount`, `discount`, `tax`, `sub_total`, `tip`, `total`) VALUES ('"+
+            int tempInt = DBpack.runUpdate("INSERT INTO `smart_rms`.`bill` (`waiter_id`, `cashier_id`, `customer_name`, `amount`, `discount`, `tax`, `sub_total`, `tip`, `total`, `pay_mode`) VALUES ('"+
                     bill.getWaiterId()+"', '"+
                     bill.getCashierId()+"', '"+
                     bill.getCustomerName()+"', "+
@@ -63,7 +63,8 @@ public class BillingHandler extends HttpServlet {
                     bill.getTax()+", "+
                     bill.getSubTotal()+", "+
                     bill.getTip()+", "+
-                    bill.getTotal()+")");
+                    bill.getTotal()+", '"+
+                    bill.getPayMode()+"')");
             for (BillOrder billOrder : bill.getOrders()) {
                 int tempInt2 = DBpack.runUpdate("INSERT INTO `smart_rms`.`bill_order` (`bill_id`, `order_no`) VALUES ("+
                         tempInt+", "+

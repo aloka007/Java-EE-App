@@ -30,7 +30,6 @@ public class LoginServlet extends HttpServlet {
 
     String username, password, query;
 
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {  // the only servlet method used for the app
 
@@ -71,8 +70,12 @@ public class LoginServlet extends HttpServlet {
         }
 
         try {
-            username = request.getParameter("username");  // get data from request parameters
-            password = request.getParameter("password");
+//            username = request.getParameter("username");  // get data from request parameters
+//            password = request.getParameter("password");
+
+            username = (String)session.getAttribute("username");
+            password = (String)session.getAttribute("password");
+            
             password = MdFive.hash(password); // hash the password with MD5 hashing
             
             //The database query- this part is to be replaced later by JPA which eliminates the need to use database connectors

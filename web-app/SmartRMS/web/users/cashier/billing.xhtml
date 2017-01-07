@@ -103,18 +103,19 @@
                                 <h:outputText value="    Waiter ID: " />
                                 <p:inputText id="wid" value="#{CashV.bill.waiterId}"></p:inputText>
 
+                                <h:outputText value="    Payment: " />
+                                <p:selectOneMenu id="pmode" value="#{CashV.payMode}" style="width:125px">
+                                    <f:selectItem itemLabel="Cash" itemValue="CASH" />
+                                    <f:selectItem itemLabel="E-Card" itemValue="E-CARD" />
+                                </p:selectOneMenu>
+
                             </f:facet>
 
                             <f:facet name="right">
                                 <p:growl id="growl" showDetail="true" sticky="true" />  
 
                                 <p:commandButton id="proceedbtn" value="Settle and Save" ajax="false" update="growl" action="#{CashV.save()}" icon="ui-icon-check" disabled="false"/>
-                                <p:menuButton value="Options">
-                                    <p:menuitem value="Option1" icon="ui-icon-disk" />
-                                    <p:menuitem value="Option2" icon="ui-icon-arrowrefresh-1-w" />
-                                    <p:menuitem value="Option3" icon="ui-icon-close" />
-                                    <p:menuitem value="Option4" icon="ui-icon-extlink" />
-                                </p:menuButton>
+                                
                             </f:facet>
 
                         </p:toolbar>
@@ -136,10 +137,10 @@
                             </p:panelGrid>
                             <p:dataTable style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;" var="item" value="#{billorder.items}">
                                 <f:facet name="header">Items List</f:facet>
-<!--                                IDE might give wrong warnings here-->
-<!--                                <p:column headerText="Index" style="width: 60px">
-                                    <h:outputText value="#{item.orderItem.itemId.itemId}" />
-                                </p:column>-->
+                                <!--                                IDE might give wrong warnings here-->
+                                <!--                                <p:column headerText="Index" style="width: 60px">
+                                                                    <h:outputText value="#{item.orderItem.itemId.itemId}" />
+                                                                </p:column>-->
 
                                 <p:column headerText="Item Name">
                                     <h:outputText value="#{item.orderItem.itemId.itemName}" />

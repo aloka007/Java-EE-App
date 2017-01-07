@@ -72,20 +72,14 @@
                     min-width: 30px !important;
                 }
 
-                .main-panel{
-                    height: 100% !important;
-                }
+                /*                .main-panel{
+                                    height: 100% !important;
+                                }*/
 
                 .user-toolbar .ui-layout-unit-content{
                     padding: 0px !important;
                     height: 45px !important;
-                }
-
-
-
-
-
-
+                } 
 
             </style>
 
@@ -100,10 +94,64 @@
 
 
 
-                <p:layoutUnit id="center-panel" class="main-panel" rendered="#{ComV.authorize('ADMIN')}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+                <p:layoutUnit id="center-panel" class="main-panel" rendered="#{ComV.authorize('ADMIN')}" position="center" style="overflow:visible !important;padding: 5px 5px" collapsible="true" gutter="0">
 
                     <p:chart type="line" model="#{AdmV.dateModel}" style="height:400px; width: 50%; margin-left: 25%"/>
 
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <h:form>
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/icons/excel.png" width="32"/>
+                                    <p:dataExporter type="xls" target="tbl" fileName="sales" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/icons/pdf.png" width="32"/>
+                                    <p:dataExporter type="pdf" target="tbl" fileName="sales"/>
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/icons/csv.png" width="32"/>
+                                    <p:dataExporter type="csv" target="tbl" fileName="sales" />
+                                </h:commandLink>
+                            </h:form>
+                        </div>
+                    </div>
+
+
+
+                    <p:dataTable id="tbl" var="bill" value="#{AdmV.billList}" style="margin-left:10%;width: 80%"
+                                 rows="10"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                       
+                        <p:column headerText="Id">
+                            <h:outputText value="#{bill.id}" />
+                        </p:column>
+                        <p:column headerText="Customer">
+                            <h:outputText value="#{bill.customerName}" />
+                        </p:column>
+                        <p:column headerText="Date" style="width:300px">
+                            <h:outputText value="#{bill.date}" />
+                        </p:column>
+                        <p:column headerText="Subtotal">
+                            <h:outputText value="#{bill.subTotal}" />
+                        </p:column>
+                        <p:column headerText="Tip">
+                            <h:outputText value="#{bill.tip}" />
+                        </p:column>
+                        <p:column headerText="Waiter">
+                            <h:outputText value="#{bill.waiterId}" />
+                        </p:column>
+                        <p:column headerText="Total">
+                            <h:outputText value="#{bill.total}" />
+                        </p:column>
+                        <p:column headerText="Paymode">
+                            <h:outputText value="#{bill.payMode}" />
+                        </p:column>
+                    </p:dataTable>
 
 
                 </p:layoutUnit>
