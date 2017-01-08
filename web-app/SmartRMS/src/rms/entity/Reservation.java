@@ -6,6 +6,7 @@
 package rms.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -95,7 +96,7 @@ public class Reservation implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
-
+    
     public String getMealTime() {
         return mealTime;
     }

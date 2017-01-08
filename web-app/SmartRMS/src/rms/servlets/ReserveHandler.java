@@ -58,6 +58,8 @@ public class ReserveHandler extends HttpServlet {
 
             HttpSession session = request.getSession();
             String custName = (String) session.getAttribute("cust_name");
+            String custCont = (String) session.getAttribute("cust_cont");
+            String custMail = (String) session.getAttribute("cust_mail");
             int custId = (int) session.getAttribute("cust_id");
             String resDate = (String) session.getAttribute("res_date");
             String resTime = (String) session.getAttribute("res_time");
@@ -87,7 +89,7 @@ public class ReserveHandler extends HttpServlet {
                 List<DiningTable> tables = (List<DiningTable>) session.getAttribute("table_list");
                 if (custId == 0){
                     
-                    Customer tempCustomer = reserveManager.createCustomer(custName);
+                    Customer tempCustomer = reserveManager.createCustomer(custName,custCont,custMail);
 
                     int resId = reserveManager.reserve(tempCustomer, username, resDate, resTime, tables);
 

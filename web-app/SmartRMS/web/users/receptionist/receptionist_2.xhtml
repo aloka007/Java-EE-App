@@ -66,8 +66,8 @@
                 .item-table{
                     width: 620px !important;
                 }
-                
-                
+
+
 
 
             </style>
@@ -85,12 +85,14 @@
 
                 <p:layoutUnit id="center-panel" rendered="#{ComV.authorize('RECEPTIONIST')}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
-<!--                    <p:messages id="messages" autoUpdate="true" closable="true" />-->
+                    <!--                    <p:messages id="messages" autoUpdate="true" closable="true" />-->
 
                     <p:tabView id="tab-panel" orientation="left" style="height:98%" activeIndex="#{ComV.selectedTab}">
                         <p:ajax event="tabChange" listener="#{ComV.onTabChange}"/>
                         <p:tab title="Ordering" id="tab0">
                             <h:form>
+
+
 
 
 
@@ -174,30 +176,30 @@
                             </h:form>
                         </p:tab>
                         <p:tab title="View Menu" id="tab1">
-                            
-                                <p:dataTable var="item" value="#{dtRecepView.items}" scrollable="true" scrollHeight="530">
-                                    <p:column headerText="Index" style="width:30px">
-                                        <h:outputText value="#{item.menuIndex}" />
-                                    </p:column>
 
-                                    <p:column headerText="Name" style="width:160px">
-                                        <h:outputText value="#{item.itemName}" />
-                                    </p:column>
+                            <p:dataTable var="item" value="#{dtRecepView.items}" scrollable="true" scrollHeight="530">
+                                <p:column headerText="Index" style="width:30px">
+                                    <h:outputText value="#{item.menuIndex}" />
+                                </p:column>
 
-                                    <p:column headerText="Description" style="width:350px">
-                                        <h:outputText value="#{item.description}" />
-                                    </p:column>
+                                <p:column headerText="Name" style="width:160px">
+                                    <h:outputText value="#{item.itemName}" />
+                                </p:column>
 
-                                    <p:column headerText="Price" style="width:50px">
-                                        <h:outputText value="#{item.price}" />
-                                    </p:column>
+                                <p:column headerText="Description" style="width:350px">
+                                    <h:outputText value="#{item.description}" />
+                                </p:column>
 
-                                    <p:column headerText="Spiciness" style="width:80px">
-                                        <p:rating value="#{item.spiciness}" readonly="true" />
-                                    </p:column>
+                                <p:column headerText="Price" style="width:50px">
+                                    <h:outputText value="#{item.price}" />
+                                </p:column>
 
-                                </p:dataTable>
-                            
+                                <p:column headerText="Spiciness" style="width:80px">
+                                    <p:rating value="#{item.spiciness}" readonly="true" />
+                                </p:column>
+
+                            </p:dataTable>
+
                         </p:tab>
 
                         <p:tab id="tab2" title="Placed Orders">
@@ -209,9 +211,7 @@
                                             <p:outputPanel id="orderpanel">
 
                                                 <p:dataTable id="ordertable" var="order" value="#{RecOrd.orderDetails}" rowStyleClass="#{ComV.statuSwitch(1,order.customerOrder.status)}" >
-                                                    <f:facet name="header">
-                                                        <h:outputText id="refcount" value="Orders List.  Refresh Count: #{RecOrd.refreshcount}" />
-                                                    </f:facet>
+                                                    
                                                     <p:column headerText="Order No" style="width: 40px">
                                                         <h:outputText style="align-content: center" value="#{order.customerOrder.orderNo}" />
                                                     </p:column>
@@ -279,6 +279,15 @@
                                                     </p:column>
 
                                                 </p:dataTable>
+                                                
+                                                <p:panelGrid  columns="6" style="text-align: center; width:100%">
+                                                    <h:outputText value="New" style="color:red; font-weight: bold" />
+                                                    <h:outputText value="Accepted" style="color:darkorange; font-weight: bold" />
+                                                    <h:outputText value="Ready" style="color:lime; font-weight: bold" />
+                                                    <h:outputText value="Delivered" style="color:turquoise; font-weight: bold" />
+                                                    <h:outputText value="Paid" style="color:yellow; font-weight: bold" />
+                                                    <h:outputText value="Cancelled" style="color:slategray; font-weight: bold" />
+                                                </p:panelGrid>
 
                                             </p:outputPanel>
                                         </p:layoutUnit>
@@ -293,13 +302,11 @@
 
                             <h:form>
 
+                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
                                 <h:panelGrid columns="3" style="margin-left:30%; margin-top: 3%;" cellpadding="5">
 
-                                    <h:outputText value="Customer Name:" />
-                                    <p:inputText id="custname" value="#{dtRecepView.customerName}" required="true">
-                                        <p:ajax event="blur" update="custname,msg" />
-                                    </p:inputText>
-                                    <p:message id="msg" for="custname" />
+
 
                                     <h:outputText value="No of Customers:" />
                                     <p:selectOneMenu id="console" value="#{dtRecepView.customerCount}" style="width:125px">
@@ -349,33 +356,79 @@
 
                         </p:tab>
                         <p:tab id="tab4" title="View Reservations">
-                            
+
                             <div class="ui-g-12">
-                                <p:dataTable value="#{dtRecepView.reservationsList}" var="reservation">
-                                    <p:column headerText="ID">
-                                        <h:outputText value="#{reservation.resId}" />
-                                    </p:column>
-                                    <p:column headerText="Placed Time">
-                                        <h:outputText value="#{reservation.placedTime}" />
-                                    </p:column>
-                                    <p:column headerText="Date">
-                                        <p:calendar id="resdate" value="#{reservation.date}" disabled="true"/>
-                                    </p:column>
-                                    <p:column headerText="Time">
-                                        <h:outputText value="#{reservation.mealTime}"/>
-                                    </p:column>
-                                    <p:column headerText="By">
-                                        <h:outputText value="#{reservation.placedBy}"/>
-                                    </p:column>
-                                    <p:column headerText="Customer Name">
-                                        <h:outputText value="#{reservation.customerId.name}"/>
-                                    </p:column>
-                                    <p:column headerText="Status">
-                                        <h:outputText value="#{reservation.status}"/>
-                                    </p:column>
-                                </p:dataTable>
+                                <h:form id="reseditform">
+                                    <p:dataTable id="res-table" value="#{dtRecepView.reservationsList}" var="reservation">
+
+                                        <p:ajax event="rowEdit" listener="#{dtRecepView.onRowEdit}" update="res-table" />
+
+                                        <p:column headerText="ID">
+                                            <h:outputText value="#{reservation.resId}" />
+                                        </p:column>
+                                        <p:column headerText="Placed Time" style="width:200px">
+                                            <h:outputText value="#{reservation.placedTime}" > <f:convertDateTime pattern="dd-MM-yyyy 'at' HH:mm:ss" timeZone="IST" /></h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Date" style="width:100px">
+                                            <h:outputText value="#{reservation.date}"> <f:convertDateTime pattern="dd-MM-yyyy" timeZone="IST" /> </h:outputText>
+
+                                        </p:column>
+                                        <p:column headerText="Time">
+                                            <h:outputText value="#{reservation.mealTime}"/>
+                                        </p:column>
+                                        <p:column headerText="By">
+                                            <h:outputText value="#{reservation.placedBy}"/>
+                                        </p:column>
+                                        <p:column headerText="Customer Name">
+                                            <h:outputText value="#{reservation.customerId.name}"/>
+                                        </p:column>
+                                        <p:column headerText="Status">
+                                            <h:outputText value="#{reservation.status}"/>
+                                        </p:column>
+                                        <p:column style="width:32px;text-align: center">
+                                            <p:commandButton update=":tab-panel:resDialog" oncomplete="PF('resDialog').show()" icon="ui-icon-search" title="View">
+                                                <f:setPropertyActionListener value="#{reservation}" target="#{dtRecepView.selectedReservation}" />
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+
+                                <p:dialog id="resDialog" header="Edit Reservation" widgetVar="resDialog" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
+                                    <p:outputPanel id="resDetail" style="text-align:center;">
+                                        <h:form id="dialogform">
+                                            <p:panelGrid  columns="2" columnClasses="label,value">
+
+                                                <h:outputText value="Id:" />
+                                                <h:outputText value="#{dtRecepView.selectedReservation.resId}" />
+
+                                                <h:outputText value="Date" />
+                                                <p:calendar id="popup" value="#{dtRecepView.selectedReservation.date}" showOn="button" />
+
+                                                <h:outputText value="Time:" />
+                                                <p:selectOneMenu value="#{dtRecepView.selectedResMealTime}" style="width:125px">
+                                                    <f:selectItem itemLabel="Lunch" itemValue="LUNCH" />
+                                                    <f:selectItem itemLabel="Dinner" itemValue="DINNER" />
+                                                </p:selectOneMenu>
+
+                                                <h:outputText value="Status" />
+                                                <p:selectOneMenu value="#{dtRecepView.selectedResStatus}" style="width:125px">
+                                                    <f:selectItem itemLabel="Pending" itemValue="PENDING" />
+                                                    <f:selectItem itemLabel="Late" itemValue="LATE" />
+                                                    <f:selectItem itemLabel="Active" itemValue="ACTIVE" />
+                                                    <f:selectItem itemLabel="Complete" itemValue="COMPLETE" />
+                                                    <f:selectItem itemLabel="No-Show" itemValue="NO-SHOW" />
+                                                    <f:selectItem itemLabel="Cancelled" itemValue="CANCELLED" />
+                                                </p:selectOneMenu>
+                                            </p:panelGrid>
+                                            <p:commandButton value="Save Changes" id="nonAjax" actionListener="#{dtRecepView.save(dtRecepView.selectedReservation)}" ajax="false" />
+                                        </h:form>
+                                    </p:outputPanel>
+
+                                </p:dialog>
+
                             </div>
-                            
+
                         </p:tab>
                     </p:tabView>
 

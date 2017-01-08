@@ -86,7 +86,7 @@ public class AdminView {
             //billList = (List<Bill>)billFacade.findAll();
             //Date initDate = new SimpleDateFormat("yyyy-MM-dd").parse("2016-11-03");
             Date tempDate = new SimpleDateFormat("yyyy-MM-dd").parse("2016-11-02");
-            Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse("2016-12-31");
+            Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse("2017-01-31");
 
             while (tempDate.before(lastDate)) {
                 BigDecimal tempTotal = BigDecimal.valueOf(0);
@@ -112,10 +112,22 @@ public class AdminView {
         DateAxis axis = new DateAxis("Date");
         axis.setTickAngle(-50);
         axis.setMin("2016-10-31");
-        axis.setMax("2016-12-31");
+        axis.setMax("2017-01-31");
         axis.setTickFormat("%b %#d, %y");
 
         salesChart.getAxes().put(AxisType.X, axis);
+    }
+    
+    public BigDecimal getTodaySales(){
+        BigDecimal t_total = BigDecimal.valueOf(0);
+        Date today = new Date();
+        today = ComTainer.getOnlyDate(today);
+        for (Bill bill : billList) {
+            if (ComTainer.getOnlyDate(bill.getDate()).equals(today)) {
+                t_total = t_total.add(bill.getSubTotal());
+            }
+        }
+        return t_total;
     }
 
 // </editor-fold>

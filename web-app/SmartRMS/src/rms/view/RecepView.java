@@ -5,6 +5,7 @@
  */
 package rms.view;
 
+import com.sun.xml.rpc.processor.modeler.j2ee.xml.emptyType;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +23,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.DualListModel;
 import rms.common.ComTainer;
 import rms.entity.DiningTable;
@@ -32,6 +35,7 @@ import rms.entity.Reservation;
 import rms.session.DiningTableFacade;
 import rms.session.MenuItemFacade;
 import rms.session.ReservationFacade;
+import rms.transaction.ReserveManager;
 
 /**
  *
@@ -40,17 +44,23 @@ import rms.session.ReservationFacade;
 @ManagedBean(name = "dtRecepView", eager = true)
 @SessionScoped
 public class RecepView {
+
     @EJB
     private MenuItemFacade menuItemFacade;
 
     @EJB
     private DiningTableFacade diningTableFacade;
-    
+
     @EJB
     private ReservationFacade reservationFacade;
 
+    @EJB
+    private ReserveManager reserveManager;
+
     @PostConstruct
     public void init() {  // INITIALIZATION-------------------------**************************
+        
+        reserveManager.updateStatus();
 
         items = (List<MenuItem>) menuItemFacade.findAll();
         Collections.sort(items);
@@ -204,33 +214,33 @@ public class RecepView {
     //This is the function that finds all possible combinations;
     public List<List<DiningTable>> getCombinations() {
         List<DiningTable> availableDiningTables = getTables();
-        
+
         List<List<DiningTable>> nestedList = new ArrayList<>();
         Set<DiningTable> available = new HashSet<>(availableDiningTables); //convert llist to a set
         Set<Set<DiningTable>> powerSet = powerSet(available);
-        
+
         ArrayList<Integer> uniques = new ArrayList<>();
-        
-        for(Set set : powerSet){
+
+        for (Set set : powerSet) {
             List<DiningTable> templList = new ArrayList<>(set);
             int uid = 0;
             int seats = 0;
             int min = 1000;
-            for(DiningTable table : templList){
-                uid += (int)Math.pow(10, table.getNumOfSeats());
+            for (DiningTable table : templList) {
+                uid += (int) Math.pow(10, table.getNumOfSeats());
                 seats += table.getNumOfSeats();
-                if(table.getNumOfSeats() < min){
+                if (table.getNumOfSeats() < min) {
                     min = table.getNumOfSeats();
                 }
             }
             // add if seat combination is unique, not empty, seats are more than customers, seats are not 8 (MAX) more than customers
-            if (!uniques.contains(uid) && !templList.isEmpty() && this.customerCount <= seats && seats < (this.customerCount+min) && this.customerCount+4 > seats){
+            if (!uniques.contains(uid) && !templList.isEmpty() && this.customerCount <= seats && seats < (this.customerCount + min) && this.customerCount + 4 > seats) {
                 nestedList.add(templList);
-                uniques.add(uid);            
+                uniques.add(uid);
             }
-            
+
         }
-        
+
         return nestedList;
     }
 
@@ -253,7 +263,7 @@ public class RecepView {
         return sets;
     }
     //end of that function
-    
+
     //view-edit reservations
     private List<Reservation> reservationsList;
 
@@ -312,16 +322,34 @@ public class RecepView {
         this.date1 = date1;
     }
 
-    public void checkAvail() {
+    private String customerContact;
 
-        if (date1.before(new Date())) {
+    public String getCustomerContact() {
+        return customerContact;
+    }
+
+    public void setCustomerContact(String customerContact) {
+        this.customerContact = customerContact;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+    private String customerEmail = "";
+
+    public void checkAvail() {
+        if (date1.before(ComTainer.getOnlyDate(new Date()))) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Error!",
                     "The date is set before current date!"));
         } else {
 
             FacesContext facesContext = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
-            session.setAttribute("cust_name", customerName);
+            //session.setAttribute("cust_name", customerName);
             session.setAttribute("cust_id", 0);
             session.setAttribute("res_date", new SimpleDateFormat("yyyy-MM-dd").format(date1));
             session.setAttribute("res_time", mealTime);
@@ -343,6 +371,8 @@ public class RecepView {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
             session.setAttribute("cust_name", customerName);
+            session.setAttribute("cust_cont", customerContact);
+            session.setAttribute("cust_mail", customerEmail);
             session.setAttribute("cust_id", 0);
             session.setAttribute("res_date", new SimpleDateFormat("yyyy-MM-dd").format(date1));
             session.setAttribute("res_time", mealTime);
@@ -356,9 +386,48 @@ public class RecepView {
             }
         }
     }
+
+    private Reservation selectedReservation = new Reservation();
+
+    public Reservation getSelectedReservation() {
+        return selectedReservation;
+    }
+
+    public void setSelectedReservation(Reservation selectedReservation) {
+        this.selectedReservation = selectedReservation;
+    }
+
+    public String getSelectedResMealTime() {
+        if (this.selectedReservation.getMealTime() != null) {
+            return this.selectedReservation.getMealTime();
+        } else {
+            return "LUNCH";
+        }
+    }
+
+    public void setSelectedResMealTime(String time) {
+        this.selectedReservation.setMealTime(time);
+    }
+
+    public String getSelectedResStatus() {
+        if (this.selectedReservation.getStatus() != null) {
+            return this.selectedReservation.getStatus();
+        }
+        else{
+            return "PENDING";
+        }
+    }
+
+    public void setSelectedResStatus(String status) {
+        this.selectedReservation.setStatus(status);
+    }
+    
+    public void save(Reservation reservation){
+        reserveManager.save(reservation);
+    }
+
     //---------------------------------------
     // </editor-fold>
-
     private DualListModel<String> dualitems;
 
     public DualListModel<String> getDualitems() {
@@ -435,5 +504,4 @@ public class RecepView {
 //        //return hiddenatrib;
 //        return true;
 //    }
-
 }

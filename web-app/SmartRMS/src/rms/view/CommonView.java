@@ -5,6 +5,8 @@
  */
 package rms.view;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -31,6 +33,11 @@ public class CommonView {
 
     public void onTabChange(TabChangeEvent event) {
         selectedTab = Integer.parseInt(event.getTab().getId().substring(3, 4));
+    }
+    
+    public String formatDate(Date date){
+        String dateString = new SimpleDateFormat("yyyy-MM-dd").format(date);
+        return dateString;
     }
 
     public String statuSwitch(int m, short i) {
@@ -89,9 +96,13 @@ public class CommonView {
     private boolean hiddenatrib = false;
 
     public boolean authorize(String utype) {
+        hiddenatrib = false;
         try {
             String usertype = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("type");
             String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
+            if (utype.equals("ADMIN")) {
+                usertype = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("type");
+            }
             int auth_id = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("auth_id");
             int key_id = ComTainer.getKey(username);
             if (usertype.equals(utype) && key_id == auth_id) {

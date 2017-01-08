@@ -67,10 +67,20 @@
 
 
                             <p:layoutUnit style="border:none" position="center" collapsible="true" gutter="0">
+                                
+                                <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
 
                                 <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
-                                    <h:outputText value="Customer Name:  " />
-                                    <h:outputText value="#{dtRecepView.customerName}" />
+                                    <h:outputText value="Customer Name:" />
+                                    <p:inputText id="custname" value="#{dtRecepView.customerName}" required="true">
+                                        <p:ajax event="blur" update="custname,messages" />
+                                    </p:inputText>
+                                    
+                                    <h:outputText value="Contact No:  " />
+                                    <p:inputText value="#{dtRecepView.customerContact}" required="#{true}"/>
+                                    
+                                    <h:outputText value="Email  " />
+                                    <p:inputText value="#{dtRecepView.customerEmail}" />
 
                                     <h:outputText value="No of Customers:" />
                                     <h:outputText value="#{dtRecepView.customerCount}" />
@@ -86,7 +96,7 @@
 
                                 </p:panelGrid>
 
-                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                                
 
                                 <p:dataTable var="table" style="width:50%; margin-left: 25%;" value="#{dtRecepView.tables}" selection="#{dtRecepView.selectedTables}" rowKey="#{table.id}">
                                     <f:facet name="header">

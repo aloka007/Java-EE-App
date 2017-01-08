@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -18,10 +19,12 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import rms.common.ComTainer;
 import rms.entity.Customer;
 import rms.entity.DiningTable;
 import rms.entity.Reservation;
 import rms.entity.ReservationTable;
+import rms.session.ReservationFacade;
 
 /**
  *
@@ -37,12 +40,16 @@ public class ReserveManager {
     private EntityManager em;
     @Resource
     private SessionContext context;
+    @EJB
+    private ReservationFacade reservationFacade;
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     
-    public Customer createCustomer(String name){
+    public Customer createCustomer(String name, String contact, String email){
         Customer customer = new Customer();
         customer.setName(name);
+        customer.setContactNo(contact);
+        customer.setEmail(email);
         em.persist(customer);
         return customer;
     }
@@ -53,6 +60,7 @@ public class ReserveManager {
         reservation.setMealTime(time);
         reservation.setCustomerId(customer);
         reservation.setPlacedBy(username);
+        reservation.setStatus("PENDING");
         em.persist(reservation);
         return reservation;
     }
@@ -79,4 +87,21 @@ public class ReserveManager {
         }
     }
     
+    public void save(Reservation reservation){
+        em.flush();
+        em.merge(reservation);
+        em.flush();
+    }
+    
+    public void updateStatus(){
+        List<Reservation> reseervationList = reservationFacade.findAll();
+        em.flush();
+        for (Reservation reservation : reseervationList) {
+            if (reservation.getStatus().equals("PENDING") && reservation.getDate().before(ComTainer.getOnlyDate((new Date())))) {
+                reservation.setStatus("NO-SHOW");
+                em.merge(reservation);
+            }
+        }
+        em.flush();
+    }
 }

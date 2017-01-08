@@ -98,22 +98,22 @@
 
                     <h:form>
                         <div class="ui-g">
-                            <div class="ui-g-4">
-                                <p:panel id="basic1" header="Sales" footer="Total Sales Today ****" style="margin-bottom:20px">
+                            <div class="ui-g-4" style="text-align:center">
+                                <p:panel id="basic1" header="Sales" footer="Total Sales Today #{AdmV.todaySales}" style="margin-bottom:20px">
                                     <p:commandLink ajax="false" actionListener="#{AdmV.navigate('sales')}">
                                         <p:graphicImage name="images/Area Chart-80.png" />
                                     </p:commandLink>
                                 </p:panel>
                             </div>
-                            <div class="ui-g-4">
+                            <div class="ui-g-4" style="text-align:center">
                                 <p:panel id="basic2" header="Orders" footer="Total Orders Processed Today ****" style="margin-bottom:20px">
                                     <p:graphicImage name="images/Purchase Order-80.png" />
                                 </p:panel>
                             </div>
-                            <div class="ui-g-4">
+                            <div class="ui-g-4" style="text-align:center">
                                 <p:panel id="basic3" header="Stock" footer="*All Stocks Okay*" style="margin-bottom:20px">
                                     <p:commandLink ajax="false" actionListener="#{AdmV.navigate('stocks')}">
-                                    <p:graphicImage name="images/Package-80.png" />
+                                    <p:graphicImage name="images/Sell Stock-80.png" />
                                     </p:commandLink>
                                 </p:panel>
                             </div>

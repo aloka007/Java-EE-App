@@ -35,6 +35,21 @@ public class ComTainer implements Serializable {
         return cal.getTime();
     }
 
+    public static Date getOnlyDate(Date fecha) {
+        Date res = fecha;
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(fecha);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        res = calendar.getTime();
+
+        return res;
+    }
+
     public static void setKey(String userName, int authID) {
         keys.put(userName, authID);
     }

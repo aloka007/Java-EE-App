@@ -26,7 +26,7 @@
         <div class="error">OOPS! Something Happened!  <br>
             : (<br><br>
             <big>${message}</big><br><br>
-            <a href="index.jsp"><b>Go Back To Login Page</font></b></a>
+            <a href="index.xhtml"><b>Go Back To Login Page</font></b></a>
         </div>
         <div id="footer">
             Smart RMS Error Page

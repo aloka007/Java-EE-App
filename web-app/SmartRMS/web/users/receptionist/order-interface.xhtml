@@ -66,46 +66,40 @@
 
                     <h:form>
 
-                                <p:dataTable id="basicDT" var="item" value="#{dtRecepView.rightItems}" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
-                                    <f:facet name="header">
-                                        Check Items
-                                    </f:facet>
-                                    <p:column headerText="No" style="width:30px">
-                                        <h:outputText value="#{item.menuItem.menuIndex}" />
-                                    </p:column>
-                                    <p:column headerText="Name">
-                                        <h:outputText value="#{item.menuItem.itemName}" />
-                                    </p:column>
-                                    <p:column headerText="Price" style="width:80px">
-                                        <h:outputText value="#{item.menuItem.price}" />
-                                    </p:column>
-                                    <p:column headerText="Quantity" style="width:80px">
-                                        <h:outputText value="#{item.orderItem.quantity}" />
-                                    </p:column>
-                                    <p:column headerText="Subtotal" style="width:80px">
-                                        <h:outputText value="#{item.subtotal}" />
-                                    </p:column>
-                                </p:dataTable>
-                                <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
-                                    <h:outputText value="Customer Name:  " />
-                                    <h:outputText value="#{dtRecepView.customerName}" />
-                                    
-                                    <h:outputText value="Discount (5%):" />
-                                    <h:outputText value="(#{dtRecepView.total * 0.05})" />
-                                    
-                                    <h:outputText value="Sales Tax (15%):" />
-                                    <h:outputText value="#{(dtRecepView.total * 0.95) *0.15}" />
-                                    
-                                    <h:outputText value="Total:" />
-                                    <h:outputText value="#{((dtRecepView.total * 0.95) *1.15)-(((dtRecepView.total * 0.95) *1.15) % 0.01)}" />
-                                    
-                                    <p:button id="backbtn" value="Go Back" outcome="/users/receptionist/receptionist_2.xhtml" icon="ui-icon-play" disabled="false"/>
-                                    <p:commandButton value="Confirm and Submit" id="nonAjax" actionListener="#{dtRecepView.submit()}" ajax="false" icon="ui-icon-check"/>
-                                    
-                                </p:panelGrid>
+                        <p:dataTable id="basicDT" var="item" value="#{dtRecepView.rightItems}" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
+                            <f:facet name="header">
+                                Check Items
+                            </f:facet>
+                            <p:column headerText="No" style="width:30px">
+                                <h:outputText value="#{item.menuItem.menuIndex}" />
+                            </p:column>
+                            <p:column headerText="Name">
+                                <h:outputText value="#{item.menuItem.itemName}" />
+                            </p:column>
+                            <p:column headerText="Price" style="width:80px">
+                                <h:outputText value="#{item.menuItem.price}" />
+                            </p:column>
+                            <p:column headerText="Quantity" style="width:80px">
+                                <h:outputText value="#{item.orderItem.quantity}" />
+                            </p:column>
+                            <p:column headerText="Subtotal" style="width:80px">
+                                <h:outputText value="#{item.subtotal}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
+                            <h:outputText value="Customer Name:  " />
+                            <h:outputText value="#{dtRecepView.customerName}" />
 
-                            
-                       
+                            <h:outputText value="Total:" />
+                            <h:outputText value="#{dtRecepView.total}" />
+
+                            <p:button id="backbtn" value="Go Back" outcome="/users/receptionist/receptionist_2.xhtml" icon="ui-icon-play" disabled="false"/>
+                            <p:commandButton value="Confirm and Submit" id="nonAjax" actionListener="#{dtRecepView.submit()}" ajax="false" icon="ui-icon-check"/>
+
+                        </p:panelGrid>
+
+
+
 
 
                     </h:form>
