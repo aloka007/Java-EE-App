@@ -12,7 +12,7 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>SmartRMS - Stocks</title>
+                <title>SmartRMS - Customers</title>
             </f:facet>
             <h:outputStylesheet name="css/prime-ui.css" />
         </h:head>
@@ -72,9 +72,9 @@
                     min-width: 30px !important;
                 }
 
-                .main-panel{
+/*                .main-panel{
                     height: 100% !important;
-                }
+                }*/
 
                 .user-toolbar .ui-layout-unit-content{
                     padding: 0px !important;
@@ -91,13 +91,8 @@
 
                 </p:layoutUnit>
 
-
-
-
                 <p:layoutUnit id="center-panel" class="main-panel" rendered="#{ComV.authorize('ADMIN')}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
-                    <p:chart type="bar" model="#{AdmV.stocksBarModel}" style="height:300px; width: 50%; margin-left: 25%"/>
-                    
                     <div class="ui-g">
                         <div class="ui-g-2"></div>
                         <div class="ui-g-2"></div>
@@ -123,28 +118,28 @@
                         <div class="ui-g-2"></div>
                         <div class="ui-g-2"></div>
                     </div>
-
-                    <p:dataTable id="tbl" var="consumption" value="#{AdmV.consumptionList}" style="margin-left:10%;width: 80%"
-                                 rows="10"
-                                 paginator="true"
-                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="5,10,15">
-
-                        <p:column headerText="Id">
-                            <h:outputText value="#{consumption.id}" />
+                    
+                    <p:dataTable id="tbl" var="customer" value="#{AdmV.customers}" style="margin-left:15%; width:70%" >
+                        <p:column headerText="ID" style="width:30px" >
+                            <h:outputText value="#{customer.customerId}"/>
                         </p:column>
-                        <p:column headerText="Date" style="width:250px">
-                            <h:outputText value="#{consumption.time}" > <f:convertDateTime pattern="dd-MM-yyyy 'at' HH:mm:ss" timeZone="IST" />
-                            </h:outputText>
+                        <p:column headerText="Name">
+                            <h:outputText value="#{customer.name}"/>
                         </p:column>
-                        <p:column headerText="Ingredient">
-                            <h:outputText value="#{consumption.ingredientId.name}" />
+                        <p:column headerText="Birthday" style="width:80px">
+                            <h:outputText value="#{customer.birthday}"> <f:convertDateTime pattern="dd-MM-yyyy" timeZone="IST" /> </h:outputText>
                         </p:column>
-                        <p:column headerText="Tip">
-                            <h:outputText value="#{consumption.action}" />
+                        <p:column headerText="Email">
+                            <h:outputText value="#{customer.email}" style="width:200px"/>
                         </p:column>
-                        <p:column headerText="Waiter">
-                            <h:outputText value="#{consumption.amount}" />
+                        <p:column headerText="Contact No.">
+                            <h:outputText value="#{customer.contactNo}"/>
+                        </p:column>
+                        <p:column headerText="Total Reservations">
+                            <h:outputText value="#{customer.reservationCollection.size()}"/>
+                        </p:column>
+                        <p:column headerText="Total Revenue">
+                            <h:outputText value="#{AdmV.customerTotal(customer.getEmail())}"/>
                         </p:column>
                     </p:dataTable>
 

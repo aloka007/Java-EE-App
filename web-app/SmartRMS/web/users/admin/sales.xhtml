@@ -97,29 +97,59 @@
 
                     <div class="ui-g">
                         <div class="ui-g-12">
-                            
+                            <h:outputText value=" "/>
+
                         </div>
                     </div>
+                    
+                    <p:chart type="bar" model="#{AdmV.itemsBarModel}" style="height:600px; width: 50%; margin-left: 25%"/>
+                    
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <h:outputText value=" "/>
+
+                        </div>
+                    </div>
+
+                    <h:form>
+                        <p:panelGrid columns="5" style="margin-left:10%;width: 80%">
+                            <f:facet name="header">
+                                <h:outputText value="Total Sales For Period"/>
+                            </f:facet>
+
+                            <h:outputText value="From"/>
+                            <p:calendar value="#{AdmV.startDate}" >
+                                <p:ajax event="dateSelect" update="p-total"/> 
+                            </p:calendar>
+
+                            <h:outputText value="To"/>
+                            <p:calendar value="#{AdmV.endDate}" >
+                                <p:ajax event="dateSelect" update="p-total"/> 
+                            </p:calendar>
+                            
+                            <h:outputText id="p-total" value="#{AdmV.periodTotal}" />
+                        </p:panelGrid>
+                    </h:form>
 
                     <div class="ui-g">
                         <div class="ui-g-2"></div>
                         <div class="ui-g-2"></div>
-                        <div class="ui-g-2"></div>
+                        <div class="ui-g-2">Export Data</div>
                         <div class="ui-g-2">
                             <h:form>
                                 <h:commandLink>
                                     <p:graphicImage name="/images/icons/excel.png" width="32"/>
-                                    <p:dataExporter type="xls" target="tbl" fileName="sales" />
+                                    <p:dataExporter type="xls" target="tbl" fileName="sales-data" />
                                 </h:commandLink>
 
                                 <h:commandLink>
                                     <p:graphicImage name="/images/icons/pdf.png" width="32"/>
-                                    <p:dataExporter type="pdf" target="tbl" fileName="sales"/>
+                                    <p:dataExporter type="pdf" target="tbl" fileName="sales-data"/>
                                 </h:commandLink>
 
                                 <h:commandLink>
                                     <p:graphicImage name="/images/icons/csv.png" width="32"/>
-                                    <p:dataExporter type="csv" target="tbl" fileName="sales" />
+                                    <p:dataExporter type="csv" target="tbl" fileName="sales-data" />
                                 </h:commandLink>
                             </h:form>
                         </div>

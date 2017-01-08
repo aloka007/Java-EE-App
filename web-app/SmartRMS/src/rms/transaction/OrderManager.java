@@ -125,5 +125,11 @@ public class OrderManager {
             em.persist(orderedItem);
         }
     }
+    
+    public void saveIngredient(Ingredient ingredient){
+        em.flush();
+        em.merge(ingredient);
+        em.flush();
+    }
 
 }

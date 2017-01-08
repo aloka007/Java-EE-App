@@ -25,6 +25,7 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 import rms.common.ComTainer;
 import rms.entity.CustomerOrder;
+import rms.entity.Ingredient;
 import rms.entity.OrderItem;
 import rms.session.CustomerOrderFacade;
 import rms.session.OrderItemFacade;
@@ -46,6 +47,7 @@ public class ChefView implements Serializable {
 
     @EJB
     private OrderItemFacade orderItemFacade;
+    
 
     private int selectedTab = 0;
 
@@ -164,6 +166,20 @@ public class ChefView implements Serializable {
             }
         }
 
+    }
+    
+    private Ingredient selectedIngredient;  //THINGS realated to ingredient levels NOTICE!!!!!!!!!!!!!! <<<<<<<>>>>>>>>>>>
+
+    public Ingredient getSelectedIngredient() {
+        return selectedIngredient;
+    }
+
+    public void setSelectedIngredient(Ingredient selectedIngredient) {
+        this.selectedIngredient = selectedIngredient;
+    }
+    
+    public void editStock(Ingredient ingredient){
+        orderManager.saveIngredient(ingredient);
     }
 
     public void refresh() {

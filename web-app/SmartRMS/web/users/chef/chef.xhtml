@@ -80,11 +80,18 @@
 
 
                                                     <h:outputText style="center" value="Status: " />
-                                                    <h:outputText style="text-align:center; font-weight: bold" value="#{dtOrderList.selectedContainer.customerOrder.status == 0 ? 'New' : (dtOrderList.selectedContainer.customerOrder.status == 1 ? 'Accepted': 'Ready')}" />
+                                                    <h:outputText style="text-align:center; font-weight: bold" value="#{
+                                                                  dtOrderList.selectedContainer.customerOrder.status == 0 ? 'New' : (
+                                                                      dtOrderList.selectedContainer.customerOrder.status == 1 ? 'Accepted': 'Ready')}" />
 
-                                                    <p:commandButton value="Accept" ajax="false" actionListener="#{dtOrderList.accept(1)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
+                                                    <p:commandButton value="Accept" ajax="false" disabled="#{!(
+                                                                                                             dtOrderList.selectedContainer.customerOrder.status == 0
+                                                                                                             )}" actionListener="#{dtOrderList.accept(1)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
 
-                                                    <p:commandButton value="Ready" ajax="false" actionListener="#{dtOrderList.accept(2)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
+                                                    <p:commandButton value="Ready" ajax="false" disabled="#{!(
+                                                                                                            dtOrderList.selectedContainer.customerOrder.status == 0 or
+                                                                                                            dtOrderList.selectedContainer.customerOrder.status == 1
+                                                                                                            )}" actionListener="#{dtOrderList.accept(2)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
 
                                                 </p:panelGrid>
 
@@ -188,6 +195,49 @@
                                     </p:layoutUnit>
                                 </p:layout>
                             </h:form>
+
+                        </p:tab>
+                        <p:tab id="stock" title="Stocks">
+
+                            <p:chart type="bar" model="#{AdmV.stocksBarModel}" style="height:300px; width: 70%; margin-left: 15%"/>
+                            <h:form>
+                                <p:dataTable id="ing-table" value="#{AdmV.ingredientList}" var="ingredient">
+                                    <p:column headerText="Name">
+                                        <h:outputText value="#{ingredient.name}"/>
+                                    </p:column>
+                                    <p:column headerText="Amount">
+                                        <h:outputText value="#{ingredient.amount}"/>
+                                    </p:column>
+                                    <p:column headerText="Warning Level">
+                                        <h:outputText value="#{ingredient.warn}"/>
+                                    </p:column>
+                                    <p:column headerText="Critical Level">
+                                        <h:outputText value="#{ingredient.crit}"/>
+                                    </p:column>
+                                    <p:column style="width:32px;text-align: center">
+                                        <p:commandButton update=":chef-tabview:ingDialog" oncomplete="PF('resDialog').show()" icon="ui-icon-search" title="View">
+                                            <f:setPropertyActionListener value="#{ingredient}" target="#{dtOrderList.selectedIngredient}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
+
+                            <p:dialog id="ingDialog" header="Restock Ingredient" widgetVar="resDialog" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
+                                <p:outputPanel id="ingDetail" style="text-align:center;">
+                                    <h:form id="dialogform">
+                                        <p:panelGrid  columns="2" columnClasses="label,value">
+
+                                            <h:outputText value="Name" />
+                                            <h:outputText value="#{dtOrderList.selectedIngredient.name}" />
+
+                                            <h:outputText value="Date" />
+                                            <p:inputNumber value="#{dtOrderList.selectedIngredient.amount}" minValue="0.001" maxValue="19.999" required="true" decimalPlaces="3"/>
+                                        </p:panelGrid>
+                                        <p:commandButton value="Save Changes" id="nonAjax" actionListener="#{dtOrderList.editStock(dtOrderList.selectedIngredient)}" ajax="false" />
+                                    </h:form>
+                                </p:outputPanel>
+                            </p:dialog>
 
                         </p:tab>
 

@@ -29,12 +29,22 @@ import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.DateAxis;
+import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import rms.entity.Bill;
 import rms.session.BillFacade;
 import rms.common.ComTainer;
+import rms.entity.Customer;
+import rms.entity.CustomerOrder;
 import rms.entity.Ingredient;
+import rms.entity.IngredientConsumption;
+import rms.entity.MenuItem;
+import rms.entity.OrderItem;
+import rms.session.CustomerFacade;
+import rms.session.CustomerOrderFacade;
+import rms.session.IngredientConsumptionFacade;
 import rms.session.IngredientFacade;
+import rms.session.MenuItemFacade;
 
 /**
  *
@@ -48,11 +58,14 @@ public class AdminView {
     public void init() {
         ingredientList = (List<Ingredient>) ingredientFacade.findAll();
         billList = (List<Bill>) billFacade.findAll();
+        consumptionList = (List<IngredientConsumption>) ingredientConsumptionFacade.findAll();
+        customers  = (List<Customer>) customerFacade.findAll();
         createDateModel();
         initBarModel();
+        initBarModel2();
     }
 
-// <editor-fold defaultstate="collapsed" desc=" Sales Components ">
+    // <editor-fold defaultstate="collapsed" desc=" Sales Components ">
     @EJB
     private BillFacade billFacade;
 
@@ -83,11 +96,10 @@ public class AdminView {
         String mindate = "0";
 
         try {
-            //billList = (List<Bill>)billFacade.findAll();
-            //Date initDate = new SimpleDateFormat("yyyy-MM-dd").parse("2016-11-03");
             Date tempDate = new SimpleDateFormat("yyyy-MM-dd").parse("2016-11-02");
-            Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse("2017-01-31");
+            Date lastDate = ComTainer.addDays((new Date()), 1);
 
+            //Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse("2017-01-31");
             while (tempDate.before(lastDate)) {
                 BigDecimal tempTotal = BigDecimal.valueOf(0);
                 for (Bill bill : billList) {
@@ -112,13 +124,13 @@ public class AdminView {
         DateAxis axis = new DateAxis("Date");
         axis.setTickAngle(-50);
         axis.setMin("2016-10-31");
-        axis.setMax("2017-01-31");
+        axis.setMax(new SimpleDateFormat("yyyy-MM-dd").format(ComTainer.addDays((new Date()), 1)));
         axis.setTickFormat("%b %#d, %y");
 
         salesChart.getAxes().put(AxisType.X, axis);
     }
-    
-    public BigDecimal getTodaySales(){
+
+    public BigDecimal getTodaySales() {
         BigDecimal t_total = BigDecimal.valueOf(0);
         Date today = new Date();
         today = ComTainer.getOnlyDate(today);
@@ -129,15 +141,71 @@ public class AdminView {
         }
         return t_total;
     }
+    Date startDate = ComTainer.getOnlyDate(ComTainer.addDays(new Date(), -7));
+    Date endDate = ComTainer.getOnlyDate(ComTainer.addDays(new Date(), 1));
 
-// </editor-fold>
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public BigDecimal getPeriodTotal() {
+        BigDecimal t_total = BigDecimal.valueOf(0);
+        for (Bill bill : billList) {
+            if (ComTainer.getOnlyDate(bill.getDate()).before(endDate) && ComTainer.getOnlyDate(bill.getDate()).after(startDate)) {
+                t_total = t_total.add(bill.getSubTotal());
+            }
+        }
+        return t_total;
+    }
+
+    public String getToday() {
+        Date today = new Date();
+        return new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(today);
+    }
+
+    // </editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Stocks Components">
     @EJB
     IngredientFacade ingredientFacade;
+
+    @EJB
+    IngredientConsumptionFacade ingredientConsumptionFacade;
+
     List<Ingredient> ingredientList = new ArrayList<>();
+
+    public List<Ingredient> getIngredientList() {
+        return ingredientList;
+    }
+
+    public void setIngredientList(List<Ingredient> ingredientList) {
+        this.ingredientList = ingredientList;
+    }
+
+    List<IngredientConsumption> consumptionList = new ArrayList<>();
+
+    public List<IngredientConsumption> getConsumptionList() {
+        return consumptionList;
+    }
+
+    public void setConsumptionList(List<IngredientConsumption> consumptionList) {
+        this.consumptionList = consumptionList;
+    }
+
     private BarChartModel stocksBarModel = new BarChartModel();
-    
-    private LineChartModel consumptionChart; 
+
+    private LineChartModel consumptionChart;
 
     public LineChartModel getConsumptionChart() {
         return consumptionChart;
@@ -148,15 +216,15 @@ public class AdminView {
     }
 
     private void initBarModel() {
-        stocksBarModel.setTitle("Bar Chart");
+        stocksBarModel.setTitle("Stock Levels");
         stocksBarModel.setAnimate(true);
         Axis xAxis = stocksBarModel.getAxis(AxisType.X);
         xAxis.setLabel("Ingredient");
         Axis yAxis = stocksBarModel.getAxis(AxisType.Y);
         yAxis.setLabel("Amount (grams)");
-        
+
         ChartSeries bar = new ChartSeries();
-        
+
         for (Ingredient ingredient : ingredientList) {
             if (ingredient.getUnit().equals("UNIT")) {
                 bar.set(ingredient.getName(), ingredient.getAmount().multiply(BigDecimal.valueOf(1)).toBigInteger().intValue());
@@ -167,7 +235,85 @@ public class AdminView {
         stocksBarModel.addSeries(bar);
     }
 
-//</editor-fold>
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Menu Items Components">
+    @EJB
+    private CustomerOrderFacade customerOrderFacade;
+
+    @EJB
+    private MenuItemFacade menuItemFacade;
+
+    private HorizontalBarChartModel itemsBarModel = new HorizontalBarChartModel();
+
+    public HorizontalBarChartModel getItemsBarModel() {
+        return itemsBarModel;
+    }
+
+    private void initBarModel2() {
+        List<MenuItem> menuItems = menuItemFacade.findAll();
+        List<OrderItem> combinedList = new ArrayList<>();
+
+        for (MenuItem menuItem : menuItems) {
+            OrderItem oi = new OrderItem(0, menuItem);
+            combinedList.add(oi);
+        }
+
+        List<CustomerOrder> orders = customerOrderFacade.findAll();
+        itemsBarModel.setTitle("Item-wise Sales");
+        itemsBarModel.setAnimate(true);
+        Axis xAxis = itemsBarModel.getAxis(AxisType.X);
+        xAxis.setLabel("Sales");
+        Axis yAxis = itemsBarModel.getAxis(AxisType.Y);
+        yAxis.setLabel("Items");
+
+        ChartSeries bar = new ChartSeries();
+
+        for (CustomerOrder order : orders) {
+            List<OrderItem> itemList = (List<OrderItem>) order.getOrderItemCollection();
+            for (OrderItem orderItem : itemList) {
+                MenuItem item = orderItem.getItemId();
+
+                for (OrderItem orderItem1 : combinedList) {
+                    if (orderItem1.getItemId().getItemId().equals(item.getItemId())) {
+                        orderItem1.setQuantity(orderItem1.getQuantity() + orderItem.getQuantity());
+                    }
+                }
+            }
+        }
+
+        for (OrderItem orderItem1 : combinedList) {
+            bar.set(orderItem1.getItemId().getItemName(), orderItem1.getQuantity());
+        }
+        itemsBarModel.addSeries(bar);
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Customers Components">
+    @EJB
+    private CustomerFacade customerFacade;
+    
+    private List<Customer> customers;
+
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
+    }
+    
+    public BigDecimal customerTotal(String email){
+        BigDecimal total = BigDecimal.valueOf(0.00);
+        for (Bill bill : billList) {
+            if (bill.getCustomerName() != null && bill.getCustomerName().equals(email)) {
+                total = total.add(bill.getSubTotal());
+            }
+        }
+        return total;
+    }
+            
+    //</editor-fold>
+
     public void navigate(String path) {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         try {
