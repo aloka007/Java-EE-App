@@ -23,6 +23,8 @@ import javax.faces.context.FacesContext;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
@@ -39,6 +41,7 @@ import rms.entity.CustomerOrder;
 import rms.entity.Ingredient;
 import rms.entity.IngredientConsumption;
 import rms.entity.MenuItem;
+import rms.entity.MenuItemIngredient;
 import rms.entity.OrderItem;
 import rms.entity.UserAccount;
 import rms.session.CustomerFacade;
@@ -46,7 +49,9 @@ import rms.session.CustomerOrderFacade;
 import rms.session.IngredientConsumptionFacade;
 import rms.session.IngredientFacade;
 import rms.session.MenuItemFacade;
+import rms.session.MenuItemIngredientFacade;
 import rms.session.UserAccountFacade;
+import rms.transaction.OrderManager;
 import rms.transaction.UserManager;
 
 /**
@@ -56,6 +61,9 @@ import rms.transaction.UserManager;
 @ManagedBean(name = "AdmV")
 @SessionScoped
 public class AdminView {
+    
+    @PersistenceContext(unitName = "SmartRMSPU")
+    private EntityManager em;
 
     @PostConstruct
     public void init() {
@@ -64,6 +72,7 @@ public class AdminView {
         consumptionList = (List<IngredientConsumption>) ingredientConsumptionFacade.findAll();
         customers  = (List<Customer>) customerFacade.findAll();
         userList = (List<UserAccount>) userAccountFacade.findAll();
+        rulesList = menuItemIngredientFacade.findAll();
         dummyAccount = new UserAccount();
         createDateModel();
         initBarModel();
@@ -181,6 +190,7 @@ public class AdminView {
     }
 
     // </editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Stocks Components">
     @EJB
     IngredientFacade ingredientFacade;
@@ -241,6 +251,7 @@ public class AdminView {
     }
 
     //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Menu Items Components">
     @EJB
     private CustomerOrderFacade customerOrderFacade;
@@ -319,7 +330,6 @@ public class AdminView {
             
     //</editor-fold>
     
-    
     //<editor-fold defaultstate="collapsed" desc="User Account Functions">
     @EJB
     UserAccountFacade userAccountFacade;
@@ -363,10 +373,62 @@ public class AdminView {
     
     public void createUser(){
         userManager.saveUser(dummyAccount);
+        em.getEntityManagerFactory().getCache().evictAll();
+        userList = (List<UserAccount>) userAccountFacade.findAll();
+    }
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Estimation Rules">
+    @EJB
+            MenuItemIngredientFacade menuItemIngredientFacade;
+    
+    @EJB
+            OrderManager orderManager;
+    
+    private List<MenuItemIngredient> rulesList;
+    
+    public List<MenuItemIngredient> getRulesList() {
+        return rulesList;
+    }
+    
+    public void setRulesList(List<MenuItemIngredient> rulesList) {
+        this.rulesList = rulesList;
+    }
+    
+    public void createRule(){
+        MenuItemIngredient rule = new MenuItemIngredient();
+        orderManager.saveNewRule(rule);
+        em.getEntityManagerFactory().getCache().evictAll();
+        rulesList = menuItemIngredientFacade.findAll();
+    }
+    
+    public void saveRule(){
+        orderManager.saveNewRule(rule);
+    }
+    
+    MenuItemIngredient rule;
+    
+    public MenuItemIngredient getSelectedRule() {
+        return rule;
+    }
+    
+    public void setSelectedRule(MenuItemIngredient rule) {
+        this.rule = rule;
+    }
+    
+    public void setRuleIngredient(Ingredient ingredient){
+        rule.setIngredientId(ingredient);
+    }
+    public Ingredient getRuleIngredient(){
+        return rule.getIngredientId();
+    }
+    
+    public void chooseMenuItem(MenuItem item){
+        rule.setItemId(item);
     }
     
 //</editor-fold>
-
     public void navigate(String path) {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         try {

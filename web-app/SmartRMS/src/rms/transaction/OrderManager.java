@@ -131,5 +131,17 @@ public class OrderManager {
         em.merge(ingredient);
         em.flush();
     }
+    
+    public void saveNewRule(MenuItemIngredient rule){
+        em.flush();
+        if (rule.getId() == null) {
+            em.persist(rule);
+        }
+        else{
+            em.merge(rule);
+        }
+        em.flush();
+    }
+    
 
 }

@@ -96,3 +96,21 @@ public class DataBaseConnection{
 
                                                     background-color: #{order.customerOrder.status == 0 ? 'red' : (order.customerOrder.status == 1 ? 'yellow': 'lime')}
 
+<p:outputLabel value="Ingredient:" />
+<!--                                            <p:commandButton id="ingBtn" value=">#{AdmV.selectedRule.ingredientId.name}" type="button" />-->
+<!--                                            <p:overlayPanel id="ingPanel" for="ingBtn" hideEffect="fade">-->
+                                                <p:repeat value="#{AdmV.ingredientList}" var="item" offset="0" size="#{AdmV.ingredientList.size()}" step="1" varStatus="status">
+                                                    <p:panelGrid columns="4">
+                                                        <h:form>
+                                                            <p:commandButton update=":resDialog" value="#{item.name}" type="button" ajax="false" >
+                                                                <f:setPropertyActionListener value="#{item}" target="#{AdmV.ruleIngredient}" />
+                                                            </p:commandButton>
+                                                        </h:form>
+                                                    </p:panelGrid>
+                                                </p:repeat>
+<!--                                            </p:overlayPanel>-->
+                                            <!--                                            <p:outputLabel value="ItemId:" for="itemId" />
+                                                                                        <p:selectOneMenu id="itemId" value="#{AdmV.selectedRule.itemId}" >
+                                                                                            TODO: update below reference to list of available items
+                                                                                            <f:selectItems value="#{fixme}"/>
+                                                                                        </p:selectOneMenu>-->

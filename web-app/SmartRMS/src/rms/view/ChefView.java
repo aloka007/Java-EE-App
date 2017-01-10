@@ -35,7 +35,7 @@ import rms.transaction.OrderManager;
 @SessionScoped
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class ChefView implements Serializable {
-
+    
     @PersistenceContext(unitName = "SmartRMSPU")
     private EntityManager em;
 
@@ -143,7 +143,7 @@ public class ChefView implements Serializable {
         selectedContainer.customerOrder.setAcceptedBy(uName);
         orderManager.acceptOrder(selectedContainer.customerOrder);
     }
-
+    
     public void update() {
         em.getEntityManagerFactory().getCache().evictAll();
         orders = customerOrderFacade.findAll();
@@ -165,7 +165,11 @@ public class ChefView implements Serializable {
                 orderDetails.add(cont);
             }
         }
-
+//        if (orderDetails.size() > orderListSize) {
+//            EventBus eventBus = EventBusFactory.getDefault().eventBus();
+//            eventBus.publish(CHANNEL, new FacesMessage("kek", "kek"));
+//            orderListSize = orderDetails.size();
+//        }
     }
     
     private Ingredient selectedIngredient;  //THINGS realated to ingredient levels NOTICE!!!!!!!!!!!!!! <<<<<<<>>>>>>>>>>>
