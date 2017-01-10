@@ -93,31 +93,6 @@
 
                 <p:layoutUnit id="center-panel" class="main-panel" rendered="#{ComV.authorize('ADMIN')}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
-                    <div class="ui-g">
-                        <div class="ui-g-2"></div>
-                        <div class="ui-g-2"></div>
-                        <div class="ui-g-2">Export Data</div>
-                        <div class="ui-g-2">
-                            <h:form>
-                                <h:commandLink>
-                                    <p:graphicImage name="/images/icons/excel.png" width="32"/>
-                                    <p:dataExporter type="xls" target="tbl" fileName="consumption-data" />
-                                </h:commandLink>
-
-                                <h:commandLink>
-                                    <p:graphicImage name="/images/icons/pdf.png" width="32"/>
-                                    <p:dataExporter type="pdf" target="tbl" fileName="consumption-data"/>
-                                </h:commandLink>
-
-                                <h:commandLink>
-                                    <p:graphicImage name="/images/icons/csv.png" width="32"/>
-                                    <p:dataExporter type="csv" target="tbl" fileName="consumption-data" />
-                                </h:commandLink>
-                            </h:form>
-                        </div>
-                        <div class="ui-g-2"></div>
-                        <div class="ui-g-2"></div>
-                    </div>
                     
                     <p:dataTable id="tbl" var="customer" value="#{AdmV.customers}" style="margin-left:15%; width:70%" >
                         <p:column headerText="ID" style="width:30px" >
@@ -142,6 +117,34 @@
                             <h:outputText value="#{AdmV.customerTotal(customer.getEmail())}"/>
                         </p:column>
                     </p:dataTable>
+                    
+                    
+                    <div class="ui-g">
+                        <div class="ui-g-2"></div>
+                        <div class="ui-g-2"></div>
+                        
+                        <div class="ui-g-2"></div>
+                        <div class="ui-g-2">Export Data</div>
+                        <div class="ui-g-2">
+                            <h:form>
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/icons/excel.png" width="32"/>
+                                    <p:dataExporter type="xls" target="tbl" fileName="consumption-data" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/icons/pdf.png" width="32"/>
+                                    <p:dataExporter type="pdf" target="tbl" fileName="consumption-data"/>
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/icons/csv.png" width="32"/>
+                                    <p:dataExporter type="csv" target="tbl" fileName="consumption-data" />
+                                </h:commandLink>
+                            </h:form>
+                        </div>
+                        <div class="ui-g-2"></div>
+                    </div>
 
                 </p:layoutUnit>
 

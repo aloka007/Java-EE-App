@@ -88,20 +88,14 @@
                     <h:form id="mainform">
                         <p:toolbar style="overflow: hidden">
                             <f:facet name="left">
-                                <p:commandButton value="New" icon="ui-icon-document" />
-
-
-                                <span class="ui-separator">
-                                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                                </span>
                                 <h:outputText value="    Customer Name or Email: " />
                                 <p:inputText id="custname" value="#{CashV.customerName}"></p:inputText>
 
                                 <h:outputText value="    Tip: " />
-                                <p:inputText id="tip" value="#{CashV.bill.tip}"></p:inputText>
+                                <p:inputText id="tip" value="#{CashV.bill.tip}"><f:validateDoubleRange minimum="0.00" maximum="1000.00" /></p:inputText>
 
                                 <h:outputText value="    Waiter ID: " />
-                                <p:inputText id="wid" value="#{CashV.bill.waiterId}"></p:inputText>
+                                <p:inputText id="wid" value="#{CashV.bill.waiterId}"> <f:validateDoubleRange minimum="0" maximum="20" /> </p:inputText>
 
                                 <h:outputText value="    Payment: " />
                                 <p:selectOneMenu id="pmode" value="#{CashV.payMode}" style="width:125px">
@@ -113,9 +107,11 @@
 
                             <f:facet name="right">
                                 <p:growl id="growl" showDetail="true" sticky="true" />  
-
+                                <p:commandButton value="Print" type="button" icon="ui-icon-print" >
+                                    <p:printer target="center-panel" />
+                                </p:commandButton>
                                 <p:commandButton id="proceedbtn" value="Settle and Save" ajax="false" update="growl" action="#{CashV.save()}" icon="ui-icon-check" disabled="false"/>
-                                
+
                             </f:facet>
 
                         </p:toolbar>
@@ -161,14 +157,16 @@
                             </p:dataTable>
                         </p:repeat>
 
-                        <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-top: 20px;">
+                        <p:panelGrid id="summary" columns="2" style="width:50%; border: none; margin-left: 25%; margin-top: 20px;">
 
                             <h:outputText value="Total Amount:" />
                             <h:outputText value="#{CashV.bill.amount}" />
-                            <h:outputText value="Discount (0%):" />
-                            <h:outputText value="(#{CashV.bill.discount})" />
+
                             <h:outputText value="Sales Tax (15%):" />
                             <h:outputText value="#{CashV.bill.tax}" />
+
+                            <h:outputText value="Subtotal:" />
+                            <h:outputText value="#{CashV.bill.subTotal}" />
                         </p:panelGrid>
 
                     </h:form>

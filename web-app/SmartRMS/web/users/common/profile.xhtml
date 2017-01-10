@@ -12,7 +12,7 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>SmartRMS Staff Login</title>
+                <title>SmartRMS - Users</title>
             </f:facet>
             <h:outputStylesheet name="css/prime-ui.css" />
         </h:head>
@@ -53,11 +53,6 @@
                     height: 20px;
                     border: none;
                 }
-                .loginGrid.ui-panelgrid>*>tr,
-                .loginGrid.ui-panelgrid .ui-panelgrid-cell {
-                    height: 20px;
-                    border: none;
-                }
                 .ui-g-2{
                     text-align:right;
 
@@ -77,60 +72,52 @@
                     min-width: 30px !important;
                 }
 
-                .main-panel{
-                    height: 100% !important;
-                }
+                /*                .main-panel{
+                                    height: 100% !important;
+                                }*/
 
                 .user-toolbar .ui-layout-unit-content{
                     padding: 0px !important;
                     height: 45px !important;
                 }
 
-                .logbtn{
-                    width:200px;
-                    margin-top:10px;
-                    margin-left: 0px !important;
-                }
-
-                
-
             </style>
 
             <p:layout fullPage="true">
 
-                <p:layoutUnit id="center-panel" class="main-panel" position="center" style="padding: 5px 5px;" collapsible="true" gutter="0">
+                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{(ComV.authorize('RECEPTIONIST') or 
+                                                                                   ComV.authorize('CASHIER') or
+                                                                                   ComV.authorize('CHEF') or
+                                                                                   ComV.authorize('ADMIN'))}" position="north" size="60" collapsible="true" gutter="0" >
 
-
-                    <div class="ui-g">
-                        
-                        <div class="ui-g-7"><p:graphicImage name="images/srms-banner.png" style="margin-left:20%; margin-top:170px; width:60%"/></div>
-                        
-                        <div class="ui-g-5">
-                            <h:form id="login">
-
-                                <p:panel id="pnl" style="margin-top:200px; width:325px">
-                                    <p:messages closable="true" showSummary="true"/>
-                                    <p:panelGrid columns="1" styleClass="loginGrid" style="text-align:center; margin:30px">
-                                        <p:inputText id="name" styleClass="logbtn" value="#{IndV.username}" placeholder="Username" required="#{true}" onfocus="PF('spot').show()" onblur="PF('spot').hide()"/>
-                                        <p:password id="password" styleClass="logbtn" value="#{IndV.password}" placeholder="Password" required="#{true}" onfocus="PF('spot').show()" onblur="PF('spot').hide()"/>
-                                        <p:commandButton value="Login" styleClass="logbtn" id="nonAjax" actionListener="#{IndV.login()}" ajax="false" />
-                                    </p:panelGrid>
-
-                                </p:panel>
-                                <p:spotlight target="pnl" widgetVar="spot"/>
-
-                            </h:form>
-                        </div>
-                    </div>
-
-
-
-
-
+                    <ui:include src="/users/common/header.xhtml" />
 
                 </p:layoutUnit>
 
+                <p:layoutUnit id="center-panel" class="main-panel" rendered="#{(ComV.authorize('RECEPTIONIST') or 
+                                                                               ComV.authorize('CASHIER') or
+                                                                               ComV.authorize('CHEF') or
+                                                                               ComV.authorize('ADMIN'))}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
+                    <p:panelGrid columns="2" style="margin-left:20%; width:60%">
+                        <h:outputText value="Name"/>
+                        <h:outputText value="Name"/>
+
+                        <h:outputText value="Name"/>
+                        <h:outputText value="Name"/>
+
+                        <h:outputText value="Name"/>
+                        <h:outputText value="Name"/>
+                    </p:panelGrid>
+
+                </p:layoutUnit>
+                
+                <p:layoutUnit rendered="#{!(ComV.authorize('RECEPTIONIST') or 
+                                          ComV.authorize('CASHIER') or
+                                          ComV.authorize('CHEF') or
+                                          ComV.authorize('ADMIN'))}" position="center">
+                    <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
+                </p:layoutUnit>
 
                 <p:layoutUnit class="footer-unit" position="south" size="20" collapsible="true" gutter="0">
                     Copyright © 2016 Smart RMS Project Group #12

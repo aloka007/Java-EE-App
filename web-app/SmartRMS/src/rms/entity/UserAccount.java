@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -16,6 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import rms.security.MdFive;
 
 /**
  *
@@ -34,10 +37,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserAccount.findByLName", query = "SELECT u FROM UserAccount u WHERE u.lName = :lName")})
 public class UserAccount implements Serializable {
 
+    @Size(max = 500)
+    @Column(name = "token")
+    private String token;
+
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "user_id")
     private Integer userId;
     @Basic(optional = false)
@@ -91,7 +98,7 @@ public class UserAccount implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = MdFive.hash(password);
     }
 
     public String getUserType() {
@@ -141,6 +148,14 @@ public class UserAccount implements Serializable {
     @Override
     public String toString() {
         return "rms.common.UserAccount[ userId=" + userId + " ]";
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
     
 }

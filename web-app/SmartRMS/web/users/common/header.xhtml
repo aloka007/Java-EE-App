@@ -12,15 +12,15 @@ and open the template in the editor.
     xmlns:p="http://primefaces.org/ui">
     
         <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="5">
-            <h:outputText value=" " style="font-size: 200%" />
-            <h:outputText value="SmartRMS - #{type}" style="font-size: 200%" />
+            <h:outputText styleClass="head-text" value=" " style="font-size: 200%" />
+            <h:outputText styleClass="head-text" value="SmartRMS - #{type}" style="font-size: 200%" />
             <h:form>
-                <p:menuButton class="profile-button" style="color: darkblue" value="#{firstname} #{lastname}">
-                    <p:menuitem value="My Profile" url="/Profile" icon="ui-icon-check" />
+                <p:menuButton class="profile-button" styleClass="profile-button" value="#{firstname} #{lastname}">
+                    <p:menuitem value="My Profile" url="/users/common/profile.xhtml" icon="ui-icon-check" />
                     <p:menuitem value="Logout" url="/Logout" icon="ui-icon-close" />
                 </p:menuButton>
             </h:form>
-            <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
+            <p:clock id="clock" pattern="dd.MM.yyyy HH:mm:ss"/>
         </p:panelGrid>
     
 </ui:composition>

@@ -131,31 +131,7 @@
                         </p:panelGrid>
                     </h:form>
 
-                    <div class="ui-g">
-                        <div class="ui-g-2"></div>
-                        <div class="ui-g-2"></div>
-                        <div class="ui-g-2">Export Data</div>
-                        <div class="ui-g-2">
-                            <h:form>
-                                <h:commandLink>
-                                    <p:graphicImage name="/images/icons/excel.png" width="32"/>
-                                    <p:dataExporter type="xls" target="tbl" fileName="sales-data" />
-                                </h:commandLink>
-
-                                <h:commandLink>
-                                    <p:graphicImage name="/images/icons/pdf.png" width="32"/>
-                                    <p:dataExporter type="pdf" target="tbl" fileName="sales-data"/>
-                                </h:commandLink>
-
-                                <h:commandLink>
-                                    <p:graphicImage name="/images/icons/csv.png" width="32"/>
-                                    <p:dataExporter type="csv" target="tbl" fileName="sales-data" />
-                                </h:commandLink>
-                            </h:form>
-                        </div>
-                        <div class="ui-g-2"></div>
-                        <div class="ui-g-2"></div>
-                    </div>
+                    
 
 
 
@@ -190,6 +166,33 @@
                             <h:outputText value="#{bill.payMode}" />
                         </p:column>
                     </p:dataTable>
+                    
+                    <div class="ui-g">
+                        <div class="ui-g-2"></div>
+                        <div class="ui-g-2"></div>
+                        <div class="ui-g-2"></div>
+                        <div class="ui-g-2">Export Data</div>
+                        <div class="ui-g-2">
+                            <h:form>
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/icons/excel.png" width="32"/>
+                                    <p:dataExporter type="xls" target="tbl" fileName="sales-data" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/icons/pdf.png" width="32"/>
+                                    <p:dataExporter type="pdf" target="tbl" fileName="sales-data"/>
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/icons/csv.png" width="32"/>
+                                    <p:dataExporter type="csv" target="tbl" fileName="sales-data" />
+                                </h:commandLink>
+                            </h:form>
+                        </div>
+                        
+                        <div class="ui-g-2"></div>
+                    </div>
 
 
                 </p:layoutUnit>

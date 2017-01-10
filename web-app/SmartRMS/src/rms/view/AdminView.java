@@ -40,11 +40,14 @@ import rms.entity.Ingredient;
 import rms.entity.IngredientConsumption;
 import rms.entity.MenuItem;
 import rms.entity.OrderItem;
+import rms.entity.UserAccount;
 import rms.session.CustomerFacade;
 import rms.session.CustomerOrderFacade;
 import rms.session.IngredientConsumptionFacade;
 import rms.session.IngredientFacade;
 import rms.session.MenuItemFacade;
+import rms.session.UserAccountFacade;
+import rms.transaction.UserManager;
 
 /**
  *
@@ -60,6 +63,8 @@ public class AdminView {
         billList = (List<Bill>) billFacade.findAll();
         consumptionList = (List<IngredientConsumption>) ingredientConsumptionFacade.findAll();
         customers  = (List<Customer>) customerFacade.findAll();
+        userList = (List<UserAccount>) userAccountFacade.findAll();
+        dummyAccount = new UserAccount();
         createDateModel();
         initBarModel();
         initBarModel2();
@@ -93,9 +98,9 @@ public class AdminView {
         series1.setLabel("Series 1");
         series1.setSmoothLine(false);
 
-        String mindate = "0";
+        //String mindate = "0";
 
-        try {
+        try { //create salesbye date graph
             Date tempDate = new SimpleDateFormat("yyyy-MM-dd").parse("2016-11-02");
             Date lastDate = ComTainer.addDays((new Date()), 1);
 
@@ -215,7 +220,7 @@ public class AdminView {
         return stocksBarModel;
     }
 
-    private void initBarModel() {
+    private void initBarModel() { //create ingredient level graph
         stocksBarModel.setTitle("Stock Levels");
         stocksBarModel.setAnimate(true);
         Axis xAxis = stocksBarModel.getAxis(AxisType.X);
@@ -268,7 +273,7 @@ public class AdminView {
 
         ChartSeries bar = new ChartSeries();
 
-        for (CustomerOrder order : orders) {
+        for (CustomerOrder order : orders) { //creating the graph for item wise sales
             List<OrderItem> itemList = (List<OrderItem>) order.getOrderItemCollection();
             for (OrderItem orderItem : itemList) {
                 MenuItem item = orderItem.getItemId();
@@ -302,7 +307,7 @@ public class AdminView {
         this.customers = customers;
     }
     
-    public BigDecimal customerTotal(String email){
+    public BigDecimal customerTotal(String email){ //calculate total spent by each customer
         BigDecimal total = BigDecimal.valueOf(0.00);
         for (Bill bill : billList) {
             if (bill.getCustomerName() != null && bill.getCustomerName().equals(email)) {
@@ -313,6 +318,54 @@ public class AdminView {
     }
             
     //</editor-fold>
+    
+    
+    //<editor-fold defaultstate="collapsed" desc="User Account Functions">
+    @EJB
+    UserAccountFacade userAccountFacade;
+    
+    @EJB
+    UserManager userManager;
+    
+    private List<UserAccount> userList;
+    
+    public List<UserAccount> getUserList() {
+        return userList;
+    }
+    
+    public void setUserList(List<UserAccount> userList) {
+        this.userList = userList;
+    }
+    
+    private UserAccount selcectedAccount;
+    
+    public UserAccount getSelcectedAccount() {
+        return selcectedAccount;
+    }
+    
+    public void setSelcectedAccount(UserAccount selcectedAccount) {
+        this.selcectedAccount = selcectedAccount;
+    }
+    
+    private UserAccount dummyAccount;
+
+    public UserAccount getDummyUserAccount() {
+        return dummyAccount;
+    }
+
+    public void setDummyUserAccount(UserAccount dummyAccount) {
+        this.dummyAccount = dummyAccount;
+    }
+    
+    public void editUser(UserAccount user){
+        userManager.saveUser(selcectedAccount);
+    }
+    
+    public void createUser(){
+        userManager.saveUser(dummyAccount);
+    }
+    
+//</editor-fold>
 
     public void navigate(String path) {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();

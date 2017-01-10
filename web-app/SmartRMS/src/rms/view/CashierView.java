@@ -190,11 +190,12 @@ public class CashierView {
         }
         else{
         bill.setCustomerName(customerName);
-        bill.setSubTotal((bill.getAmount().subtract(bill.getDiscount())).add(bill.getTax()));
         bill.setTotal(bill.getSubTotal().add(bill.getTip()));
         bill.setPayMode(payMode);
+        
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+        bill.setCashierId((String)session.getAttribute("username"));
         session.setAttribute("bill", bill);
             
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -229,8 +230,9 @@ public class CashierView {
             }
             this.customerName = selectedContainers.get(0).getCustomerOrder().getCustName();
             this.bill.setAmount(amount);
-            this.bill.setDiscount(BigDecimal.valueOf(0.0));
+            this.bill.setDiscount(BigDecimal.valueOf(0.00));
             this.bill.setTax(amount.multiply(BigDecimal.valueOf(0.15)).setScale(2, RoundingMode.CEILING));
+            this.bill.setSubTotal((bill.getAmount().subtract(bill.getDiscount())).add(bill.getTax()));
             
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             try {
@@ -295,66 +297,4 @@ public class CashierView {
         selectedTab = Integer.parseInt(event.getTab().getId().substring(3, 4));
     }
 
-//    public String statuSwitch(int m, short i) {
-//        String s = "";
-//        if (m == 1) {
-//            switch (i) {
-//                case 0:
-//                    s = "red";
-//                    break;
-//                case 1:
-//                    s = "darkorange";
-//                    break;
-//                case 2:
-//                    s = "lime";
-//                    break;
-//                case 3:
-//                    s = "turquoise";
-//                    break;
-//                case 9:
-//                    s = "slategray";
-//                    break;
-//                default:
-//                    break;
-//            }
-//
-//        } else if (m == 2) {
-//
-//            switch (i) {
-//                case 0:
-//                    s = "New";
-//                    break;
-//                case 1:
-//                    s = "Accepted";
-//                    break;
-//                case 2:
-//                    s = "Ready";
-//                    break;
-//                case 3:
-//                    s = "Delivered";
-//                    break;
-//                case 9:
-//                    s = "Cancelled";
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//        return s;
-//    }
-
-//    public boolean isHiddenatrib() {
-//        try {
-//            String usertype = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("type");
-//            String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
-//            int auth_id = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("auth_id");
-//            int key_id = ComTainer.getKey(username);
-//            if (usertype.equals("RECEPTIONIST") && key_id == auth_id) {
-//                hiddenatrib = true;
-//            }
-//        } catch (Exception e) {
-//        }
-//        //return hiddenatrib;
-//        return true;
-//    }
 }

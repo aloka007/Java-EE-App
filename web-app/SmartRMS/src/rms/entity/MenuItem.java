@@ -39,6 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "MenuItem.findBySpiciness", query = "SELECT m FROM MenuItem m WHERE m.spiciness = :spiciness")})
 public class MenuItem implements Serializable, Comparable{
 
+    @Size(max = 100)
+    @Column(name = "image_path")
+    private String imagePath;
+
     @OneToMany(mappedBy = "itemId")
     private Collection<MenuItemIngredient> menuItemIngredientCollection;
 
@@ -178,6 +182,14 @@ public class MenuItem implements Serializable, Comparable{
 
     public void setMenuItemIngredientCollection(Collection<MenuItemIngredient> menuItemIngredientCollection) {
         this.menuItemIngredientCollection = menuItemIngredientCollection;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
     
 }

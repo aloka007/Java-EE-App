@@ -72,9 +72,9 @@
                     min-width: 30px !important;
                 }
 
-                .main-panel{
+/*                .main-panel{
                     height: 100% !important;
-                }
+                }*/
 
                 .user-toolbar .ui-layout-unit-content{
                     padding: 0px !important;
@@ -98,31 +98,6 @@
 
                     <p:chart type="bar" model="#{AdmV.stocksBarModel}" style="height:300px; width: 50%; margin-left: 25%"/>
                     
-                    <div class="ui-g">
-                        <div class="ui-g-2"></div>
-                        <div class="ui-g-2"></div>
-                        <div class="ui-g-2">Export Data</div>
-                        <div class="ui-g-2">
-                            <h:form>
-                                <h:commandLink>
-                                    <p:graphicImage name="/images/icons/excel.png" width="32"/>
-                                    <p:dataExporter type="xls" target="tbl" fileName="consumption-data" />
-                                </h:commandLink>
-
-                                <h:commandLink>
-                                    <p:graphicImage name="/images/icons/pdf.png" width="32"/>
-                                    <p:dataExporter type="pdf" target="tbl" fileName="consumption-data"/>
-                                </h:commandLink>
-
-                                <h:commandLink>
-                                    <p:graphicImage name="/images/icons/csv.png" width="32"/>
-                                    <p:dataExporter type="csv" target="tbl" fileName="consumption-data" />
-                                </h:commandLink>
-                            </h:form>
-                        </div>
-                        <div class="ui-g-2"></div>
-                        <div class="ui-g-2"></div>
-                    </div>
 
                     <p:dataTable id="tbl" var="consumption" value="#{AdmV.consumptionList}" style="margin-left:10%;width: 80%"
                                  rows="10"
@@ -147,6 +122,33 @@
                             <h:outputText value="#{consumption.amount}" />
                         </p:column>
                     </p:dataTable>
+                    
+                    
+                    <div class="ui-g">
+                        <div class="ui-g-2"></div>
+                        <div class="ui-g-2"></div>
+                        <div class="ui-g-2"></div>
+                        <div class="ui-g-2">Export Data</div>
+                        <div class="ui-g-2">
+                            <h:form>
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/icons/excel.png" width="32"/>
+                                    <p:dataExporter type="xls" target="tbl" fileName="consumption-data" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/icons/pdf.png" width="32"/>
+                                    <p:dataExporter type="pdf" target="tbl" fileName="consumption-data"/>
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/icons/csv.png" width="32"/>
+                                    <p:dataExporter type="csv" target="tbl" fileName="consumption-data" />
+                                </h:commandLink>
+                            </h:form>
+                        </div>
+                        <div class="ui-g-2"></div>
+                    </div>
 
                 </p:layoutUnit>
 

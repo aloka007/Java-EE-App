@@ -66,22 +66,22 @@
                 .item-table{
                     width: 50% !important;
                 }
-                
+
                 .ui-selectonemenu{
                     width: 30px !important;
                     min-width: 30px !important;
                 }
-                
+
                 .main-panel{
                     height: 100% !important;
                 }
-                
+
                 .user-toolbar .ui-layout-unit-content{
                     padding: 0px !important;
                     height: 45px !important;
                 }
-                
-                
+
+
             </style>
 
             <p:layout fullPage="true">
@@ -97,7 +97,7 @@
 
                 <p:layoutUnit id="center-panel" class="main-panel" rendered="#{ComV.authorize('CASHIER')}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
-<!--                    <p:messages id="messages" autoUpdate="true" closable="true" />-->
+                    <!--                    <p:messages id="messages" autoUpdate="true" closable="true" />-->
 
                     <p:tabView id="tab-panel" orientation="left" style="height:98%" activeIndex="#{CashV.selectedTab}">
                         <p:ajax event="tabChange" listener="#{CashV.onTabChange}"/>
@@ -123,7 +123,7 @@
                                                     <p:growl id="growl" showDetail="true" sticky="true" />  
 
                                                     <p:commandButton id="proceedbtn" value="Create Bill" ajax="false" update="growl" action="#{CashV.proceed()}" icon="ui-icon-play" disabled="false"/>
-                                                    
+
                                                 </f:facet>
 
                                             </p:toolbar>
@@ -141,7 +141,7 @@
                                                     <p:column headerText="Order No" style="width: 40px">
                                                         <h:outputText style="align-content: center" value="#{order.customerOrder.orderNo}" />
                                                     </p:column>
-                                                    
+
                                                     <p:column filterBy="#{order.customerOrder.tableNo}" filterMatchMode="exact" headerText="Table No" style="width: 40px">
                                                         <f:facet name="filter">
                                                             <p:selectOneMenu onchange="PF('orderTable').filter()" style="width: 20px">
@@ -217,20 +217,42 @@
                             </p:layoutUnit>
                         </p:tab>
 
-                        <p:tab title="Take-Away Orders" id="tab1">
+                        <p:tab title="Created Invoices" id="tab1">
+                            <p:dataTable id="tbl" var="bill" value="#{AdmV.billList}" style="margin-left:10%;width: 80%"
+                                         rows="10"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15">
+
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{bill.id}" />
+                                </p:column>
+                                <p:column headerText="Customer" style="width:150px">
+                                    <h:outputText value="#{bill.customerName}" />
+                                </p:column>
+                                <p:column headerText="Date" style="width:250px">
+                                    <h:outputText value="#{bill.date}" />
+                                </p:column>
+                                <p:column headerText="Subtotal">
+                                    <h:outputText value="#{bill.subTotal}" />
+                                </p:column>
+                                <p:column headerText="Tip">
+                                    <h:outputText value="#{bill.tip}" />
+                                </p:column>
+                                <p:column headerText="Waiter">
+                                    <h:outputText value="#{bill.waiterId}" />
+                                </p:column>
+                                <p:column headerText="Total">
+                                    <h:outputText value="#{bill.total}" />
+                                </p:column>
+                                <p:column headerText="Paymode">
+                                    <h:outputText value="#{bill.payMode}" />
+                                </p:column>
+                            </p:dataTable>
                         </p:tab>
 
-                        <p:tab title="Paid Orders" id="tab2">
-                        </p:tab>
-
-                        <p:tab id="tab3" title="Placed Orders">
-
-                        </p:tab>
-
-                        <p:tab id="tab4" title="Reservation">
 
 
-                        </p:tab>
                     </p:tabView>
 
 

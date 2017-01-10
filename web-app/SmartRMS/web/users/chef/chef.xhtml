@@ -231,7 +231,7 @@
                                             <h:outputText value="Name" />
                                             <h:outputText value="#{dtOrderList.selectedIngredient.name}" />
 
-                                            <h:outputText value="Date" />
+                                            <h:outputText value="Amount" />
                                             <p:inputNumber value="#{dtOrderList.selectedIngredient.amount}" minValue="0.001" maxValue="19.999" required="true" decimalPlaces="3"/>
                                         </p:panelGrid>
                                         <p:commandButton value="Save Changes" id="nonAjax" actionListener="#{dtOrderList.editStock(dtOrderList.selectedIngredient)}" ajax="false" />
