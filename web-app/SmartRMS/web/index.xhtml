@@ -111,8 +111,8 @@
                                 <p:panel id="pnl" style="margin-top:200px; width:325px">
                                     <p:messages closable="true" showSummary="true"/>
                                     <p:panelGrid columns="1" styleClass="loginGrid" style="text-align:center; margin:30px">
-                                        <p:inputText id="name" styleClass="logbtn" value="#{IndV.username}" placeholder="Username" required="#{true}" onfocus="PF('spot').show()" onblur="PF('spot').hide()"/>
-                                        <p:password id="password" styleClass="logbtn" value="#{IndV.password}" placeholder="Password" required="#{true}" onfocus="PF('spot').show()" onblur="PF('spot').hide()"/>
+                                        <p:inputText id="name" styleClass="logbtn" value="#{IndV.username}" placeholder="Username" required="#{true}" requiredMessage="Please Enter Username" onfocus="PF('spot').show()" onblur="PF('spot').hide()"/>
+                                        <p:password id="password" styleClass="logbtn" value="#{IndV.password}" placeholder="Password" required="#{true}" requiredMessage="Please Enter Password" onfocus="PF('spot').show()" onblur="PF('spot').hide()"/>
                                         <p:commandButton value="Login" styleClass="logbtn" id="nonAjax" actionListener="#{IndV.login()}" ajax="false" />
                                     </p:panelGrid>
 

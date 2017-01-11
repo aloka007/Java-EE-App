@@ -227,12 +227,11 @@
                                 <p:outputPanel id="ingDetail" style="text-align:center;">
                                     <h:form id="dialogform">
                                         <p:panelGrid  columns="2" columnClasses="label,value">
-
                                             <h:outputText value="Name" />
                                             <h:outputText value="#{dtOrderList.selectedIngredient.name}" />
 
                                             <h:outputText value="Amount" />
-                                            <p:inputNumber value="#{dtOrderList.selectedIngredient.amount}" minValue="0.001" maxValue="19.999" required="true" decimalPlaces="3"/>
+                                            <p:inputNumber value="#{dtOrderList.selectedIngredient.amount}" minValue="0.001" maxValue="999.999" required="true" decimalPlaces="3"/>
                                         </p:panelGrid>
                                         <p:commandButton value="Save Changes" id="nonAjax" actionListener="#{dtOrderList.editStock(dtOrderList.selectedIngredient)}" ajax="false" />
                                     </h:form>

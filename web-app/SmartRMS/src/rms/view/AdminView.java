@@ -201,6 +201,7 @@ public class AdminView {
     List<Ingredient> ingredientList = new ArrayList<>();
 
     public List<Ingredient> getIngredientList() {
+        ingredientList = ingredientFacade.findAll();
         return ingredientList;
     }
 
@@ -381,10 +382,10 @@ public class AdminView {
     
     //<editor-fold defaultstate="collapsed" desc="Estimation Rules">
     @EJB
-            MenuItemIngredientFacade menuItemIngredientFacade;
+    MenuItemIngredientFacade menuItemIngredientFacade;
     
     @EJB
-            OrderManager orderManager;
+    OrderManager orderManager;
     
     private List<MenuItemIngredient> rulesList;
     
@@ -396,12 +397,6 @@ public class AdminView {
         this.rulesList = rulesList;
     }
     
-    public void createRule(){
-        MenuItemIngredient rule = new MenuItemIngredient();
-        orderManager.saveNewRule(rule);
-        em.getEntityManagerFactory().getCache().evictAll();
-        rulesList = menuItemIngredientFacade.findAll();
-    }
     
     public void saveRule(){
         orderManager.saveNewRule(rule);
@@ -413,21 +408,40 @@ public class AdminView {
         return rule;
     }
     
-    public void setSelectedRule(MenuItemIngredient rule) {
-        this.rule = rule;
+    
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Create menu items and ingredients">
+    
+    Ingredient dummyIngredient = new Ingredient();
+    
+    public Ingredient getDummyIngredient() {
+        return dummyIngredient;
     }
     
-    public void setRuleIngredient(Ingredient ingredient){
-        rule.setIngredientId(ingredient);
-    }
-    public Ingredient getRuleIngredient(){
-        return rule.getIngredientId();
+    public void setDummyIngredient(Ingredient dummyIngredient) {
+        this.dummyIngredient = dummyIngredient;
     }
     
-    public void chooseMenuItem(MenuItem item){
-        rule.setItemId(item);
+    MenuItem dummyItem = new MenuItem();
+    
+    public MenuItem getDummyItem() {
+        return dummyItem;
     }
     
+    public void setDummyItem(MenuItem dummyItem) {
+        this.dummyItem = dummyItem;
+    }
+    
+    public void createItem(){
+        orderManager.insertMenuItem(dummyItem);
+        dummyItem = new MenuItem();
+    }
+    
+    public void createIngredient(){
+        orderManager.insertIngredient(dummyIngredient);
+        dummyIngredient = new Ingredient();
+    }
 //</editor-fold>
     public void navigate(String path) {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();

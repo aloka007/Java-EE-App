@@ -84,19 +84,6 @@ public class RecepView {
         ComTainer.setMenu(items);
     }
 
-//    private int selectedTab = 0;
-//
-//    public void setSelectedTab(int selectedTab) {
-//        this.selectedTab = selectedTab;
-//    }
-//
-//    public int getSelectedTab() {
-//        return selectedTab;
-//    }
-//
-//    public void onTabChange(TabChangeEvent event) {
-//        selectedTab = Integer.parseInt(event.getTab().getId().substring(3, 4));
-//    }
     // <editor-fold defaultstate="collapsed" desc="Ordering Functions. Click on the + sign on the left to edit the code.">
     //------------------Ordering Functions
     private String customerName = "";
@@ -444,6 +431,7 @@ public class RecepView {
     private List<String> strings;
 
     public List<MenuItem> getItems() {
+        items = menuItemFacade.findAll();
         return items;
     }
 

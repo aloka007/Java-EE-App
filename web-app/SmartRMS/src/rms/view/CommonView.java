@@ -7,11 +7,18 @@ package rms.view;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.event.TabChangeEvent;
 import rms.common.ComTainer;
+import rms.entity.UserAccount;
+import rms.session.UserAccountFacade;
+import rms.transaction.UserManager;
 
 /**
  *
@@ -20,6 +27,56 @@ import rms.common.ComTainer;
 @ManagedBean(name = "ComV")
 @SessionScoped
 public class CommonView {
+
+    @EJB
+    UserAccountFacade userAccountFacade;
+
+    @EJB
+    UserManager userManager;
+
+    @PostConstruct
+    public void init() {
+        try {
+
+            List<UserAccount> allAccounts = (List<UserAccount>) userAccountFacade.findAll();
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+
+            for (UserAccount account : allAccounts) {
+                if (((String) session.getAttribute("username")).equals(account.getUsername())) {
+                    userAccount = account;
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private String tempPassword = "default";
+
+    public String getTempPassword() {
+        return tempPassword;
+    }
+
+    public void setTempPassword(String tempPassword) {
+        this.tempPassword = tempPassword;
+    }
+
+    private UserAccount userAccount = new UserAccount();
+
+    public UserAccount getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    public void saveUserAccount() {
+        if (!"default".equals(tempPassword)) {
+            userAccount.setPassword(tempPassword);
+        }
+        userManager.saveUser(userAccount);
+    }
 
     private int selectedTab = 0;
 
@@ -34,8 +91,8 @@ public class CommonView {
     public void onTabChange(TabChangeEvent event) {
         selectedTab = Integer.parseInt(event.getTab().getId().substring(3, 4));
     }
-    
-    public String formatDate(Date date){
+
+    public String formatDate(Date date) {
         String dateString = new SimpleDateFormat("yyyy-MM-dd").format(date);
         return dateString;
     }
@@ -100,8 +157,8 @@ public class CommonView {
         try {
             String usertype = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("type");
             String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
-            if (utype.equals("ADMIN")) {
-                usertype = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("type");
+            if (usertype.equals("ADMIN")) {
+                usertype = utype;//what was i thinking?
             }
             int auth_id = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("auth_id");
             int key_id = ComTainer.getKey(username);

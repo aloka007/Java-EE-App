@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sql="http://java.sun.com/jsp/jstl/sql"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>SmartRMS - Configuration</title>
+            </f:facet>
+            <h:outputStylesheet name="css/prime-ui.css" />
+        </h:head>
+
+        <h:body>
+            <style>
+                .ui-picklist .ui-picklist-list {
+                    height: 400px;
+                    width: 220px;
+                    margin: 0;
+                    overflow:auto;
+                    padding: 0;
+                }
+                .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
+                    /*                    background: #363636;*/
+                    color: white;  
+                    /*                    specific for cashier*/
+
+                }
+                .ui-tabs-left > .ui-tabs-nav{
+                    width: 12%;
+                    padding-top: 5px;
+                }
+                .ui-tabs-left > .ui-tabs-panels {
+                    float: right;
+                    width: 87%;
+                }
+                .ui-tabs .ui-tabs-panel{
+                    padding: 0px 0px;
+                }
+                .header-grid.ui-panelgrid>*>tr,
+                .header-grid.ui-panelgrid .ui-panelgrid-cell {
+                    height: 20px;
+                    border: none;
+                }
+                .res-grid.ui-panelgrid>*>tr,
+                .res-grid.ui-panelgrid .ui-panelgrid-cell {
+                    height: 20px;
+                    border: none;
+                }
+                .ui-g-2{
+                    text-align:right;
+
+                }
+
+                .ui-tabs-left > .ui-tabs-nav{
+                    width: 12%;
+                    padding-top: 5px;
+                    height: 98% !important;
+                }
+                .item-table{
+                    width: 50% !important;
+                }
+
+                .ui-selectonemenu{
+                    width: 30px !important;
+                    min-width: 30px !important;
+                }
+
+                /*                .main-panel{
+                                    height: 100% !important;
+                                }*/
+
+                .user-toolbar .ui-layout-unit-content{
+                    padding: 0px !important;
+                    height: 45px !important;
+                }
+
+            </style>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{ComV.authorize('ADMIN')}" position="north" size="60" collapsible="true" gutter="0" >
+
+                    <ui:include src="/users/common/header.xhtml" />
+                    <p:growl id="growl" showDetail="true" life ="7000" />
+
+                </p:layoutUnit>
+
+                <p:layoutUnit id="center-panel" class="main-panel" rendered="#{ComV.authorize('ADMIN')}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
+
+                    <f:view>
+                        <p:panel id="itmPanel" style="margin-bottom:20px; margin-left:3%; width:94%;" >
+
+                            <h:form id="itmMainForm">
+                                <h1><h:outputText value="Menu Items"/></h1>
+                                <p:dataTable id="itmTable" value="#{dtRecepView.items}" var="item">
+                                    <p:column style="width:30px">
+                                        <f:facet name="header">
+                                            <h:outputText value="Id"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.itemId}"/>
+                                    </p:column>
+                                    <p:column style="width:30px">
+                                        <f:facet name="header">
+                                            <h:outputText value="MenuIndex"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.menuIndex}"/>
+                                    </p:column>
+                                    <p:column style="width:150px">
+                                        <f:facet name="header">
+                                            <h:outputText value="ItemType"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.itemType}"/>
+                                    </p:column>
+                                    <p:column style="width:150px">
+                                        <f:facet name="header">
+                                            <h:outputText value="ItemName"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.itemName}"/>
+                                    </p:column>
+                                    <p:column style="min-width:300px">
+                                        <f:facet name="header" >
+                                            <h:outputText value="Description"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.description}"/>
+                                    </p:column>
+                                    <p:column style="width:80px">
+                                        <f:facet name="header">
+                                            <h:outputText value="Price"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.price}"/>
+                                    </p:column>
+                                    <p:column style="width:60px">
+                                        <f:facet name="header" >
+                                            <h:outputText value="Spice"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.spiciness}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
+                            <p:commandButton value="Add New Item" update=":itmDialog" oncomplete="PF('itmDialog').show()" icon="ui-icon-plus" title="View"/>
+                            <p:dialog id="itmDialog" header="Insert New Item" widgetVar="itmDialog" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
+                                <p:outputPanel id="itmDetail" style="text-align:center;">
+                                    <h:form>
+                                        <p:panelGrid columns="2">
+                                            <p:outputLabel value="Item Id:" for="itemId" />
+                                            <p:inputText id="itemId" value="#{AdmV.dummyItem.itemId}" title="ItemId" required="true" requiredMessage="The Item Id field is required."/>
+                                            <p:outputLabel value="Menu Index:" for="menuIndex" />
+                                            <p:inputText id="menuIndex" value="#{AdmV.dummyItem.menuIndex}" title="MenuIndex" required="true" requiredMessage="The Menu Index field is required."/>
+                                            <p:outputLabel value="ItemType:" for="itemType" />
+                                            <p:inputText id="itemType" value="#{AdmV.dummyItem.itemType}" title="ItemType" />
+                                            <p:outputLabel value="Item Name:" for="itemName" />
+                                            <p:inputText id="itemName" value="#{AdmV.dummyItem.itemName}" title="ItemName" />
+                                            <p:outputLabel value="Description:" for="description" />
+                                            <p:inputTextarea rows="4" cols="30" id="description" value="#{AdmV.dummyItem.description}" title="Description" />
+                                            <p:outputLabel value="Price:" for="price" />
+                                            <p:inputText id="price" value="#{AdmV.dummyItem.price}" title="Price" />
+                                            <p:outputLabel value="Spiciness:" for="spiciness" />
+                                            <p:inputText id="spiciness" value="#{AdmV.dummyItem.spiciness}" title="Spiciness" />
+                                            <p:outputLabel value="Image Path:" for="imagePath" />
+                                            <p:inputText id="imagePath" value="#{AdmV.dummyItem.imagePath}" title="ImagePath" />
+                                        </p:panelGrid>
+                                        <p:commandButton id="save-itm-button" update=":itmMainForm:itmTable" ajax="false" value="Create Item" actionListener="#{AdmV.createItem()}" icon="ui-icon-check" />
+                                    </h:form>
+
+                                </p:outputPanel>
+
+                            </p:dialog>
+                        </p:panel>
+
+                        <p:separator/>
+
+                        <p:panel id="ingPanel" style="margin-bottom:20px; margin-left:20%; width:60%;" >
+
+                            <h:form>
+                                <h1><h:outputText value="Ingredients"/></h1>
+                                <p:dataTable value="#{AdmV.ingredientList}" var="item">
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Id"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.id}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.name}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Description"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.description}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Unit"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.unit}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Amount"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.amount}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Warn"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.warn}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Crit"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.crit}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
+                            <p:commandButton value="Add New Ingredient" update=":ingDialog" oncomplete="PF('ingDialog').show()" icon="ui-icon-plus" title="View"/>
+                            <p:dialog id="ingDialog" header="Insert New Ingredient" widgetVar="ingDialog" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
+                                <p:outputPanel id="ingDetail" style="text-align:center;">
+                                    <h:form>
+                                        <p:panelGrid columns="2">
+                                            <p:outputLabel value="Id:" for="id" />
+                                            <p:inputText id="id" value="#{AdmV.dummyIngredient.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
+                                            <p:outputLabel value="Name:" for="name" />
+                                            <p:inputText id="name" value="#{AdmV.dummyIngredient.name}" title="Name" />
+                                            <p:outputLabel value="Description:" for="description" />
+                                            <p:inputText id="description" value="#{AdmV.dummyIngredient.description}" title="Description" />
+                                            <p:outputLabel value="Unit:" for="unit" />
+                                            
+                                            <p:selectOneMenu id="unit" value="#{AdmV.dummyIngredient.unit}" style="width:125px">
+                                                <f:selectItem itemLabel="Kilograms" itemValue="KG" />
+                                                <f:selectItem itemLabel="Litres" itemValue="L" />
+                                                <f:selectItem itemLabel="Count" itemValue="UNIT" />
+                                            </p:selectOneMenu>
+
+                                            <p:outputLabel value="Amount:" for="amount" />
+                                            <p:inputNumber id="amount" value="#{AdmV.dummyIngredient.amount}" minValue="0.001" maxValue="999.999" required="true" decimalPlaces="3"/>
+
+                                            <p:outputLabel value="Warn:" for="warn" />
+                                            <p:inputNumber id="warn" value="#{AdmV.dummyIngredient.warn}" minValue="0.001" maxValue="999.999" required="true" decimalPlaces="3"/>
+
+                                            <p:outputLabel value="Crit:" for="crit" />
+                                            <p:inputNumber id="crit" value="#{AdmV.dummyIngredient.crit}" minValue="0.001" maxValue="999.999" required="true" decimalPlaces="3"/>
+
+                                        </p:panelGrid>
+                                        <p:commandButton id="save-ing-button" update=":itmMainForm:itmTable" ajax="false" value="Create Item" actionListener="#{AdmV.createIngredient()}" icon="ui-icon-check" />
+                                    </h:form>
+                                </p:outputPanel>
+
+                            </p:dialog>
+
+                        </p:panel>
+
+                    </f:view>
+
+
+                </p:layoutUnit>
+
+                <p:layoutUnit rendered="#{!ComV.authorize('ADMIN')}" position="center">
+                    <h:outputLabel for="name" value="You Are Not Authorized!" style="font-weight:bold" />
+                </p:layoutUnit>
+
+                <p:layoutUnit class="footer-unit" position="south" size="20" collapsible="true" gutter="0">
+                    Copyright © 2016 Smart RMS Project Group #12
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

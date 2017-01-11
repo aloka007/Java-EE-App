@@ -15,7 +15,8 @@
     <body>
         <style>
             .error{
-                background-color:lightcyan;
+                background-color:darkblue;
+                color: white;
                 font-family: "Arial",sans-serif;
                 font-size: 28px;
                 height:600px;
@@ -23,8 +24,10 @@
                 padding:10px 10px;
             }
         </style>
-        <div class="error">OOPS! Something Happened!  <br>
-            : (<br><br>
+        <div class="error">
+            <br><br>
+            Something Is Wrong! :(  <br>
+            <br><br>
             <big>${message}</big><br><br>
             <a href="index.xhtml"><b>Go Back To Login Page</font></b></a>
         </div>

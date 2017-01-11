@@ -99,19 +99,34 @@
                                                                                ComV.authorize('CHEF') or
                                                                                ComV.authorize('ADMIN'))}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
-                    <p:panelGrid columns="2" style="margin-left:20%; width:60%">
-                        <h:outputText value="Name"/>
-                        <h:outputText value="Name"/>
 
-                        <h:outputText value="Name"/>
-                        <h:outputText value="Name"/>
+                    <f:view>
+                        <h:form>
+                            <p:panel id="basic" header=" " style="margin-left:35%; width: 30%">
+                                <h1><h:outputText value="Change Details"/></h1>
 
-                        <h:outputText value="Name"/>
-                        <h:outputText value="Name"/>
-                    </p:panelGrid>
+                                <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                                <p:panelGrid id="editGrid" columns="2" >
+
+                                    <h:outputLabel for="pwd1" value="New Password: *" />
+                                    <p:password id="pwd1" value="#{ComV.tempPassword}" feedback="true" match="pwd2" label="Password 1" required="true" />
+
+                                    <h:outputLabel for="pwd2" value="Repeat Password: *" />
+                                    <p:password id="pwd2" value="#{ComV.tempPassword}" label="Password 2" required="true" />
+
+                                    <p:outputLabel value="FName:" for="FName" />
+                                    <p:inputText id="FName" value="#{ComV.userAccount.FName}" title="FName" />
+                                    <p:outputLabel value="LName:" for="LName" />
+                                    <p:inputText id="LName" value="#{ComV.userAccount.LName}" title="LName" />
+                                </p:panelGrid>
+                                <p:commandButton value="Save" icon="ui-icon-check" update="basic" actionListener="#{ComV.saveUserAccount()}" />
+                            </p:panel>
+                        </h:form>
+                    </f:view>
+
 
                 </p:layoutUnit>
-                
+
                 <p:layoutUnit rendered="#{!(ComV.authorize('RECEPTIONIST') or 
                                           ComV.authorize('CASHIER') or
                                           ComV.authorize('CHEF') or

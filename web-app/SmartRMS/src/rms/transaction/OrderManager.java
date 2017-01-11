@@ -143,5 +143,17 @@ public class OrderManager {
         em.flush();
     }
     
+    public void insertMenuItem(MenuItem item){
+        em.flush();
+        em.persist(item);
+        em.flush();
+    }
+    
+    public void insertIngredient(Ingredient item){
+        em.flush();
+        em.persist(item);
+        em.flush();
+    }
+    
 
 }

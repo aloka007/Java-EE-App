@@ -130,7 +130,7 @@
                                         </p:commandButton>
                                     </p:column>
                                 </p:dataTable>
-<!--                                <p:commandButton value="Add Rule" icon="ui-icon-plus" update=":rulestblform:rulestbl" actionListener="#{AdmV.createRule()}"/>-->
+
                             </h:form>
                             <p:dialog id="resDialog" header="Edit Rule" widgetVar="resDialog" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
 
@@ -149,6 +149,51 @@
 
                                 </p:outputPanel>
 
+                            </p:dialog>
+                            
+                            <p:separator/>
+                            
+                            <h1><h:outputText value="Stock Levels"/></h1>
+                            
+                            <h:form>
+                                <p:dataTable id="ing-table" value="#{AdmV.ingredientList}" var="ingredient">
+                                    <p:column headerText="Name">
+                                        <h:outputText value="#{ingredient.name}"/>
+                                    </p:column>
+                                    <p:column headerText="Amount">
+                                        <h:outputText value="#{ingredient.amount}"/>
+                                    </p:column>
+                                    <p:column headerText="Warning Level">
+                                        <h:outputText value="#{ingredient.warn}"/>
+                                    </p:column>
+                                    <p:column headerText="Critical Level">
+                                        <h:outputText value="#{ingredient.crit}"/>
+                                    </p:column>
+                                    <p:column style="width:32px;text-align: center">
+                                        <p:commandButton update=":ingDialog" oncomplete="PF('resDialog').show()" icon="ui-icon-search" title="View">
+                                            <f:setPropertyActionListener value="#{ingredient}" target="#{dtOrderList.selectedIngredient}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
+                            
+                            
+
+                            <p:dialog id="ingDialog" header="Restock Ingredient" widgetVar="resDialog" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
+                                <p:outputPanel id="ingDetail" style="text-align:center;">
+                                    <h:form id="dialogform">
+                                        <p:panelGrid  columns="2" columnClasses="label,value">
+
+                                            <h:outputText value="Name" />
+                                            <h:outputText value="#{dtOrderList.selectedIngredient.name}" />
+
+                                            <h:outputText value="Amount" />
+                                            <p:inputNumber value="#{dtOrderList.selectedIngredient.amount}" minValue="0.001" maxValue="999.999" required="true" decimalPlaces="3"/>
+                                        </p:panelGrid>
+                                        <p:commandButton value="Save Changes" id="nonAjax" actionListener="#{dtOrderList.editStock(dtOrderList.selectedIngredient)}" ajax="false" />
+                                    </h:form>
+                                </p:outputPanel>
                             </p:dialog>
                         </p:panel>
 
