@@ -81,19 +81,12 @@
 
                 <p:layoutUnit id="center-panel" rendered="#{ComV.authorize('RECEPTIONIST')}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
-                    <!--                    <p:messages id="messages" autoUpdate="true" closable="true" />-->
-
                     <p:tabView id="tab-panel" orientation="left" style="height:98%" activeIndex="#{ComV.selectedTab}">
                         <p:ajax event="tabChange" listener="#{ComV.onTabChange}"/>
                         <p:tab title="Ordering" id="tab0">
                             <h:form>
-
-
-
-
-
-                                <p:layout id="main-form" style="overflow: hidden">
-                                    <p:layoutUnit style="overflow: hidden; border:none; padding-left:3px; padding-bottom: 0px; padding-top: 0px;" position="north" size="50" collapsible="true" gutter="0">
+                                <div class="ui-g">
+                                    <div class="ui-g-12">
                                         <p:toolbar style="overflow: hidden">
                                             <f:facet name="left">
                                                 <p:commandButton value="New" icon="ui-icon-document" />
@@ -104,71 +97,68 @@
                                                 </span>
 
                                                 <h:outputText value="    Customer Name: " />
-                                                <p:inputText id="custname" value="#{dtRecepView.customerName}" required="true">
+                                                <p:inputText id="custname" value="#{dtRecepView.customerName}" required="true" requiredMessage="Please enter costomer name">
                                                     <p:ajax event="blur" update="custname,msg" />
 
                                                 </p:inputText>
-                                                <p:message id="msg" for="custname" />
-
-
+                                                <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true"/>
                                             </f:facet>
 
                                             <f:facet name="right">
 
                                                 <p:commandButton id="proceedbtn" value="Proceed" ajax="false" action="#{dtRecepView.proceed()}" icon="ui-icon-play" disabled="false"/>
-                                                <p:menuButton value="Options">
-                                                    <p:menuitem value="Option1" icon="ui-icon-disk" />
-                                                    <p:menuitem value="Option2" icon="ui-icon-arrowrefresh-1-w" />
-                                                    <p:menuitem value="Option3" icon="ui-icon-close" />
-                                                    <p:menuitem value="Option4" icon="ui-icon-extlink" />
-                                                </p:menuButton>
+
                                             </f:facet>
 
                                         </p:toolbar>
-                                    </p:layoutUnit>
+                                    </div>
+                                </div>
 
 
-                                    <p:layoutUnit style="overflow: hidden; border:none; padding-top: 2px; padding-right: 0px; height: 420px" position="west" size="520" collapsible="true" gutter="0">
+                                <div class="ui-g">
+                                    <div class="ui-g-12">
+                                        <div class="ui-g">
+                                            <div class="ui-g-6">
 
-                                        <f:facet name="header">
-                                            Pick Items
-                                        </f:facet>
-                                        <p:pickList id="pickList" style="" value="#{dtRecepView.dualitems}" var="items" itemLabel="#{items}" itemValue="#{items}" 
-                                                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
-                                            <p:ajax event="transfer" listener="#{dtRecepView.filtertoo()}" update="basicDT" />
-                                        </p:pickList>
-
-                                    </p:layoutUnit>
-                                    <p:layoutUnit style="border:none; overflow: hidden;" class="item-table" position="center" collapsible="true" gutter="0">
-
-                                        <p:dataTable id="basicDT" style="margin-top:0px;" var="item" value="#{dtRecepView.rightItems}" 
-                                                     editable="true" editMode="cell" widgetVar="cellItems">
-                                            <f:facet name="header">
-                                                Enter Quantities
-                                            </f:facet>
-                                            <p:column headerText="No" style="width:30px">
-                                                <h:outputText value="#{item.menuItem.menuIndex}" />
-                                            </p:column>
-                                            <p:column headerText="Name" style="width:250px">
-                                                <h:outputText value="#{item.menuItem.itemName}" />
-                                            </p:column>
-                                            <p:column headerText="Price" style="width:80px">
-                                                <h:outputText value="#{item.menuItem.price}" />
-                                            </p:column>
-                                            <p:column headerText="Quantity" style="width:60px">
-
-                                                <p:cellEditor>
-                                                    <f:facet name="output"><h:outputText value="#{item.orderItem.quantity}" /></f:facet>
-                                                    <f:facet name="input"><p:spinner id="minMax" size="2" value="#{item.orderItem.quantity}" min="1" max="10" /></f:facet>
-                                                </p:cellEditor>
-                                            </p:column>
-                                        </p:dataTable>
+                                                <p:panel id="basic" style="overflow: hidden; border:none; padding-top: 2px; padding-right: 0px; height: 420px">
+                                                    <f:facet name="header">
+                                                        Pick Items
+                                                    </f:facet>
+                                                    <p:pickList id="pickList" style="" value="#{dtRecepView.dualitems}" var="items" itemLabel="#{items}" itemValue="#{items}" 
+                                                                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                                        <p:ajax event="transfer" listener="#{dtRecepView.filtertoo()}" update="basicDT" />
+                                                    </p:pickList>
+                                                </p:panel>
+                                            </div>
+                                            <div class="ui-g-6">
 
 
+                                                <p:dataTable id="basicDT" style="margin-top:0px;" var="item" value="#{dtRecepView.rightItems}" 
+                                                             editable="true" editMode="cell" widgetVar="cellItems">
+                                                    <f:facet name="header">
+                                                        Enter Quantities
+                                                    </f:facet>
+                                                    <p:column headerText="No" style="width:30px">
+                                                        <h:outputText value="#{item.menuItem.menuIndex}" />
+                                                    </p:column>
+                                                    <p:column headerText="Name" style="min-width:150px">
+                                                        <h:outputText value="#{item.menuItem.itemName}" />
+                                                    </p:column>
+                                                    <p:column headerText="Price" style="width:80px">
+                                                        <h:outputText value="#{item.menuItem.price}" />
+                                                    </p:column>
+                                                    <p:column headerText="Qty" style="width:40px">
 
-                                    </p:layoutUnit>
-
-                                </p:layout> 
+                                                        <p:cellEditor>
+                                                            <f:facet name="output"><h:outputText value="#{item.orderItem.quantity}" /></f:facet>
+                                                            <f:facet name="input"><p:spinner id="minMax" size="2" value="#{item.orderItem.quantity}" min="1" max="10" /></f:facet>
+                                                        </p:cellEditor>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </h:form>
                         </p:tab>
                         <p:tab title="View Menu" id="tab1">
@@ -207,7 +197,7 @@
                                             <p:outputPanel id="orderpanel">
 
                                                 <p:dataTable id="ordertable" var="order" value="#{RecOrd.orderDetails}" rowStyleClass="#{ComV.statuSwitch(1,order.customerOrder.status)}" >
-                                                    
+
                                                     <p:column headerText="Order No" style="width: 40px">
                                                         <h:outputText style="align-content: center" value="#{order.customerOrder.orderNo}" />
                                                     </p:column>
@@ -267,7 +257,7 @@
                                                     </p:column>
 
                                                     <p:column headerText="Item Name">
-                                                        <h:outputText value="#{item.itemId.itemName}" />
+                                                        <h:outputText value="#{item. itemId.itemName}" />
                                                     </p:column>
 
                                                     <p:column headerText="Quantity" style="width: 60px">
@@ -275,7 +265,7 @@
                                                     </p:column>
 
                                                 </p:dataTable>
-                                                
+
                                                 <p:panelGrid  columns="6" style="text-align: center; width:100%">
                                                     <h:outputText value="New" style="color:red; font-weight: bold" />
                                                     <h:outputText value="Accepted" style="color:darkorange; font-weight: bold" />

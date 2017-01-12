@@ -99,15 +99,8 @@
                             <h:outputText value="Customer Name:  " />
                             <h:outputText value="#{dtRecepView.customerName}" />
 
-                            <h:outputText value="Discount (5%):" />
-                            <h:outputText value="(#{dtRecepView.total * 0.05})" />
-
-                            <h:outputText value="Sales Tax (15%):" />
-                            <h:outputText value="#{(dtRecepView.total * 0.95) *0.15}" />
-
                             <h:outputText value="Total:" />
-                            <h:outputText value="#{((dtRecepView.total * 0.95) *1.15)-(((dtRecepView.total * 0.95) *1.15) % 0.01)}" />
-
+                            <h:outputText value="#{dtRecepView.total}" />
                         </p:panelGrid>
 
 

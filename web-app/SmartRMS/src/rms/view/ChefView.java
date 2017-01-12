@@ -130,6 +130,7 @@ public class ChefView implements Serializable {
     public void init() {
         itemList = orderItemFacade.findAll();
         update();
+        selectedContainer = orderDetails.get(0);
     }
 
     public void accept(int i) {

@@ -68,16 +68,16 @@
 
                             <p:layoutUnit style="border:none" position="center" collapsible="true" gutter="0">
                                 
-                                <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
                                 <p:panelGrid columns="2" style="width:50%; border: none; margin-left: 25%; margin-bottom: 20px;">
                                     <h:outputText value="Customer Name:" />
-                                    <p:inputText id="custname" value="#{dtRecepView.customerName}" required="true">
+                                    <p:inputText id="custname" value="#{dtRecepView.customerName}" required="true" requiredMessage="Customer name cannot be empty">
                                         <p:ajax event="blur" update="custname,messages" />
                                     </p:inputText>
                                     
                                     <h:outputText value="Contact No:  " />
-                                    <p:inputText value="#{dtRecepView.customerContact}" required="#{true}"/>
+                                    <p:inputText value="#{dtRecepView.customerContact}" required="true" requiredMessage="Contact number cannot be empty"/>
                                     
                                     <h:outputText value="Email  " />
                                     <p:inputText value="#{dtRecepView.customerEmail}" />
