@@ -11,7 +11,7 @@ and open the template in the editor.
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui">
     
-        <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="5">
+        <p:panelGrid styleClass="header-grid" style="padding: 10px 10px" columns="6">
             <h:outputText styleClass="head-text" value=" " style="font-size: 200%" />
             <h:outputText styleClass="head-text" value="SmartRMS - #{type}" style="font-size: 200%" />
             <h:form>
@@ -19,6 +19,7 @@ and open the template in the editor.
                     <p:menuitem value="My Profile" url="/users/common/profile.xhtml" icon="ui-icon-check" />
                     <p:menuitem value="Logout" url="/Logout" icon="ui-icon-close" />
                 </p:menuButton>
+                <p:commandButton class="profile-button" value="Home" actionListener="#{ComV.navigateHome()}" icon="ui-icon-home"/>
             </h:form>
             <p:clock id="clock" pattern="dd.MM.yyyy HH:mm:ss"/>
         </p:panelGrid>

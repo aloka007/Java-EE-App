@@ -5,13 +5,17 @@
  */
 package rms.view;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.TabChangeEvent;
@@ -95,6 +99,32 @@ public class CommonView {
     public String formatDate(Date date) {
         String dateString = new SimpleDateFormat("yyyy-MM-dd").format(date);
         return dateString;
+    }
+    
+    public void navigateHome(){
+        String usertype = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("type");
+        String homepath = "/";
+        
+        if (usertype.equals("CHEF")) {
+            homepath = "/users/chef/chef.xhtml";
+        }
+        else if (usertype.equals("RECEPTIONIST")){
+            homepath = "/users/receptionist/receptionist_2.xhtml";
+        }
+        else if (usertype.equals("CASHIER")){
+            homepath = "/users/cashier/cashier.xhtml";            
+        }
+        else if (usertype.equals("ADMIN")){
+            homepath = "/users/admin/admin.xhtml";            
+        }
+
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            ec.redirect(ec.getRequestContextPath() + homepath);
+        } catch (IOException ex) {
+            Logger.getLogger(RecepView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     public String statuSwitch(int m, short i) {
