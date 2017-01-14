@@ -18,6 +18,8 @@
         </h:head>
 
         <h:body>
+            
+            
 
 
             <p:layout fullPage="true">
@@ -92,6 +94,8 @@
                                                                                                             dtOrderList.selectedContainer.customerOrder.status == 0 or
                                                                                                             dtOrderList.selectedContainer.customerOrder.status == 1
                                                                                                             )}" actionListener="#{dtOrderList.accept(2)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
+                                                    
+                                                    <p:outputLabel value="#{dtOrderList.checkLevel()}"/>
 
                                                 </p:panelGrid>
 
@@ -205,9 +209,9 @@
                                         <h:outputText value="#{ingredient.name}"/>
                                     </p:column>
                                     <p:column headerText="Amount">
-                                        <h:outputText value="#{ingredient.amount}"/>
+                                        <h:outputText value="#{ingredient.amount} #{ingredient.unit}"/>
                                     </p:column>
-                                    <p:column headerText="Warning Level">
+                                    <p:column headerText="Reorder Level">
                                         <h:outputText value="#{ingredient.warn}"/>
                                     </p:column>
                                     <p:column headerText="Critical Level">

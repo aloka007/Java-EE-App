@@ -91,18 +91,11 @@
                                 <h:outputText value="    Customer Name or Email: " />
                                 <p:inputText id="custname" value="#{CashV.customerName}"></p:inputText>
 
-                                <h:outputText value="    Tip: " />
-                                <p:inputText id="tip" value="#{CashV.bill.tip}"><f:validateDoubleRange minimum="0.00" maximum="1000.00" /></p:inputText>
-
-                                <h:outputText value="    Waiter ID: " />
-                                <p:inputText id="wid" value="#{CashV.bill.waiterId}"> <f:validateDoubleRange minimum="0" maximum="20" /> </p:inputText>
-
-                                <h:outputText value="    Payment: " />
+                                <h:outputText value="Payment Mode: " />
                                 <p:selectOneMenu id="pmode" value="#{CashV.payMode}" style="width:125px">
                                     <f:selectItem itemLabel="Cash" itemValue="CASH" />
                                     <f:selectItem itemLabel="E-Card" itemValue="E-CARD" />
                                 </p:selectOneMenu>
-
                             </f:facet>
 
                             <f:facet name="right">

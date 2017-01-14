@@ -10,6 +10,7 @@ package rms.view;
  * @author Tharinda
  */
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import rms.common.ComTainer;
 import rms.entity.CustomerOrder;
 import rms.entity.Ingredient;
+import rms.entity.MenuItemIngredient;
 import rms.entity.OrderItem;
 import rms.session.CustomerOrderFacade;
 import rms.session.OrderItemFacade;
@@ -35,7 +37,7 @@ import rms.transaction.OrderManager;
 @SessionScoped
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class ChefView implements Serializable {
-    
+
     @PersistenceContext(unitName = "SmartRMSPU")
     private EntityManager em;
 
@@ -47,7 +49,6 @@ public class ChefView implements Serializable {
 
     @EJB
     private OrderItemFacade orderItemFacade;
-    
 
     private int selectedTab = 0;
 
@@ -130,7 +131,7 @@ public class ChefView implements Serializable {
     public void init() {
         itemList = orderItemFacade.findAll();
         update();
-        selectedContainer = orderDetails.get(0);
+        
     }
 
     public void accept(int i) {
@@ -144,7 +145,24 @@ public class ChefView implements Serializable {
         selectedContainer.customerOrder.setAcceptedBy(uName);
         orderManager.acceptOrder(selectedContainer.customerOrder);
     }
-    
+
+    public boolean checkLevel() {
+        if (selectedContainer != null) {
+            List<OrderItem> selItems = (List<OrderItem>) selectedContainer.customerOrder.getOrderItemCollection();
+            for (OrderItem selItem : selItems) {
+                List<MenuItemIngredient> rules = (List<MenuItemIngredient>) selItem.getItemId().getMenuItemIngredientCollection();
+                for (MenuItemIngredient rule : rules) {
+                    BigDecimal currentStock = rule.getIngredientId().getAmount();
+                    BigDecimal est = currentStock.subtract(rule.getAmount());
+                    if (1 == est.compareTo(rule.getIngredientId().getWarn())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public void update() {
         em.getEntityManagerFactory().getCache().evictAll();
         orders = customerOrderFacade.findAll();
@@ -172,7 +190,7 @@ public class ChefView implements Serializable {
 //            orderListSize = orderDetails.size();
 //        }
     }
-    
+
     private Ingredient selectedIngredient;  //THINGS realated to ingredient levels NOTICE!!!!!!!!!!!!!! <<<<<<<>>>>>>>>>>>
 
     public Ingredient getSelectedIngredient() {
@@ -182,8 +200,8 @@ public class ChefView implements Serializable {
     public void setSelectedIngredient(Ingredient selectedIngredient) {
         this.selectedIngredient = selectedIngredient;
     }
-    
-    public void editStock(Ingredient ingredient){
+
+    public void editStock(Ingredient ingredient) {
         orderManager.saveIngredient(ingredient);
     }
 

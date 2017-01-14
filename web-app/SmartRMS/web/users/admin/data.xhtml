@@ -12,7 +12,7 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>SmartRMS - Configuration</title>
+                <title>SmartRMS - Manage Data</title>
             </f:facet>
             <h:outputStylesheet name="css/prime-ui.css" />
         </h:head>
@@ -150,8 +150,6 @@
                                 <p:outputPanel id="itmDetail" style="text-align:center;">
                                     <h:form>
                                         <p:panelGrid columns="2">
-                                            <p:outputLabel value="Item Id:" for="itemId" />
-                                            <p:inputText id="itemId" value="#{AdmV.dummyItem.itemId}" title="ItemId" required="true" requiredMessage="The Item Id field is required."/>
                                             <p:outputLabel value="Menu Index:" for="menuIndex" />
                                             <p:inputText id="menuIndex" value="#{AdmV.dummyItem.menuIndex}" title="MenuIndex" required="true" requiredMessage="The Menu Index field is required."/>
                                             <p:outputLabel value="ItemType:" for="itemType" />
@@ -232,8 +230,6 @@
                                 <p:outputPanel id="ingDetail" style="text-align:center;">
                                     <h:form>
                                         <p:panelGrid columns="2">
-                                            <p:outputLabel value="Id:" for="id" />
-                                            <p:inputText id="id" value="#{AdmV.dummyIngredient.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
                                             <p:outputLabel value="Name:" for="name" />
                                             <p:inputText id="name" value="#{AdmV.dummyIngredient.name}" title="Name" />
                                             <p:outputLabel value="Description:" for="description" />

@@ -5,7 +5,6 @@
  */
 package rms.view;
 
-import com.sun.xml.rpc.processor.modeler.j2ee.xml.emptyType;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,9 +22,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
-import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.DualListModel;
 import rms.common.ComTainer;
 import rms.entity.DiningTable;
@@ -225,13 +222,11 @@ public class RecepView {
                 nestedList.add(templList);
                 uniques.add(uid);
             }
-
         }
-
         return nestedList;
     }
 
-    public static <T> Set<Set<T>> powerSet(Set<T> originalSet) {
+    public static <T> Set<Set<T>> powerSet(Set<T> originalSet) { // this returns powerset of a set
         Set<Set<T>> sets = new HashSet<>();
         if (originalSet.isEmpty()) {
             sets.add(new HashSet<T>());
