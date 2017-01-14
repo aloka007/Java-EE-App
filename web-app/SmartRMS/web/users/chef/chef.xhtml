@@ -18,19 +18,19 @@
         </h:head>
 
         <h:body>
-            
-            
+
+
 
 
             <p:layout fullPage="true">
                 <p:layoutUnit class="north-toolbar" id="north-toolbar" rendered="#{ComV.authorize('CHEF')}" position="north" size="55" collapsible="true" gutter="0">
                     <ui:include src="/users/common/header.xhtml" />
-                    <p:growl id="growl" showDetail="true" life ="7000" />
+                    <p:growl id="growl" autoUpdate="true" showDetail="true" life="7000"/>
                 </p:layoutUnit>
 
                 <p:layoutUnit id="center-comp" rendered="#{ComV.authorize('CHEF')}" position="center" style="height: 98%;" collapsible="true" gutter="0">
 
-                    <p:tabView id="chef-tabview" orientation="left" style="height:98%">
+                    <p:tabView id="chef-tabview" dynamic="true" cache="false" orientation="left" style="height:98%">
                         <p:tab title="Orders">
                             <p:layoutUnit rendered="#{ComV.authorize('CHEF')}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
                                 <h:form id="mainform">
@@ -86,18 +86,65 @@
                                                                   dtOrderList.selectedContainer.customerOrder.status == 0 ? 'New' : (
                                                                       dtOrderList.selectedContainer.customerOrder.status == 1 ? 'Accepted': 'Ready')}" />
 
-                                                    <p:commandButton value="Accept" ajax="false" disabled="#{!(
-                                                                                                             dtOrderList.selectedContainer.customerOrder.status == 0
-                                                                                                             )}" actionListener="#{dtOrderList.accept(1)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
 
-                                                    <p:commandButton value="Ready" ajax="false" disabled="#{!(
-                                                                                                            dtOrderList.selectedContainer.customerOrder.status == 0 or
+
+                                                    <p:commandButton rendered="#{dtOrderList.checkLevel() and 
+                                                                                 dtOrderList.selectedContainer.customerOrder.status == 0}" 
+                                                                     update=":chef-tabview:mainform:selectedorder" value="Accept" icon="ui-icon-alert" actionListener="#{dtOrderList.accept(1)}" >
+                                                        <p:confirm header="Confirmation" message="You might run out of stock!" icon="ui-icon-alert" />
+                                                    </p:commandButton>
+
+                                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
+                                                        <h:form> 
+                                                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                                        </h:form>
+                                                    </p:confirmDialog>
+
+                                                    <p:outputLabel value="  "/>
+
+                                                    <p:commandButton value="Accept" rendered="#{!dtOrderList.checkLevel()and 
+                                                                                 dtOrderList.selectedContainer.customerOrder.status == 0}" ajax="false" disabled="#{!(
+                                                                                                dtOrderList.selectedContainer.customerOrder.status == 0
+                                                                                                )}" actionListener="#{dtOrderList.accept(1)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
+
+                                                    <p:commandButton value="Ready" rendered="#{
+                                                                                 dtOrderList.selectedContainer.customerOrder.status == 1}" ajax="false" disabled="#{!(
                                                                                                             dtOrderList.selectedContainer.customerOrder.status == 1
                                                                                                             )}" actionListener="#{dtOrderList.accept(2)}" update=":mainform:selectedorder" icon="ui-icon-check" title="View"/>
                                                     
-                                                    <p:outputLabel value="#{dtOrderList.checkLevel()}"/>
 
-                                                </p:panelGrid>
+                                                </p:panelGrid>  
+
+                                                <p:panel rendered="#{dtOrderList.checkLevel() and 
+                                                                                 dtOrderList.selectedContainer.customerOrder.status == 0}">
+                                                    <p:outputLabel value="Low stocks! The following ingredient stocks will go below reorder level if this order is accepted" style="color:red; font-weight: bold"/>
+                                                    <f:view>
+                                                        <h:form>
+                                                            <p:dataTable value="#{dtOrderList.lowIngredients}" var="item">
+                                                                <p:column>
+                                                                    <f:facet name="header">
+                                                                        <h:outputText value="Name"/>
+                                                                    </f:facet>
+                                                                    <h:outputText value="#{item.name}"/>
+                                                                </p:column>
+                                                                <p:column>
+                                                                    <f:facet name="header">
+                                                                        <h:outputText value="Reorder Level"/>
+                                                                    </f:facet>
+                                                                    <h:outputText value="#{item.warn}"/>
+                                                                </p:column>
+                                                                <p:column>
+                                                                    <f:facet name="header">
+                                                                        <h:outputText value="Estimated Amount"/>
+                                                                    </f:facet>
+                                                                    <h:outputText value="#{item.amount}" style="color:red; font-weight: bold"/>
+                                                                </p:column>
+                                                            </p:dataTable>
+                                                        </h:form>
+                                                    </f:view>
+
+                                                </p:panel>
 
 
 

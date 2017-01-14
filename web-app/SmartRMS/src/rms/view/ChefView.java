@@ -153,14 +153,35 @@ public class ChefView implements Serializable {
                 List<MenuItemIngredient> rules = (List<MenuItemIngredient>) selItem.getItemId().getMenuItemIngredientCollection();
                 for (MenuItemIngredient rule : rules) {
                     BigDecimal currentStock = rule.getIngredientId().getAmount();
-                    BigDecimal est = currentStock.subtract(rule.getAmount());
-                    if (1 == est.compareTo(rule.getIngredientId().getWarn())) {
+                    BigDecimal est = currentStock.subtract(rule.getAmount().multiply(BigDecimal.valueOf(selItem.getQuantity())));
+                    if (-1 == est.compareTo(rule.getIngredientId().getWarn())) {
                         return true;
                     }
                 }
             }
         }
         return false;
+    }
+    public List<Ingredient> getLowIngredients(){
+        List<Ingredient> lowIngredients = new ArrayList<>();
+        if (selectedContainer != null) {
+            List<OrderItem> selItems = (List<OrderItem>) selectedContainer.customerOrder.getOrderItemCollection();
+            for (OrderItem selItem : selItems) {
+                List<MenuItemIngredient> rules = (List<MenuItemIngredient>) selItem.getItemId().getMenuItemIngredientCollection();
+                for (MenuItemIngredient rule : rules) {
+                    BigDecimal currentStock = rule.getIngredientId().getAmount();
+                    BigDecimal est = currentStock.subtract(rule.getAmount().multiply(BigDecimal.valueOf(selItem.getQuantity())));
+                    if (-1 == est.compareTo(rule.getIngredientId().getWarn())) {
+                        Ingredient tempIngredient = new Ingredient();
+                        tempIngredient.setName(rule.getIngredientId().getName());
+                        tempIngredient.setWarn(rule.getIngredientId().getWarn());
+                        tempIngredient.setAmount(est);
+                        lowIngredients.add(tempIngredient);
+                    }
+                }
+            }
+        }
+        return lowIngredients;
     }
 
     public void update() {
@@ -178,9 +199,10 @@ public class ChefView implements Serializable {
                 }
             }
             Container cont = new Container(order, templist);
-            if (order.getStatus().equals((short) 2) || order.getStatus().equals((short) 3) || order.getStatus().equals((short) 4) || order.getStatus().equals((short) 9)) {
+            if (order.getStatus().equals((short) 2)) {
                 completedOrders.add(cont);
-            } else {
+            } 
+            else if (order.getStatus().equals((short) 0) || order.getStatus().equals((short) 1)){
                 orderDetails.add(cont);
             }
         }

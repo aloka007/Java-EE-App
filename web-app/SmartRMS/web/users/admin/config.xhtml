@@ -110,19 +110,19 @@
                                         <f:facet name="header">
                                             <h:outputText value="Amount"/>
                                         </f:facet>
-                                        <h:outputText value="#{item.amount}"/>
+                                        <h:outputText value="#{item.amount} #{item.ingredientId.unit}"/>
                                     </p:column>
                                     <p:column>
                                         <f:facet name="header">
-                                            <h:outputText value="IngredientId"/>
-                                        </f:facet>
-                                        <h:outputText value="#{item.ingredientId.name}"/>
-                                    </p:column>
-                                    <p:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="ItemId"/>
+                                            <h:outputText value="Item"/>
                                         </f:facet>
                                         <h:outputText value="#{item.itemId.itemName}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Ingredient"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.ingredientId.name}"/>
                                     </p:column>
                                     <p:column style="width:32px;text-align: center">
                                         <p:commandButton update=":resDialog" oncomplete="PF('resDialog').show()" icon="ui-icon-search" title="View">
@@ -161,16 +161,16 @@
                                         <h:outputText value="#{ingredient.name}"/>
                                     </p:column>
                                     <p:column headerText="Amount">
-                                        <h:outputText value="#{ingredient.amount}"/>
+                                        <h:outputText value="#{ingredient.amount} #{ingredient.unit}"/>
                                     </p:column>
-                                    <p:column headerText="Warning Level">
-                                        <h:outputText value="#{ingredient.warn}"/>
+                                    <p:column headerText="Reorder Level">
+                                        <h:outputText value="#{ingredient.warn} #{ingredient.unit}"/>
                                     </p:column>
                                     <p:column headerText="Critical Level">
-                                        <h:outputText value="#{ingredient.crit}"/>
+                                        <h:outputText value="#{ingredient.crit} #{ingredient.unit}"/>
                                     </p:column>
                                     <p:column style="width:32px;text-align: center">
-                                        <p:commandButton update=":ingDialog" oncomplete="PF('resDialog').show()" icon="ui-icon-search" title="View">
+                                        <p:commandButton update=":ingDialog" oncomplete="PF('ingDialog').show()" icon="ui-icon-search" title="View">
                                             <f:setPropertyActionListener value="#{ingredient}" target="#{dtOrderList.selectedIngredient}" />
                                         </p:commandButton>
                                     </p:column>
@@ -179,7 +179,7 @@
                             
                             
 
-                            <p:dialog id="ingDialog" header="Restock Ingredient" widgetVar="resDialog" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:dialog id="ingDialog" header="Edit Ingredient" widgetVar="ingDialog" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
 
                                 <p:outputPanel id="ingDetail" style="text-align:center;">
                                     <h:form id="dialogform">
@@ -189,7 +189,14 @@
                                             <h:outputText value="#{dtOrderList.selectedIngredient.name}" />
 
                                             <h:outputText value="Amount" />
-                                            <p:inputNumber value="#{dtOrderList.selectedIngredient.amount}" minValue="0.001" maxValue="999.999" required="true" decimalPlaces="3"/>
+                                            <p:inputNumber value="#{dtOrderList.selectedIngredient.amount}" minValue="0.000" maxValue="999.999" required="true" decimalPlaces="3"/>
+                                            
+                                            <h:outputText value="Reorder Level" />
+                                            <p:inputNumber value="#{dtOrderList.selectedIngredient.warn}" minValue="0.000" maxValue="999.999" required="true" decimalPlaces="3"/>
+                                            
+                                            <h:outputText value="Critical Level" />
+                                            <p:inputNumber value="#{dtOrderList.selectedIngredient.crit}" minValue="0.000" maxValue="999.999" required="true" decimalPlaces="3"/>
+                                           
                                         </p:panelGrid>
                                         <p:commandButton value="Save Changes" id="nonAjax" actionListener="#{dtOrderList.editStock(dtOrderList.selectedIngredient)}" ajax="false" />
                                     </h:form>

@@ -50,7 +50,7 @@ public class CashierView {
     public void init() {
         itemList = orderItemFacade.findAll();
         update();
-        for (int i = 0; i < 12; i++) {
+        for (int i = 1; i < 16; i++) {  // hardcoded tables
             filterValues.add(String.valueOf(i));
         }
     }
@@ -72,6 +72,18 @@ public class CashierView {
     int refreshcount = 0;
     private List<CustomerOrder> orders;
     private List<Container> orderDetails = new ArrayList<>();
+    
+    private List<Container> takeawayOrders = new ArrayList<>();
+
+    public List<Container> getTakeawayOrders() {
+        update();
+        return takeawayOrders;
+    }
+
+    public void setTakeawayOrders(List<Container> takeawayOrders) {
+        this.takeawayOrders = takeawayOrders;
+    }
+    
     private List<Container> completedOrders = new ArrayList<>();
 
     public List<Container> getCompletedOrders() {
@@ -190,7 +202,7 @@ public class CashierView {
         }
         else{
         bill.setCustomerName(customerName);
-        bill.setTotal(bill.getSubTotal().add(bill.getTip()));
+        
         bill.setPayMode(payMode);
         
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -233,6 +245,8 @@ public class CashierView {
             this.bill.setDiscount(BigDecimal.valueOf(0.00));
             this.bill.setTax(amount.multiply(BigDecimal.valueOf(0.15)).setScale(2, RoundingMode.CEILING));
             this.bill.setSubTotal((bill.getAmount().subtract(bill.getDiscount())).add(bill.getTax()));
+            this.bill.setTip(amount.multiply(BigDecimal.valueOf(0.10)).setScale(2, RoundingMode.CEILING));
+            this.bill.setTotal(bill.getSubTotal().add(bill.getTip()));
             
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             try {
@@ -268,6 +282,7 @@ public class CashierView {
 
         itemList = orderItemFacade.findAll();
         orderDetails = new ArrayList<>();
+        takeawayOrders = new ArrayList<>();
         completedOrders = new ArrayList<>();
         for (CustomerOrder order : orders) {
             if (order.getStatus().equals((short) 3)) {
@@ -278,7 +293,13 @@ public class CashierView {
                     }
                 }
                 Container cont = new Container(order, templist);
-                orderDetails.add(cont);
+                if (order.getTableNo() == 0) {
+                    takeawayOrders.add(cont);
+                }
+                else{
+                    orderDetails.add(cont);
+                }
+                
             }
         }
     }

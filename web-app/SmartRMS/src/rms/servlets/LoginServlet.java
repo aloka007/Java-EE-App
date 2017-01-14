@@ -124,7 +124,7 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (SQLException | ServletException | IOException e) { // database error code
             e.printStackTrace();
-            request.setAttribute("message", "Could Not Connect To Database");
+            request.setAttribute("message", "Error When Loading View");
             getServletContext().getRequestDispatcher("/common/error.jsp").forward(request, response);
         } finally {
 

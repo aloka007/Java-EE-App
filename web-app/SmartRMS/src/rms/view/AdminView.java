@@ -399,19 +399,23 @@ public class AdminView {
     
     
     public void saveRule(){
-        orderManager.saveNewRule(rule);
+        orderManager.saveNewRule(selectedRule);
     }
     
-    MenuItemIngredient rule;
+    MenuItemIngredient selectedRule;
+
+    public void setSelectedRule(MenuItemIngredient rule) {
+        this.selectedRule = rule;
+    }
     
     public MenuItemIngredient getSelectedRule() {
-        return rule;
+        return selectedRule;
     }
     
     
 //</editor-fold>
     
-//<editor-fold defaultstate="collapsed" desc="Create menu items and ingredients">
+    //<editor-fold defaultstate="collapsed" desc="Create menu items and ingredients">
     
     Ingredient dummyIngredient = new Ingredient();
     
@@ -442,7 +446,7 @@ public class AdminView {
         orderManager.insertIngredient(dummyIngredient);
         dummyIngredient = new Ingredient();
     }
-//</editor-fold>
+    //</editor-fold>
     public void navigate(String path) {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         try {

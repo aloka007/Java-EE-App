@@ -99,7 +99,7 @@
 
                     <!--                    <p:messages id="messages" autoUpdate="true" closable="true" />-->
 
-                    <p:tabView id="tab-panel" orientation="left" style="height:98%" activeIndex="#{CashV.selectedTab}">
+                    <p:tabView id="tab-panel" dynamic="true" cache="false" orientation="left" style="height:98%" activeIndex="#{CashV.selectedTab}">
                         <p:ajax event="tabChange" listener="#{CashV.onTabChange}"/>
                         <p:tab title="Dine-In Orders" id="tab0">
                             <p:layoutUnit rendered="#{ComV.authorize('CASHIER')}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
@@ -216,8 +216,119 @@
                                 </h:form>
                             </p:layoutUnit>
                         </p:tab>
+                        
+                        <p:tab title="Take Away Orders" id="tab1">
+                            <p:layoutUnit rendered="#{ComV.authorize('CASHIER')}" position="center" style="padding: 0px 0px" collapsible="true" gutter="0">
+                                <h:form id="mainform2">
 
-                        <p:tab title="Created Invoices" id="tab1">
+                                    <p:layout style="height: 530px">
+
+                                        <p:layoutUnit class="user-toolbar" style="border:none; padding-left:3px; padding-bottom: 0px; padding-top: 0px;" position="north" size="50" collapsible="true" gutter="0">
+                                            <p:toolbar style="overflow: hidden">
+                                                <f:facet name="left">
+                                                    <p:commandButton value="New" icon="ui-icon-document" />
+
+
+                                                    <span class="ui-separator">
+                                                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                                                    </span>
+
+                                                </f:facet>
+
+                                                <f:facet name="right">
+                                                    <p:growl id="growl2" showDetail="true" sticky="true" />  
+
+                                                    <p:commandButton id="proceedbtn2" value="Create Bill" ajax="false" update="growl" action="#{CashV.proceed()}" icon="ui-icon-play" disabled="false"/>
+
+                                                </f:facet>
+
+                                            </p:toolbar>
+                                        </p:layoutUnit>
+
+                                        <p:layoutUnit position="west" size="60%" style="border:none" collapsible="true" gutter="0">
+                                            <p:outputPanel id="orderpanel2">
+
+                                                <p:dataTable id="ordertable2" widgetVar="orderTable" var="order" value="#{CashV.takeawayOrders}" rowKey="#{order.customerOrder.orderNo}" selection="#{CashV.selectedContainers}"
+                                                             rowStyleClass="#{ComV.statuSwitch(1,order.customerOrder.status)}" >
+                                                    <f:facet name="header">
+                                                        <h:outputText id="refcount2" value="Orders List" />
+                                                    </f:facet>
+                                                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                                    <p:column headerText="Order No" style="width: 40px">
+                                                        <h:outputText style="align-content: center" value="#{order.customerOrder.orderNo}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Table No" style="width: 40px">
+                                                        
+                                                        <h:outputText style="center" value="#{order.customerOrder.tableNo}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Order Time" style="width: 140px">
+                                                        <h:outputText style="align-content: center;" value="#{order.customerOrder.orderTime}" />
+                                                    </p:column>
+
+
+                                                    <p:column headerText="Customer Name" style="width: 110px">
+                                                        <h:outputText style="center" value="#{order.customerOrder.custName}" />
+                                                    </p:column>
+                                                    <p:column style="width:32px;text-align: center">
+                                                        <p:commandButton update=":tab-panel:mainform:selectedorder" icon="ui-icon-search" title="View">
+                                                            <f:setPropertyActionListener value="#{order}" target="#{CashV.selectedContainer}" />
+                                                        </p:commandButton>
+                                                    </p:column>
+                                                </p:dataTable>
+
+                                            </p:outputPanel>
+                                        </p:layoutUnit>
+
+                                        <p:layoutUnit position="center" style="border:none" collapsible="true" gutter="0">
+                                            <p:outputPanel id="selectedorder2" style="text-align:center;">
+                                                <p:panelGrid  columns="2" style="text-align: left; width:100%">
+                                                    <f:facet name="header">Order Details</f:facet>
+                                                    <h:outputText style="center" value="Order Number: " />
+                                                    <h:outputText style="center" value="#{CashV.selectedContainer.customerOrder.orderNo}" />
+
+                                                    <h:outputText style="center" value="Order Time: " />
+                                                    <h:outputText style="center" value="#{CashV.selectedContainer.customerOrder.orderTime}" />
+
+                                                    <h:outputText style="center" value="Ordered By: " />
+                                                    <h:outputText style="center" value="#{CashV.selectedContainer.customerOrder.orderedBy}" />
+
+                                                    <h:outputText style="center" value="Accepted By: " />
+                                                    <h:outputText style="center" value="#{CashV.selectedContainer.customerOrder.acceptedBy}" />
+
+
+                                                    <h:outputText style="center" value="Status: " />
+                                                    <h:outputText style="text-align:center; font-weight: bold" value="#{ComV.statuSwitch(2,CashV.selectedContainer.customerOrder.status)}" />
+
+                                                </p:panelGrid>
+
+
+
+                                                <p:dataTable style="margin-top: 5px" var="item" value="#{CashV.selectedContainer.itemlist}">
+                                                    <f:facet name="header">Items List</f:facet>
+                                                    <p:column headerText="Index" style="width: 60px">
+                                                        <h:outputText value="#{item.itemId.itemId}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Item Name">
+                                                        <h:outputText value="#{item.itemId.itemName}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Quantity" style="width: 60px">
+                                                        <h:outputText value="#{item.quantity}" />
+                                                    </p:column>
+
+                                                </p:dataTable>
+
+                                            </p:outputPanel>
+                                        </p:layoutUnit>
+                                    </p:layout>
+                                </h:form>
+                            </p:layoutUnit>
+                        </p:tab>
+
+                        <p:tab title="Created Invoices" id="tab2">
                             <p:dataTable id="tbl" var="bill" value="#{AdmV.billList}" style="margin-left:10%;width: 80%"
                                          rows="10"
                                          paginator="true"
