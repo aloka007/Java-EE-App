@@ -91,7 +91,7 @@
                                                     <p:commandButton rendered="#{dtOrderList.checkLevel() and 
                                                                                  dtOrderList.selectedContainer.customerOrder.status == 0}" 
                                                                      update=":chef-tabview:mainform:selectedorder" value="Accept" icon="ui-icon-alert" actionListener="#{dtOrderList.accept(1)}" >
-                                                        <p:confirm header="Confirmation" message="You might run out of stock!" icon="ui-icon-alert" />
+                                                        <p:confirm header="Confirm Action" message="Warning! You might run out of stock!" icon="ui-icon-alert" />
                                                     </p:commandButton>
 
                                                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
@@ -118,21 +118,21 @@
 
                                                 <p:panel rendered="#{dtOrderList.checkLevel() and 
                                                                                  dtOrderList.selectedContainer.customerOrder.status == 0}">
-                                                    <p:outputLabel value="Low stocks! The following ingredient stocks will go below reorder level if this order is accepted" style="color:red; font-weight: bold"/>
+                                                    <p:outputLabel value="Low stocks! The following ingredient stocks will go below re-order level if this order is accepted" style="color:red; font-weight: bold"/>
                                                     <f:view>
                                                         <h:form>
                                                             <p:dataTable value="#{dtOrderList.lowIngredients}" var="item">
                                                                 <p:column>
                                                                     <f:facet name="header">
-                                                                        <h:outputText value="Name"/>
+                                                                        <h:outputText value="Ingredient"/>
                                                                     </f:facet>
                                                                     <h:outputText value="#{item.name}"/>
                                                                 </p:column>
                                                                 <p:column>
                                                                     <f:facet name="header">
-                                                                        <h:outputText value="Reorder Level"/>
+                                                                        <h:outputText value="Re-Order Level" />
                                                                     </f:facet>
-                                                                    <h:outputText value="#{item.warn}"/>
+                                                                    <h:outputText value="#{item.warn}" style="color:green; font-weight: bold"/>
                                                                 </p:column>
                                                                 <p:column>
                                                                     <f:facet name="header">

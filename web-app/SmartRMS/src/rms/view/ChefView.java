@@ -30,6 +30,7 @@ import rms.entity.Ingredient;
 import rms.entity.MenuItemIngredient;
 import rms.entity.OrderItem;
 import rms.session.CustomerOrderFacade;
+import rms.session.IngredientFacade;
 import rms.session.OrderItemFacade;
 import rms.transaction.OrderManager;
 
@@ -131,7 +132,7 @@ public class ChefView implements Serializable {
     public void init() {
         itemList = orderItemFacade.findAll();
         update();
-        
+
     }
 
     public void accept(int i) {
@@ -162,22 +163,42 @@ public class ChefView implements Serializable {
         }
         return false;
     }
-    public List<Ingredient> getLowIngredients(){
+
+    @EJB
+    IngredientFacade ingredientFacade;
+
+    public List<Ingredient> getLowIngredients() {
         List<Ingredient> lowIngredients = new ArrayList<>();
         if (selectedContainer != null) {
+
+            List<Ingredient> ingredients = ingredientFacade.findAll();
+            List<Ingredient> copyIngredients = new ArrayList<>();
+            for (Ingredient ingredient : ingredients) {
+                Ingredient tempIngredient = new Ingredient();
+                tempIngredient.setId(ingredient.getId());
+                tempIngredient.setName(ingredient.getName());
+                tempIngredient.setAmount(ingredient.getAmount());
+                tempIngredient.setWarn(ingredient.getWarn());
+                copyIngredients.add(ingredient);
+            }
+
             List<OrderItem> selItems = (List<OrderItem>) selectedContainer.customerOrder.getOrderItemCollection();
             for (OrderItem selItem : selItems) {
                 List<MenuItemIngredient> rules = (List<MenuItemIngredient>) selItem.getItemId().getMenuItemIngredientCollection();
                 for (MenuItemIngredient rule : rules) {
-                    BigDecimal currentStock = rule.getIngredientId().getAmount();
-                    BigDecimal est = currentStock.subtract(rule.getAmount().multiply(BigDecimal.valueOf(selItem.getQuantity())));
-                    if (-1 == est.compareTo(rule.getIngredientId().getWarn())) {
-                        Ingredient tempIngredient = new Ingredient();
-                        tempIngredient.setName(rule.getIngredientId().getName());
-                        tempIngredient.setWarn(rule.getIngredientId().getWarn());
-                        tempIngredient.setAmount(est);
-                        lowIngredients.add(tempIngredient);
+                    for (Ingredient copying : copyIngredients) {
+                        if (rule.getIngredientId().getId().equals(copying.getId())) {
+                            BigDecimal currentStock = copying.getAmount();
+                            BigDecimal est = currentStock.subtract(rule.getAmount().multiply(BigDecimal.valueOf(selItem.getQuantity())));
+                            copying.setAmount(est);
+                        }
                     }
+                }
+            }
+
+            for (Ingredient ingredient : copyIngredients) {
+                if (-1 == ingredient.getAmount().compareTo(ingredient.getWarn())) {
+                    lowIngredients.add(ingredient);
                 }
             }
         }
@@ -201,8 +222,7 @@ public class ChefView implements Serializable {
             Container cont = new Container(order, templist);
             if (order.getStatus().equals((short) 2)) {
                 completedOrders.add(cont);
-            } 
-            else if (order.getStatus().equals((short) 0) || order.getStatus().equals((short) 1)){
+            } else if (order.getStatus().equals((short) 0) || order.getStatus().equals((short) 1)) {
                 orderDetails.add(cont);
             }
         }
