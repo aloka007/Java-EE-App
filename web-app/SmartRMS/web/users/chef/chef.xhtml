@@ -178,9 +178,7 @@
                                         <p:outputPanel id="orderpanel">
 
                                             <p:dataTable id="ordertable" var="order" value="#{dtOrderList.completedOrders}" rowStyleClass="#{ComV.statuSwitch(1,order.customerOrder.status)}">
-                                                <f:facet name="header">
-                                                    <h:outputText id="refcount" value="Orders List.  Refresh Count: #{dtOrderList.refreshcount}" />
-                                                </f:facet>
+                                                
                                                 <p:column headerText="Order No" style="width: 40px">
                                                     <h:outputText style="align-content: center" value="#{order.customerOrder.orderNo}" />
                                                 </p:column>

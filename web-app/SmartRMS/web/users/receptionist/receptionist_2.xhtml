@@ -81,7 +81,7 @@
 
                 <p:layoutUnit id="center-panel" rendered="#{ComV.authorize('RECEPTIONIST')}" position="center" style="padding: 5px 5px" collapsible="true" gutter="0">
 
-                    <p:tabView id="tab-panel" orientation="left" style="height:98%" activeIndex="#{ComV.selectedTab}">
+                    <p:tabView id="tab-panel" dynamic="true" cache="false" orientation="left" style="height:98%" activeIndex="#{ComV.selectedTab}">
                         <p:ajax event="tabChange" listener="#{ComV.onTabChange}"/>
                         <p:tab title="Ordering" id="tab0">
                             <h:form>
@@ -266,13 +266,11 @@
 
                                                 </p:dataTable>
 
-                                                <p:panelGrid  columns="6" style="text-align: center; width:100%">
+                                                <p:panelGrid  columns="4" style="text-align: center; width:100%">
                                                     <h:outputText value="New" style="color:red; font-weight: bold" />
                                                     <h:outputText value="Accepted" style="color:darkorange; font-weight: bold" />
                                                     <h:outputText value="Ready" style="color:lime; font-weight: bold" />
                                                     <h:outputText value="Delivered" style="color:turquoise; font-weight: bold" />
-                                                    <h:outputText value="Paid" style="color:yellow; font-weight: bold" />
-                                                    <h:outputText value="Cancelled" style="color:slategray; font-weight: bold" />
                                                 </p:panelGrid>
 
                                             </p:outputPanel>

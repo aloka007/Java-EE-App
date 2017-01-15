@@ -143,19 +143,17 @@ public class RecepOrders {
         orderDetails = new ArrayList<>();
         completedOrders = new ArrayList<>();
         for (CustomerOrder order : orders) {
-            List<OrderItem> templist = new ArrayList<>();
-            for (OrderItem i : itemList) {
-                if (Objects.equals(i.getOrderNo().getOrderNo(), order.getOrderNo())) {
-                    templist.add(i);
+            if (order.getStatus() <= ((short) 3)) {
+                List<OrderItem> templist = new ArrayList<>();
+                for (OrderItem i : itemList) {
+                    if (Objects.equals(i.getOrderNo().getOrderNo(), order.getOrderNo())) {
+                        templist.add(i);
+                    }
                 }
+                Container cont = new Container(order, templist);
+                orderDetails.add(cont);
             }
-            Container cont = new Container(order, templist);
-            orderDetails.add(cont);
-//            if (order.getStatus().equals((short) 2)) {
-//                completedOrders.add(cont);
-//            } else {
-//                orderDetails.add(cont);
-//            }
+
         }
     }
 
