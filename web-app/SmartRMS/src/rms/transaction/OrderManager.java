@@ -95,7 +95,7 @@ public class OrderManager {
             addOrderedItems(order, item_list);
             return order.getOrderNo();
         } catch (Exception e) {
-            context.setRollbackOnly();
+            context.setRollbackOnly();//jpa rollback
             return 0;
         }
     }
