@@ -211,13 +211,13 @@ public class RecepView {
             int seats = 0;
             int min = 1000;
             for (DiningTable table : templList) {
-                uid += (int) Math.pow(10, table.getNumOfSeats());
+                uid += (int) Math.pow(10, table.getNumOfSeats()); //get a unique key for each combination
                 seats += table.getNumOfSeats();
-                if (table.getNumOfSeats() < min) {
+                if (table.getNumOfSeats() < min) {//find smallest table in combination
                     min = table.getNumOfSeats();
                 }
             }
-            // add if seat combination is unique, not empty, seats are more than customers, seats are not 8 (MAX) more than customers
+            // add if seat combination is unique, not empty, seats are more than customers, seats are not 4 (MAX) more than customers
             if (!uniques.contains(uid) && !templList.isEmpty() && this.customerCount <= seats && seats < (this.customerCount + min) && this.customerCount + 4 > seats) {
                 nestedList.add(templList);
                 uniques.add(uid);

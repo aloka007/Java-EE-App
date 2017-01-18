@@ -148,7 +148,7 @@ public class ChefView implements Serializable {
     }
 
     public boolean checkLevel() {
-        if (selectedContainer != null) {
+        if (selectedContainer != null) { //checks the ingredient level frist
             List<OrderItem> selItems = (List<OrderItem>) selectedContainer.customerOrder.getOrderItemCollection();
             for (OrderItem selItem : selItems) {
                 List<MenuItemIngredient> rules = (List<MenuItemIngredient>) selItem.getItemId().getMenuItemIngredientCollection();
@@ -166,13 +166,13 @@ public class ChefView implements Serializable {
 
     @EJB
     IngredientFacade ingredientFacade;
-
-    public List<Ingredient> getLowIngredients() {
+    //this function gets repeated in the order servlet
+    public List<Ingredient> getLowIngredients() {  // find the low ingredients
         List<Ingredient> lowIngredients = new ArrayList<>();
         if (selectedContainer != null) {
 
-            List<Ingredient> ingredients = ingredientFacade.findAll();
-            List<Ingredient> copyIngredients = new ArrayList<>();
+            List<Ingredient> ingredients = ingredientFacade.findAll(); //gets the ingredients
+            List<Ingredient> copyIngredients = new ArrayList<>(); //make a copy of that
             for (Ingredient ingredient : ingredients) {
                 Ingredient tempIngredient = new Ingredient();
                 tempIngredient.setId(ingredient.getId());
@@ -190,7 +190,7 @@ public class ChefView implements Serializable {
                         if (rule.getIngredientId().getId().equals(copying.getId())) {
                             BigDecimal currentStock = copying.getAmount();
                             BigDecimal est = currentStock.subtract(rule.getAmount().multiply(BigDecimal.valueOf(selItem.getQuantity())));
-                            copying.setAmount(est);
+                            copying.setAmount(est); // est = curr - ( ruleamt * qty)
                         }
                     }
                 }

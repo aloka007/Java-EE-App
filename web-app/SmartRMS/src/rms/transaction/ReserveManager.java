@@ -74,7 +74,7 @@ public class ReserveManager {
             em.persist(tempTable);
         }
     }
-    
+    //reserve function
     public int reserve(Customer customer, String username, String date, String time, List<DiningTable> tables ){
         try {
             Reservation reservation = addReservation(customer, username, date, time);
@@ -82,7 +82,7 @@ public class ReserveManager {
             return reservation.getResId();
         } catch (Exception e) {
             e.printStackTrace();
-            context.setRollbackOnly();
+            context.setRollbackOnly();//jpa rollback
             return 0;
         }
     }
