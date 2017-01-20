@@ -64,7 +64,7 @@ public class ReserveHandler extends HttpServlet {
             String resDate = (String) session.getAttribute("res_date");
             String resTime = (String) session.getAttribute("res_time");
             String username = (String) session.getAttribute("username");
-            if (userPath.equals("/Check Available")) {
+            if (userPath.equals("/Check Available")) { // join operation to get available tables
                 String query = "SELECT reservation.res_id, reservation_table.res_tb_id, reservation_table.table_id "
                         + "FROM `reservation` "
                         + "INNER JOIN reservation_table ON reservation.res_id = reservation_table.res_id "

@@ -143,7 +143,7 @@ public class RecepOrders {
         orderDetails = new ArrayList<>();
         completedOrders = new ArrayList<>();
         for (CustomerOrder order : orders) {
-            if (order.getStatus() <= ((short) 3)) {
+            if (order.getStatus() <= ((short) 3)) { // filtering happens here
                 List<OrderItem> templist = new ArrayList<>();
                 for (OrderItem i : itemList) {
                     if (Objects.equals(i.getOrderNo().getOrderNo(), order.getOrderNo())) {
